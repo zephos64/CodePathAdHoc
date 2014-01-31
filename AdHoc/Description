@@ -1,0 +1,19 @@
+Description of app:
+This app enables a group of people, who may or may not know each other, to create an event and be able to meet for said event. Minimal description of the event can optionally be provided, along with a list of items that are necessary.
+
+User Stories:
+1) College student has time after class, he decides to send a request with this app to play soccer on a nearby field for the 1 hour he has off. Other people respond saying they’ll join, one also says he can bring a soccer ball.
+2) Ted is has no plans this afternoon, this app sends a notification that ultimate frisbee is being played in a nearby park. He responds saying he’ll attend, and will bring an extra frisbee.
+3) Lisa has accepted an invitation to play volleyball in 1 hour. A friend calls her up and says that they are going to a movie. Lisa cancels the invitation so the organizer knows she is not attending.
+4) Robert has organized a game of water polo at a community park. An emergency comes up and he can no longer attend the event, so cancels that he will be attending. (How do we handle this? Randomly give responsibility to someone else, cancel the event for all user, etc.?)
+
+Minimum:
+0) Login (entirely inside app, Facebook, …?)
+1) Other people have the option to cancel going to the event as well. This notifies/enables the event organizer to find out how many people are going to the event.
+2) Should have maximum amount of people who can join (If accept a ‘full’ event, user should be warned that it’s full. Should still allow to accept?)
+3) How to handle minimum number of people (what if do not reach minimum by event start? Should it re-send notification to app users?)
+4) Information necessary for event
+4.1) Event name
+4.2) Map with pin for location
+4.3) Minimum number of people required
+5) Event-related information needs to be real-time
