@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.view.Menu;
 
 public class EventListActivity extends Activity {
+	// list sorted by % full (fuller = better)
+	// then by what's happening soonest
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
