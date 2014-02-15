@@ -8,7 +8,8 @@ public class AdHocUtils {
 	public final static String eventItemMinAttend = "min_attendees";
 	public final static String eventItemMaxAttend = "max_attendees";
 	public final static String eventItemTime = "event_time";
-	public final static String eventItemLoc = "location";
+	public final static String eventItemLocLong = "locationLongitude";
+	public final static String eventItemLocLat = "locationLatitude";
 	public final static String eventItemDesc = "description";
 	public final static String eventItemCreationTime = "event_creation_time";
 	public final static String eventItemCurrCount = "num_current_attendees";

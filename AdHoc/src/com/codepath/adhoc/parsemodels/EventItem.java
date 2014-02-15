@@ -51,7 +51,8 @@ public class EventItem extends ParseObject {
         	eventItem.put(AdHocUtils.eventItemMinAttend, jsonObject.getString(AdHocUtils.eventItemMinAttend));
         	eventItem.put(AdHocUtils.eventItemMaxAttend, jsonObject.getString(AdHocUtils.eventItemMaxAttend));
         	eventItem.put(AdHocUtils.eventItemTime, jsonObject.getString(AdHocUtils.eventItemTime));
-        	eventItem.put(AdHocUtils.eventItemLoc, jsonObject.getString(AdHocUtils.eventItemLoc));
+        	eventItem.put(AdHocUtils.eventItemLocLong, jsonObject.getString(AdHocUtils.eventItemLocLong));
+        	eventItem.put(AdHocUtils.eventItemLocLat, jsonObject.getString(AdHocUtils.eventItemLocLat));
         	eventItem.put(AdHocUtils.eventItemDesc, jsonObject.getString(AdHocUtils.eventItemDesc));
         	eventItem.put(AdHocUtils.eventItemCreationTime, jsonObject.getString(AdHocUtils.eventItemCreationTime));
         	eventItem.put(AdHocUtils.eventItemCurrCount, jsonObject.getString(AdHocUtils.eventItemCurrCount));
