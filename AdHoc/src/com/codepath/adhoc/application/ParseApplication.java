@@ -22,7 +22,7 @@ public class ParseApplication extends Application {
 		EventItem ei = new EventItem("Let's play soccer!");
 		
 		// Set the current user, who we think is the person signed onto the app
-		ei.setOwner(ParseUser.getCurrentUser());
+		//ei.setOwner(ParseUser.getCurrentUser());
 		
 		// Now save the data asynchronously
 		ei.saveInBackground();
