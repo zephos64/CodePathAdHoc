@@ -9,8 +9,8 @@
     <string name="title_activity_event_details">EventDetailsActivity</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
     <string name="title_activity_location">LocationActivity</string>
-    <string name="login_button_fb">Login with Facebook</string>
+    <string name="login_button_fb">Log in with Facebook</string>
     <string name="login_title">Ad Hoc Event</string>
-    <string name="fbConnect">Login with Facebok</string>
+    <string name="fbConnect">Log in with Facebook</string>
 
 </resources>

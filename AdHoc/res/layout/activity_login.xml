@@ -18,10 +18,14 @@
 
     <Button
         android:id="@+id/btnLoginFB"
+        style="@style/com_facebook_loginview_default_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/ic_fb_logo"
+        android:drawablePadding="@dimen/com_facebook_loginview_padding_left"
+        android:paddingRight="@dimen/com_facebook_loginview_padding_left"
         android:onClick="loginWithParse"
         android:text="@string/login_button_fb" />
 

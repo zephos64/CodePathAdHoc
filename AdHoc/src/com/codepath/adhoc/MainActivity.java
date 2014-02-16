@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		// TODO uncomment, commenting out because requires cleaning every time
+		// Must clean to remove errors from action bar below
 		ActionBar actionBar = getActionBar();
 		actionBar.hide();
 
