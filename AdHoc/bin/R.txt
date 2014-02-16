@@ -75,7 +75,7 @@ int drawable facebook_connect 0x7f020020
 int drawable ic_launcher 0x7f020021
 int drawable soccer 0x7f020022
 int id btLogin 0x7f040004
-int id button1 0x7f04000a
+int id btnLoginFB 0x7f04000a
 int id com_facebook_login_activity_progress_bar 0x7f04000d
 int id com_facebook_picker_activity_circle 0x7f04000c
 int id com_facebook_picker_checkbox 0x7f04000f
