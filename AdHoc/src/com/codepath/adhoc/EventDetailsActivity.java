@@ -1,5 +1,6 @@
 package com.codepath.adhoc;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ public class EventDetailsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_details);
+		
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -22,24 +26,27 @@ public class EventDetailsActivity extends Activity {
 	}
 
 	@Override
-	  public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	    case R.id.action_create_event:
-	    	Intent iCreate = new Intent(this, CreateEventActivity.class);
-	    	startActivity(iCreate);
-	    	break;
-	    case R.id.action_list_events:
-	    	Intent iList = new Intent(this, EventListActivity.class);
-	    	startActivity(iList);
-	    	break;
-	    case R.id.action_map:
-	    	Intent iMap = new Intent(this, LocationActivity.class);
-	    	startActivity(iMap);
-	    	break;
-	    default:
-	      break;
-	    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		case R.id.action_create_event:
+			Intent iCreate = new Intent(this, CreateEventActivity.class);
+			startActivity(iCreate);
+			break;
+		case R.id.action_list_events:
+			Intent iList = new Intent(this, EventListActivity.class);
+			startActivity(iList);
+			break;
+		case R.id.action_map:
+			Intent iMap = new Intent(this, LocationActivity.class);
+			startActivity(iMap);
+			break;
+		default:
+			break;
+		}
 
-	    return true;
-	  }
+		return true;
+	}
 }

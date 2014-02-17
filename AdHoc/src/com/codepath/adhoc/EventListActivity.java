@@ -24,20 +24,20 @@ public class EventListActivity extends Activity {
 	}
 
 	@Override
-	  public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	    case R.id.action_create_event:
-	    	Intent iCreate = new Intent(this, CreateEventActivity.class);
-	    	startActivity(iCreate);
-	    	break;
-	    case R.id.action_map:
-	    	Intent iMap = new Intent(this, LocationActivity.class);
-	    	startActivity(iMap);
-	    	break;
-	    default:
-	      break;
-	    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_create_event:
+			Intent iCreate = new Intent(this, CreateEventActivity.class);
+			startActivity(iCreate);
+			break;
+		case R.id.action_map:
+			Intent iMap = new Intent(this, LocationActivity.class);
+			startActivity(iMap);
+			break;
+		default:
+			break;
+		}
 
-	    return true;
-	  }
+		return true;
+	}
 }
