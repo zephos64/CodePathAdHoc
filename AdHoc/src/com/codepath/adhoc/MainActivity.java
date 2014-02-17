@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.codepath.adhoc.application.FacebookClient;
 import com.facebook.Request;
@@ -23,6 +26,10 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class MainActivity extends FragmentActivity {
+	ProgressBar pbProgress;
+	TextView tvProgressText;
+	Button btnLoginFB;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +41,14 @@ public class MainActivity extends FragmentActivity {
 
 		//parseUserSignup();
 		//parseUserLogin();
+		
+		pbProgress = (ProgressBar) findViewById(R.id.pbProgress);
+		tvProgressText = (TextView) findViewById(R.id.tvProgressText);
+		btnLoginFB = (Button) findViewById(R.id.btnLoginFB);
+		
+		pbProgress.setVisibility(ProgressBar.VISIBLE);
+		tvProgressText.setVisibility(TextView.VISIBLE);
+		btnLoginFB.setVisibility(Button.INVISIBLE);
 
 		ParseFacebookUtils.initialize(getString(R.string.app_id));
 		FacebookClient.getFacebookUser(new Request.Callback() {
@@ -41,6 +56,10 @@ public class MainActivity extends FragmentActivity {
 			public void onCompleted(Response response) {
 				Log.d("debug", "Facebook user sesssion errors: " + response.getError());
 				if(response.getError() == null) {
+					pbProgress.setVisibility(ProgressBar.INVISIBLE);
+					tvProgressText.setVisibility(TextView.INVISIBLE);
+					btnLoginFB.setVisibility(Button.VISIBLE);
+					
 					loginFacebook();
 				}
 			}

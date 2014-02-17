@@ -28,5 +28,19 @@
         android:paddingRight="@dimen/com_facebook_loginview_padding_left"
         android:onClick="loginWithParse"
         android:text="@string/login_button_fb" />
+    
+    <ProgressBar
+        android:id="@+id/pbProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+    <TextView
+        android:id="@+id/tvProgressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Checking log in status of Facebook..."
+        android:layout_above="@id/pbProgress"/>
 
 </RelativeLayout>
