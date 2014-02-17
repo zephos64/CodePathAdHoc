@@ -1,5 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-
-
+	<item
+        android:id="@+id/action_create_event"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_create_event"
+        android:title="@string/abCreate"/>
+    <item
+        android:id="@+id/action_list_events"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_list_events"
+        android:title="@string/abList"/>
 </menu>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/soccer"
-    android:contentDescription="@string/fbConnect"
+    android:contentDescription="@string/login_button_fb"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 

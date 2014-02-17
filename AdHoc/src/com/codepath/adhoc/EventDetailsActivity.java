@@ -1,8 +1,10 @@
 package com.codepath.adhoc;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class EventDetailsActivity extends Activity {
 
@@ -19,4 +21,25 @@ public class EventDetailsActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	  public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.action_create_event:
+	    	Intent iCreate = new Intent(this, CreateEventActivity.class);
+	    	startActivity(iCreate);
+	    	break;
+	    case R.id.action_list_events:
+	    	Intent iList = new Intent(this, EventListActivity.class);
+	    	startActivity(iList);
+	    	break;
+	    case R.id.action_map:
+	    	Intent iMap = new Intent(this, LocationActivity.class);
+	    	startActivity(iMap);
+	    	break;
+	    default:
+	      break;
+	    }
+
+	    return true;
+	  }
 }
