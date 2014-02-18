@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type_array">
+        <item></item>
+        <item>American Football</item>
+        <item>Baseball</item>
+        <item>Basketball</item>
+        <item>Beach Volleyball</item>
+        <item>Bowling</item>
+        <item>Hacky sack</item>
+        <item>Frisbee</item>
+        <item>Soccer</item>
+        <item>Tennis</item>
+        <item>Volleyball</item>
+    </string-array>
+</resources>

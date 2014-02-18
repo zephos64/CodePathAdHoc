@@ -1,12 +1,14 @@
-package com.codepath.adhoc;
+package com.codepath.adhoc.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class EventListActivity extends Activity {
+import com.codepath.adhoc.R;
+
+public class EventListActivity extends ActionBarActivity {
 	// list sorted by % full (fuller = better)
 	// then by what's happening soonest
 

@@ -1,11 +1,11 @@
-package com.codepath.adhoc;
+package com.codepath.adhoc.activities;
 
 import java.util.List;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.codepath.adhoc.R;
 import com.codepath.adhoc.application.FacebookClient;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -25,7 +26,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends ActionBarActivity {
 	ProgressBar pbProgress;
 	TextView tvProgressText;
 	Button btnLoginFB;
@@ -36,7 +37,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_login);
 
 		// Must clean to remove errors from action bar below
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.hide();
 
 		//parseUserSignup();
