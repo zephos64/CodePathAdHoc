@@ -17,7 +17,7 @@ public class CreateEventMapActivity extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inf, ViewGroup parent,
 			Bundle savedInstanceState) {
-		View view = inf.inflate(R.layout.activity_create_event_map, parent, false);
+		View view = inf.inflate(R.layout.fragment_create_event_map, parent, false);
 		return view;
 	}
 }
