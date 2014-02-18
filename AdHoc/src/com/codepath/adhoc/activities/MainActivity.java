@@ -55,12 +55,12 @@ public class MainActivity extends ActionBarActivity {
 		FacebookClient.getFacebookUser(new Request.Callback() {
 			@Override
 			public void onCompleted(Response response) {
+				pbProgress.setVisibility(ProgressBar.INVISIBLE);
+				tvProgressText.setVisibility(TextView.INVISIBLE);
+				btnLoginFB.setVisibility(Button.VISIBLE);
+				
 				Log.d("debug", "Facebook user sesssion errors: " + response.getError());
 				if(response.getError() == null) {
-					pbProgress.setVisibility(ProgressBar.INVISIBLE);
-					tvProgressText.setVisibility(TextView.INVISIBLE);
-					btnLoginFB.setVisibility(Button.VISIBLE);
-					
 					loginFacebook();
 				}
 			}
