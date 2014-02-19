@@ -17,30 +17,17 @@
         android:text="@string/login_title" />
 
     <Button
-        android:id="@+id/btnLoginFB"
-        style="@style/com_facebook_loginview_default_style"
+        android:id="@+id/btnLoginTwitter"
+        style="@style/login_button_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:drawableLeft="@drawable/ic_fb_logo"
-        android:drawablePadding="@dimen/com_facebook_loginview_padding_left"
-        android:paddingRight="@dimen/com_facebook_loginview_padding_left"
+        android:drawableLeft="@drawable/ic_twitter_icon"
+        android:drawablePadding="10dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:onClick="loginWithParse"
         android:text="@string/login_button_fb" />
-    
-    <ProgressBar
-        android:id="@+id/pbProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-    <TextView
-        android:id="@+id/tvProgressText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Checking log in status of Facebook..."
-        android:layout_above="@id/pbProgress"/>
 
 </RelativeLayout>

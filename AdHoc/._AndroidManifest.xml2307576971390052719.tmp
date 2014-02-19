@@ -17,8 +17,8 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!--
-IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
-to match your app's package name + ".permission.C2D_MESSAGE".
+  IMPORTANT: Change "com.parse.starter.permission.C2D_MESSAGE" in the lines below
+  to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission
         android:name="com.codepath.adhoc.permission.C2D_MESSAGE"
@@ -29,54 +29,44 @@ to match your app's package name + ".permission.C2D_MESSAGE".
     <application
         android:name="com.codepath.adhoc.application.ParseApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher_soccer_ball"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Base.AppCompat.Light.DarkActionBar" >
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.codepath.adhoc.activities.MainActivity"
+            android:name="com.codepath.adhoc.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="twitterapp"
-                    android:scheme="oauth" />
-            </intent-filter>
         </activity>
         <activity
-            android:name="com.codepath.adhoc.activities.EventListActivity"
+            android:name="com.codepath.adhoc.EventListActivity"
             android:label="@string/title_activity_event_list" >
         </activity>
         <activity
-            android:name="com.codepath.adhoc.activities.EventDetailsActivity"
+            android:name="com.codepath.adhoc.EventDetailsActivity"
             android:label="@string/title_activity_event_details" >
         </activity>
         <activity
-            android:name="com.codepath.adhoc.activities.CreateEventActivity"
+            android:name="com.codepath.adhoc.CreateEventActivity"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
-            android:name="com.codepath.adhoc.activities.LocationActivity"
+            android:name="com.codepath.adhoc.LocationActivity"
             android:label="@string/title_activity_location" >
         </activity>
-
-        <!-- Facebook information -->
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/app_id" />
-
-        <activity
-            android:name="com.facebook.LoginActivity"
-            android:label="@string/login_button_fb" >
-        </activity>
+        
+        <!--  Facebook information -->
+         <meta-data
+        	android:name="com.facebook.sdk.ApplicationId"
+        	android:value="@string/app_id" />
+         <activity
+        	android:name="com.facebook.LoginActivity"
+        	android:label="@string/login_button_fb" >
+    	</activity>
 
         <!-- For push notifications via Parse -->
         <service android:name="com.parse.PushService" />
@@ -98,11 +88,6 @@ to match your app's package name + ".permission.C2D_MESSAGE".
                 <category android:name="com.codepath.adhoc" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name="com.codepath.adhoc.fragments.CreateEventMapActivity"
-            android:label="@string/title_activity_create_event_map" >
-        </activity>
     </application>
 
 </manifest>

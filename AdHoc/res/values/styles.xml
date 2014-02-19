@@ -22,4 +22,15 @@
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">serif</item>
     </style>
+    
+    <style name="login_button_style" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/facebook_button_blue</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

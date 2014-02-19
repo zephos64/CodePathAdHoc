@@ -33,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
 				if(ParseTwitterUtils.isLinked(ParseUser.getCurrentUser())) {
 					Log.d("DEBUG", "User is already linked with Parse");
 				}
-				//test
 				loginApp();
 			}
 			

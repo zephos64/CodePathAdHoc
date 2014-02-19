@@ -3,7 +3,7 @@
 
     <string name="app_name">AdHoc</string>
     <string name="app_id">575878422500726</string>
-    <string name="login_button_fb">Log in with Facebook</string>
+    <string name="login_button_fb">Log in with Twitter</string>
     <string name="login_title">Ad Hoc Event</string>
     <string name="title_activity_event_list">EventListActivity</string>
     <string name="title_activity_event_details">EventDetailsActivity</string>
