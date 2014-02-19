@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.codepath.adhoc.R;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 public class LocationActivity extends ActionBarActivity {
 
@@ -39,6 +41,9 @@ public class LocationActivity extends ActionBarActivity {
 		case R.id.action_list_events:
 			Intent iList = new Intent(this, EventListActivity.class);
 			startActivity(iList);
+			break;
+		case R.id.action_logout:
+			ParseUser.logOut();
 			break;
 		default:
 			break;

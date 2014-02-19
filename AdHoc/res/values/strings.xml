@@ -18,6 +18,7 @@
     <string name="descBody">Input an optional description here!</string>
     <string name="timeDesc">Time of Event:</string>
     <string name="title_activity_create_event_map">CreateEventMapActivity</string>
+    <string name="action_logout">Log Out</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 

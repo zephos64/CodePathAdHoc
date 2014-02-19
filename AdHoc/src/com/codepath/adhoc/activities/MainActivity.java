@@ -30,7 +30,8 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onSuccess(Object arg0) {
 				Log.d("DEBUG", "User successfully authenticated with twitter");
-				if(ParseTwitterUtils.isLinked(ParseUser.getCurrentUser())) {
+				if(ParseUser.getCurrentUser() != null &&
+						ParseTwitterUtils.isLinked(ParseUser.getCurrentUser())) {
 					Log.d("DEBUG", "User is already linked with Parse");
 				}
 				loginApp();

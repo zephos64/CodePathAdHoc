@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.codepath.adhoc.R;
+import com.parse.ParseTwitterUtils;
+import com.parse.ParseUser;
 
 public class EventListActivity extends ActionBarActivity {
 	// list sorted by % full (fuller = better)
@@ -35,6 +37,12 @@ public class EventListActivity extends ActionBarActivity {
 		case R.id.action_map:
 			Intent iMap = new Intent(this, LocationActivity.class);
 			startActivity(iMap);
+			break;
+		case R.id.action_logout:
+			ParseUser.logOut();
+			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+			Intent intLogOut = new Intent(this, MainActivity.class);
+			startActivity(intLogOut);
 			break;
 		default:
 			break;

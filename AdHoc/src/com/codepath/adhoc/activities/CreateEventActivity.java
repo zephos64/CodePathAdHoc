@@ -12,6 +12,7 @@ import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.CreateEventDataActivity;
 import com.codepath.adhoc.fragments.CreateEventMapActivity;
+import com.parse.ParseUser;
 
 public class CreateEventActivity extends ActionBarActivity {	
 	@Override
@@ -45,6 +46,9 @@ public class CreateEventActivity extends ActionBarActivity {
 		case R.id.action_map:
 			Intent iMap = new Intent(this, LocationActivity.class);
 			startActivity(iMap);
+			break;
+		case R.id.action_logout:
+			ParseUser.logOut();
 			break;
 		default:
 			break;

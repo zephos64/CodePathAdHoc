@@ -316,11 +316,11 @@ int id action_bar_title 0x7f050024
 int id action_context_bar 0x7f05001f
 int id action_create_event 0x7f050066
 int id action_list_events 0x7f050064
+int id action_logout 0x7f050065
 int id action_map 0x7f050063
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050026
-int id action_settings 0x7f050065
 int id activity_chooser_view_content 0x7f050027
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -478,7 +478,8 @@ int string abc_searchview_description_submit 0x7f0a0007
 int string abc_searchview_description_voice 0x7f0a0008
 int string abc_shareactionprovider_share_with 0x7f0a000c
 int string abc_shareactionprovider_share_with_application 0x7f0a000b
-int string action_settings 0x7f0a0037
+int string action_logout 0x7f0a0037
+int string action_settings 0x7f0a0038
 int string app_id 0x7f0a0027
 int string app_name 0x7f0a0026
 int string com_facebook_choose_friends 0x7f0a001c
@@ -508,7 +509,7 @@ int string com_facebook_usersettingsfragment_logged_in 0x7f0a0016
 int string com_facebook_usersettingsfragment_not_logged_in 0x7f0a0017
 int string desc 0x7f0a0033
 int string descBody 0x7f0a0034
-int string hello_world 0x7f0a0038
+int string hello_world 0x7f0a0039
 int string login_button_fb 0x7f0a0028
 int string login_title 0x7f0a0029
 int string maxAtt 0x7f0a0032
