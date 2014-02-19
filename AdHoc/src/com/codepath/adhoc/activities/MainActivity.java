@@ -7,24 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.codepath.adhoc.R;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.internal.AsyncCallback;
 
 public class MainActivity extends ActionBarActivity {
-	ProgressBar pbProgress;
-	TextView tvProgressText;
-	Button btnLoginFB;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,31 +24,30 @@ public class MainActivity extends ActionBarActivity {
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.hide();
-		
-		pbProgress = (ProgressBar) findViewById(R.id.pbProgress);
-		tvProgressText = (TextView) findViewById(R.id.tvProgressText);
-		btnLoginFB = (Button) findViewById(R.id.btnLoginFB);
-		
-		//pbProgress.setVisibility(ProgressBar.VISIBLE);
-		//tvProgressText.setVisibility(TextView.VISIBLE);
-		//btnLoginFB.setVisibility(Button.INVISIBLE);
-		//test
 
-		//ParseFacebookUtils.initialize(getString(R.string.app_id));
 		ParseTwitterUtils.initialize("8CxSNUzNaoy1ciE1J5VdWQ", "wWhy3ibas8NQGAo3Q70l8EpQb8QXwzsTWibQRF68Y");
-		/*FacebookClient.getFacebookUser(new Request.Callback() {
+		ParseTwitterUtils.getTwitter().authorize(this, new AsyncCallback() {
 			@Override
-			public void onCompleted(Response response) {
-				pbProgress.setVisibility(ProgressBar.INVISIBLE);
-				tvProgressText.setVisibility(TextView.INVISIBLE);
-				btnLoginFB.setVisibility(Button.VISIBLE);
-				
-				Log.d("debug", "Facebook user sesssion errors: " + response.getError());
-				if(response.getError() == null) {
-					loginFacebook();
+			public void onSuccess(Object arg0) {
+				Log.d("DEBUG", "User successfully authenticated with twitter");
+				if(ParseTwitterUtils.isLinked(ParseUser.getCurrentUser())) {
+					Log.d("DEBUG", "User is already linked with Parse");
 				}
+				//test
+				loginApp();
 			}
-	    });*/
+			
+			@Override
+			public void onFailure(Throwable e) {
+				Log.d("ERROR", "User failed to authenticate with twitter");
+				e.printStackTrace();
+			}
+			
+			@Override
+			public void onCancel() {
+				Log.d("DEBUG", "User cancelled authenticating with twitter");
+			}
+		});
 	}
 
 	@Override
@@ -65,8 +56,9 @@ public class MainActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	public void loginFacebook() {
+
+	public void loginWithParse(View view) {
+		Log.d("debug", "Login To Rest Clicked");
 		ParseTwitterUtils.logIn(this, new LogInCallback() {
 			@Override
 			public void done(final ParseUser user, ParseException err) {
@@ -90,16 +82,15 @@ public class MainActivity extends ActionBarActivity {
 								});
 					}
 
-					Intent i = new Intent(getApplicationContext(),
-							EventListActivity.class);
-					startActivity(i);
+					loginApp();
 				}
 			}
 		});
 	}
-
-	public void loginWithParse(View view) {
-		Log.d("debug", "Login To Rest Clicked");
-		loginFacebook();
+	
+	public void loginApp() {
+		Intent i = new Intent(getApplicationContext(),
+				EventListActivity.class);
+		startActivity(i);
 	}
 }
