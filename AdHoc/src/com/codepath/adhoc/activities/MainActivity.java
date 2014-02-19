@@ -26,28 +26,36 @@ public class MainActivity extends ActionBarActivity {
 		actionBar.hide();
 
 		ParseTwitterUtils.initialize("8CxSNUzNaoy1ciE1J5VdWQ", "wWhy3ibas8NQGAo3Q70l8EpQb8QXwzsTWibQRF68Y");
-		ParseTwitterUtils.getTwitter().authorize(this, new AsyncCallback() {
-			@Override
-			public void onSuccess(Object arg0) {
-				Log.d("DEBUG", "User successfully authenticated with twitter");
-				if(ParseUser.getCurrentUser() != null &&
-						ParseTwitterUtils.isLinked(ParseUser.getCurrentUser())) {
-					Log.d("DEBUG", "User is already linked with Parse");
+		if (ParseUser.getCurrentUser() != null) {
+			ParseTwitterUtils.getTwitter().authorize(this, new AsyncCallback() {
+				@Override
+				public void onSuccess(Object arg0) {
+					Log.d("DEBUG",
+							"User successfully authenticated with twitter");
+					if (ParseUser.getCurrentUser() != null) {
+						if(ParseTwitterUtils.isLinked(ParseUser
+									.getCurrentUser())) {
+							Log.d("DEBUG", "User is already linked with Parse");
+						} else {
+							linkParseUser(ParseUser.getCurrentUser());
+						}
+					}
+					
+					loginApp();
 				}
-				loginApp();
-			}
-			
-			@Override
-			public void onFailure(Throwable e) {
-				Log.d("ERROR", "User failed to authenticate with twitter");
-				e.printStackTrace();
-			}
-			
-			@Override
-			public void onCancel() {
-				Log.d("DEBUG", "User cancelled authenticating with twitter");
-			}
-		});
+
+				@Override
+				public void onFailure(Throwable e) {
+					Log.d("ERROR", "User failed to authenticate with twitter");
+					e.printStackTrace();
+				}
+
+				@Override
+				public void onCancel() {
+					Log.d("DEBUG", "User cancelled authenticating with twitter");
+				}
+			});
+		}
 	}
 
 	@Override
@@ -70,16 +78,7 @@ public class MainActivity extends ActionBarActivity {
 					Log.d("debug", "User logged in through Twitter");
 
 					if (!ParseTwitterUtils.isLinked(user)) {
-						ParseTwitterUtils.link(user, getParent(),
-								new SaveCallback() {
-									@Override
-									public void done(ParseException ex) {
-										if (ParseTwitterUtils.isLinked(user)) {
-											Log.d("debug",
-													"Account linked with ParseUser account");
-										}
-									}
-								});
+						linkParseUser(user);
 					}
 
 					loginApp();
@@ -92,5 +91,18 @@ public class MainActivity extends ActionBarActivity {
 		Intent i = new Intent(getApplicationContext(),
 				EventListActivity.class);
 		startActivity(i);
+	}
+	
+	public void linkParseUser(final ParseUser user) {
+		ParseTwitterUtils.link(user, getParent(),
+				new SaveCallback() {
+					@Override
+					public void done(ParseException ex) {
+						if (ParseTwitterUtils.isLinked(user)) {
+							Log.d("debug",
+									"Account linked with ParseUser account");
+						}
+					}
+				});
 	}
 }
