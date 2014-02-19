@@ -25,9 +25,9 @@
         android:layout_centerHorizontal="true"
         android:drawableLeft="@drawable/ic_twitter_icon"
         android:drawablePadding="10dp"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:onClick="loginWithParse"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/login_button_fb" />
 
 </RelativeLayout>
