@@ -13,14 +13,14 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <RadioButton
-        android:id="@+id/radioButton1"
+        android:id="@+id/rbSelectedEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -29,20 +29,20 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/radioButton1"
+        android:layout_toLeftOf="@+id/rbSelectedEvent"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvRemainingSpots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/textView3"
+        android:layout_alignRight="@+id/tvDistance"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

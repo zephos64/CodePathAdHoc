@@ -28,7 +28,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvTime"
             android:paddingBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:layout_alignBottom="@+id/textView1"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/textView1"
-            android:layout_toRightOf="@+id/textView2"
+            android:layout_toRightOf="@+id/tvTime"
             android:ems="10"
             android:inputType="number" >
         </EditText>
@@ -53,15 +53,15 @@
             android:id="@+id/editText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
+            android:layout_alignBottom="@+id/tvTime"
             android:layout_alignLeft="@+id/editText1"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textView2"
+            android:layout_alignTop="@+id/tvTime"
             android:ems="10"
             android:inputType="number" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView3"
+            android:layout_below="@+id/tvDistance"
             android:ems="10"
             android:hint="@string/descBody" />
 
@@ -86,16 +86,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="30dp"
-            android:layout_toRightOf="@+id/textView3"
+            android:layout_toRightOf="@+id/tvDistance"
             android:layout_below="@+id/editText3"
             android:text="Button" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tvRemainingSpots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView2"
+            android:layout_below="@+id/tvTime"
             android:text="@string/timeDesc"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView4" />
+            android:layout_below="@+id/tvRemainingSpots" />
 
     </RelativeLayout>
 
