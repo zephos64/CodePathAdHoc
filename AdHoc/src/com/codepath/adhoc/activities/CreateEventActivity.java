@@ -49,6 +49,9 @@ public class CreateEventActivity extends ActionBarActivity {
 			break;
 		case R.id.action_logout:
 			ParseUser.logOut();
+			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+			Intent intLogOut = new Intent(this, MainActivity.class);
+			startActivity(intLogOut);
 			break;
 		default:
 			break;
