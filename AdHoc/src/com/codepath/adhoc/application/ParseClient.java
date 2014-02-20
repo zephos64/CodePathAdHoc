@@ -1,16 +1,11 @@
 package com.codepath.adhoc.application;
 
-import java.util.List;
-
 import android.util.Log;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.parsemodels.Events;
-import com.codepath.adhoc.parsemodels.User;
 import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 public class ParseClient {
 	/* Example FindCallback<>
