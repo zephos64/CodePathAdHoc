@@ -3,7 +3,6 @@ package com.codepath.adhoc.fragments;
 import java.util.Calendar;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.parsemodels.Events;
+import com.parse.ParseUser;
 
-public class CreateEventDataActivity extends Fragment {
+public class CreateEventDataActivity extends CreateEventFragment {
 	Spinner spListEvents;
 	EditText etMaxAttendees;
 	EditText etDescription;
@@ -41,6 +43,7 @@ public class CreateEventDataActivity extends Fragment {
 	//TODO initial spinner:
 	// http://stackoverflow.com/questions/867518/how-to-make-an-android-spinner-with-initial-text-select-one?rq=1
 	
+	@Override
 	public void checkData() {
 		if(spListEvents.getSelectedItemPosition() == Spinner.INVALID_POSITION) {
 			Log.e("err", "Item not selected");
@@ -55,5 +58,18 @@ public class CreateEventDataActivity extends Fragment {
 				&& cal.get(Calendar.MINUTE) > tpStartTime.getCurrentMinute()){
 			Log.e("err", "Too few minutes");
 		}
+		
+		Log.d("DEBUG", "Finished checking data consistency");
+	}
+
+	@Override
+	public Events getEvent() {
+		Events newEvent = new Events(AdHocUtils.EventStates.TBS,
+				spListEvents.getSelectedItem().toString(),
+				Integer.valueOf(etMaxAttendees.getText().toString()),
+				tpStartTime.getCurrentHour() + ":" + tpStartTime.getCurrentMinute(),
+				etDescription.getText().toString(),
+				ParseUser.getCurrentUser().getObjectId());
+		return newEvent;
 	}
 }

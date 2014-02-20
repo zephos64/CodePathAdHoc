@@ -3,6 +3,7 @@ package com.codepath.adhoc.parsemodels;
 import java.util.Date;
 
 import com.codepath.adhoc.AdHocUtils;
+import com.codepath.adhoc.AdHocUtils.EventStates;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
@@ -10,6 +11,16 @@ import com.parse.ParseObject;
 public class Events extends ParseObject {
 	public Events() {
 
+	}
+	
+	public Events(EventStates tbs, String name, int maxAttend, String time,
+			String desc, String hostedId) {
+		put(AdHocUtils.eventState, tbs.toString());
+		put(AdHocUtils.eventName, name);
+		put(AdHocUtils.eventMaxAttend, maxAttend);
+		put(AdHocUtils.eventTime, time);
+		put(AdHocUtils.eventDesc, desc);
+		put(AdHocUtils.eventHostUserId, hostedId);
 	}
 
 	public Events(String state, String name, int maxAttend, String time,
@@ -44,12 +55,12 @@ public class Events extends ParseObject {
 		return getString(AdHocUtils.eventTime);
 	}
 
-	public String getLocLong() {
-		return getString(AdHocUtils.eventLocLong);
+	public int getLocLong() {
+		return getInt(AdHocUtils.eventLocLong);
 	}
 
-	public String getLocLat() {
-		return getString(AdHocUtils.eventLocLat);
+	public int getLocLat() {
+		return getInt(AdHocUtils.eventLocLat);
 	}
 
 	public String getDesc() {
@@ -70,6 +81,14 @@ public class Events extends ParseObject {
 
 	public void setEventState(String newState) {
 		put(AdHocUtils.eventState, newState);
+	}
+	
+	public void setLocLat(int lat) {
+		put(AdHocUtils.eventLocLat, lat);
+	}
+	
+	public void setLocLong(int longi) {
+		put(AdHocUtils.eventLocLat, longi);
 	}
 
 	public void addJoinedUser(String userId, String[] usersJoined) {

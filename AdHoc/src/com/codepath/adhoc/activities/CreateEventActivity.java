@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.CreateEventDataActivity;
 import com.codepath.adhoc.fragments.CreateEventMapActivity;
+import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
 
 public class CreateEventActivity extends ActionBarActivity {	
@@ -90,8 +92,22 @@ public class CreateEventActivity extends ActionBarActivity {
 	}
 	
 	public void clickSave(View v) {
+		Log.d("DEBUG", "Saving new event...");
 		FragmentManager fm = getSupportFragmentManager();
 		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
 		dataAct.checkData();
+		//CreateEventMapActivity dataMap = (CreateEventMapActivity)fm.getFragments().get(1);
+		//dataMap.checkData();
+		
+		Events newEvent = dataAct.getEvent();
+		//Events newMap = dataMap.getEvent();
+		
+		//newEvent.setLocLat(newMap.getLocLat());
+		//newEvent.setLocLong(newMap.getLocLong());
+		
+		newEvent.saveEventually();
+		Log.d("DEBUG", "Save completed for event");
+		
+		//go to main screen
 	}
 }
