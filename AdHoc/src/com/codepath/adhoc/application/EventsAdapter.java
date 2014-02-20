@@ -11,13 +11,22 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.parsemodels.Details;
 import com.codepath.adhoc.parsemodels.EventItem;
+import com.codepath.adhoc.parsemodels.Events;
+import com.codepath.adhoc.parsemodels.Location;
 import com.codepath.adhoc.parsemodels.User;
 import com.parse.ParseUser;
 
-public class EventsAdapter extends ArrayAdapter {
+public class EventsAdapter extends ArrayAdapter<Events> {
+	
+	private Context mContext;
+	private List<Events> mEvents;
+	private List<Details> mDetails;
+	private List<Location> mLocation;
+	private List<User> mUser;
 
-	public EventsAdapter(Context context, List<EventItem> objects) {
+	public EventsAdapter(Context context, List<Events> objects) {
 		super(context, 0, objects);
 		// TODO Auto-generated constructor stub
 	}
@@ -28,13 +37,16 @@ public class EventsAdapter extends ArrayAdapter {
 		//return super.getView(position, convertView, parent);
 		View view = convertView;
 		if (view == null) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			//LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = LayoutInflater.from(mContext);
 			view = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
 		}
 		
-		EventItem eventItem = (EventItem) getItem(position);
+		//EventItem eventItem = (EventItem) getItem(position);
 		
-		ParseUser user = eventItem.getUser();
+		//ParseUser user = eventItem.getUser();
+		Events events = mEvents.get(position);
+		
 		
 		TextView tvLoginTitle = (TextView) view.findViewById(R.id.tvLoginTitle);
 		TextView tvDistance = (TextView) view.findViewById(R.id.tvDistance);

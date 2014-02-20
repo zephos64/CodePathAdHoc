@@ -2,8 +2,10 @@ package com.codepath.adhoc.parsemodels;
 
 import android.location.Geocoder;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+@ParseClassName("Location")
 public class Location extends ParseObject {
 	public Location() {
 		

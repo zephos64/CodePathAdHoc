@@ -1,7 +1,9 @@
 package com.codepath.adhoc.parsemodels;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+@ParseClassName("Details")
 public class Details extends ParseObject {
 	public Details() {
 		

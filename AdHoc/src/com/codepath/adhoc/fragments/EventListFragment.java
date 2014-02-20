@@ -11,11 +11,11 @@ import android.widget.ListView;
 
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.application.EventsAdapter;
-import com.codepath.adhoc.parsemodels.EventItem;
+import com.codepath.adhoc.parsemodels.Events;
 
 public class EventListFragment extends ListFragment {
 	
-	ArrayList<EventItem> eventItem = new ArrayList<EventItem>();
+	ArrayList<Events> events = new ArrayList<Events>();
 	EventsAdapter eventsAdapter;
 	ListView lvEvents;
 	
@@ -30,7 +30,7 @@ public class EventListFragment extends ListFragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_item_event, container, false);
-		eventsAdapter = new EventsAdapter(getActivity(), eventItem);
+		eventsAdapter = new EventsAdapter(getActivity(), events);
 		lvEvents = (ListView) view.findViewById(R.id.lvEvents);
 		lvEvents.setAdapter(eventsAdapter);
 		return view;
