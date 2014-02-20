@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="type_array">
-        <item></item>
+    <string name="sport_prompt">Choose a sport</string>
+    
+    <string-array name="sport_array">
         <item>American Football</item>
         <item>Baseball</item>
         <item>Basketball</item>

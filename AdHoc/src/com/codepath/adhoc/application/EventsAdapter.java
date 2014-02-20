@@ -43,9 +43,9 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		
 		
 		TextView tvLoginTitle = (TextView) view.findViewById(R.id.tvLoginTitle);
-		TextView tvDistance = (TextView) view.findViewById(R.id.tvDistance);
-		TextView tvRemainingSpots = (TextView) view.findViewById(R.id.tvRemainingSpots);
-		TextView tvTime = (TextView) view.findViewById(R.id.tvTime);
+		TextView tvDistance = (TextView) view.findViewById(R.id.tvDescription);
+		TextView tvRemainingSpots = (TextView) view.findViewById(R.id.tvStartTime);
+		TextView tvTime = (TextView) view.findViewById(R.id.tvMaxAttendees);
 		RadioButton rbSelectedEvent = (RadioButton) view.findViewById(R.id.rbSelectedEvent);
 		
 		return view;

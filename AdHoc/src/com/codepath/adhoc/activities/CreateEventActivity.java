@@ -2,15 +2,16 @@ package com.codepath.adhoc.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
-import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.fragments.CreateEventDataActivity;
 import com.codepath.adhoc.fragments.CreateEventMapActivity;
 import com.parse.ParseUser;
@@ -86,5 +87,11 @@ public class CreateEventActivity extends ActionBarActivity {
 								R.id.flContainerEvent, this, "Map",
 								CreateEventMapActivity.class));
 		actionBar.addTab(tab2);
+	}
+	
+	public void clickSave(View v) {
+		FragmentManager fm = getSupportFragmentManager();
+		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
+		dataAct.checkData();
 	}
 }
