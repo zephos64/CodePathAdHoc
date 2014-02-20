@@ -64,10 +64,14 @@ public class CreateEventDataActivity extends CreateEventFragment {
 
 	@Override
 	public Events getEvent() {
+		Calendar tempTime = Calendar.getInstance();
+		tempTime.set(Calendar.HOUR_OF_DAY, tpStartTime.getCurrentHour());
+		tempTime.set(Calendar.MINUTE, tpStartTime.getCurrentMinute());
+		
 		Events newEvent = new Events(AdHocUtils.EventStates.TBS,
 				spListEvents.getSelectedItem().toString(),
 				Integer.valueOf(etMaxAttendees.getText().toString()),
-				tpStartTime.getCurrentHour() + ":" + tpStartTime.getCurrentMinute(),
+				tempTime.getTime().toString(),
 				etDescription.getText().toString(),
 				ParseUser.getCurrentUser().getObjectId());
 		return newEvent;

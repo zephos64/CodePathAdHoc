@@ -97,6 +97,7 @@ public class CreateEventActivity extends ActionBarActivity {
 		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
 		dataAct.checkData();
 		//CreateEventMapActivity dataMap = (CreateEventMapActivity)fm.getFragments().get(1);
+		// not sure if above line is correct - Ryan
 		//dataMap.checkData();
 		
 		Events newEvent = dataAct.getEvent();
@@ -108,6 +109,7 @@ public class CreateEventActivity extends ActionBarActivity {
 		newEvent.saveEventually();
 		Log.d("DEBUG", "Save completed for event");
 		
-		//go to main screen
+		Intent listIntent = new Intent(this, EventListActivity.class);
+		startActivity(listIntent);
 	}
 }
