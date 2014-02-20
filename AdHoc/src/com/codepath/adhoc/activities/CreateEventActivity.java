@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
+import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.fragments.CreateEventDataActivity;
 import com.codepath.adhoc.fragments.CreateEventMapActivity;
 import com.parse.ParseUser;

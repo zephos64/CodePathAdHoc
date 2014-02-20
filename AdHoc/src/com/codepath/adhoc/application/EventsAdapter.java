@@ -11,19 +11,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.codepath.adhoc.R;
-import com.codepath.adhoc.parsemodels.Details;
-import com.codepath.adhoc.parsemodels.EventItem;
 import com.codepath.adhoc.parsemodels.Events;
-import com.codepath.adhoc.parsemodels.Location;
 import com.codepath.adhoc.parsemodels.User;
-import com.parse.ParseUser;
 
 public class EventsAdapter extends ArrayAdapter<Events> {
 	
 	private Context mContext;
 	private List<Events> mEvents;
-	private List<Details> mDetails;
-	private List<Location> mLocation;
 	private List<User> mUser;
 
 	public EventsAdapter(Context context, List<Events> objects) {
