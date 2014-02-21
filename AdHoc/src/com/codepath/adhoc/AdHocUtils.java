@@ -1,7 +1,8 @@
 package com.codepath.adhoc;
 
 public class AdHocUtils {
-	public final static String eventObjectId = "objectId";
+	public final static String objectId = "objectId";
+	
 	public final static String eventState = "event_state";
 	public final static String eventName = "event_name";
 	public final static String eventMaxAttend = "max_attendees";
@@ -30,7 +31,6 @@ public class AdHocUtils {
 		}
 	}
 
-	public final static String userObjectId = "objectId";
 	public final static String userName = "username";
 	public final static String userPassword = "password";
 	public final static String userAuthData = "authData";

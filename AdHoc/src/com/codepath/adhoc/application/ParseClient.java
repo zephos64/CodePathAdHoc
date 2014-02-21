@@ -58,7 +58,7 @@ public class ParseClient {
 		// Define the class we would like to query
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 		// Define our query conditions
-		query.whereEqualTo(AdHocUtils.eventObjectId, eventId);
+		query.whereEqualTo(AdHocUtils.objectId, eventId);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
 	}

@@ -11,10 +11,6 @@ public class User extends ParseObject{
 	public User() {
 		super();
 	}
-
-	public String getID() {
-		return getString(AdHocUtils.userObjectId);
-	}
 	
 	public String getUserName() {
 		return getString(AdHocUtils.userName);

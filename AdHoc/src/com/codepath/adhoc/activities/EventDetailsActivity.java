@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.parsemodels.Events;
@@ -131,13 +132,15 @@ public class EventDetailsActivity extends ActionBarActivity {
 	public void onAction(View v) {
 		if(isHost) {
 			//set event status cancel
+			item.setEventState(AdHocUtils.EventStates.FINISHED.toString());
 		} else if(hasJoined) {
 			//remove name from event list
+			//item.removeJoinedUser(ParseUser.getCurrentUser().getObjectId());
 		} else {
 			//add name to event list
-			
+			//item.addJoinedUser(ParseUser.getCurrentUser().getObjectId());			
 		}
-		item.addJoinedUser(ParseUser.getCurrentUser().getObjectId());
-		//item.
+
+		item.saveEventually();
 	}
 }

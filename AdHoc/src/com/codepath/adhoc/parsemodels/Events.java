@@ -41,10 +41,6 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventJoinedUsersId, "");
 	}
 
-	public String getObjectId() {
-		return getString(AdHocUtils.eventObjectId);
-	}
-
 	public String getEventState() {
 		return getString(AdHocUtils.eventState);
 	}
@@ -119,7 +115,7 @@ public class Events extends ParseObject {
 
 	public void addJoinedUser(String userId) {
 		Log.d("DEBUG", "Adding user " + userId + " to event "
-				+ getString(AdHocUtils.eventObjectId));
+				+ this.getObjectId());
 		String usersJoined = getString(AdHocUtils.eventJoinedUsersId);
 		Log.d("DEBUG", "Old user list : " + usersJoined);
 		String listUsers;
