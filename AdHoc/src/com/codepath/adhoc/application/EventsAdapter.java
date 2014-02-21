@@ -21,8 +21,10 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 	private List<User> mUser;
 
 	public EventsAdapter(Context context, List<Events> objects) {
-		super(context, 0, objects);
+		super(context, com.codepath.adhoc.R.layout.fragment_item_event, objects);
 		// TODO Auto-generated constructor stub
+		this.mContext = context;
+		this.mEvents = objects;
 	}
 	
 	@Override
