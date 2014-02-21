@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 public class CreateEventMapActivity extends CreateEventFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 	}
 
