@@ -2,11 +2,13 @@ package com.codepath.adhoc;
 
 public class AdHocUtils {
 	public final static String objectId = "objectId";
+	public final static String dateFormat = "hh:mm aa";
 	
 	public final static String eventState = "event_state";
 	public final static String eventName = "event_name";
 	public final static String eventMaxAttend = "max_attendees";
 	public final static String eventTime = "event_time";
+	public final static String eventTimeEnd = "event_time_end";
 	public final static String eventLocLong = "longitude";
 	public final static String eventLocLat = "latitude";
 	public final static String eventDesc = "description";

@@ -35,9 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/spListEvents"
-            android:layout_toRightOf="@+id/tvMaxAttendees"
+            android:layout_toRightOf="@+id/tvStartTime"
             android:ems="10"
+            android:gravity="right"
             android:inputType="number" >
+
         </EditText>
 
         <TextView
@@ -45,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tpStartTime"
+            android:layout_below="@+id/tvStopTime"
+            android:layout_marginTop="18dp"
             android:text="@string/desc"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -58,25 +61,52 @@
             android:layout_below="@+id/tvDescription"
             android:ems="10"
             android:hint="@string/descBody"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp" >
+
+            <requestFocus />
+        </EditText>
 
         <TextView
             android:id="@+id/tvStartTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvMaxAttendees"
-            android:text="@string/timeDesc"
+            android:layout_below="@+id/etMaxAttendees"
+            android:layout_marginTop="19dp"
+            android:text="@string/startTime"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TimePicker
-            android:id="@+id/tpStartTime"
+        <EditText
+            android:id="@+id/etStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvStartTime"
+            android:layout_alignLeft="@+id/etMaxAttendees"
+            android:layout_alignParentRight="true"
+            android:ems="10"
+            android:gravity="right" />
+
+        <EditText
+            android:id="@+id/etEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvDescription"
+            android:layout_alignLeft="@+id/etStartTime"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/etStartTime"
+            android:ems="10"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/tvStopTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/tvStartTime"
-            android:paddingBottom="8dp" />
+            android:layout_marginTop="10dp"
+            android:text="@string/endTime"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </RelativeLayout>
 
 </ScrollView>

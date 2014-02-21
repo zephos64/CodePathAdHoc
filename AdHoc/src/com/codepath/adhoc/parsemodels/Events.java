@@ -56,6 +56,10 @@ public class Events extends ParseObject {
 	public String getEventTime() {
 		return getString(AdHocUtils.eventTime);
 	}
+	
+	public String getEventTimeEnd() {
+		return getString(AdHocUtils.eventTimeEnd);
+	}
 
 	public int getLocLong() {
 		return getInt(AdHocUtils.eventLocLong);
