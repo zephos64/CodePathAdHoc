@@ -29,26 +29,31 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		//return super.getView(position, convertView, parent);
-		View view = convertView;
-		if (view == null) {
-			//LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			LayoutInflater inflater = LayoutInflater.from(mContext);
-			view = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			//LayoutInflater inflater = LayoutInflater.from(mContext);
+			convertView = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
 		}
 		
 		//EventItem eventItem = (EventItem) getItem(position);
 		
 		//ParseUser user = eventItem.getUser();
+		Log.d("DEBUG", mEvents.toString());
 		Events events = mEvents.get(position);
+		//User user = mUser.get(position);
 		
+		TextView tvLoginTitle = (TextView) convertView.findViewById(R.id.tvLoginTitle);
+		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
+		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
+		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
+		RadioButton rbSelectedEvent = (RadioButton) convertView.findViewById(R.id.rbSelectedEvent);
 		
-		TextView tvLoginTitle = (TextView) view.findViewById(R.id.tvLoginTitle);
-		TextView tvDistance = (TextView) view.findViewById(R.id.tvDescription);
-		TextView tvRemainingSpots = (TextView) view.findViewById(R.id.tvStartTime);
-		TextView tvTime = (TextView) view.findViewById(R.id.tvMaxAttendees);
-		RadioButton rbSelectedEvent = (RadioButton) view.findViewById(R.id.rbSelectedEvent);
-		
-		return view;
+		tvLoginTitle.setText(events.getEventName());
+		//tvDistance.setText(events.getLocLat());
+		//tvRemainingSpots.setText(events.getMaxAttendees());
+		//tvTime.setText(events.getEventTime());
+				
+		return convertView;
 	}
 
 }
