@@ -69,9 +69,9 @@ public class EventListActivity extends ActionBarActivity {
 				.setText("All")
 				.setTag("All")
 				.setTabListener(
-						new SupportFragmentTabListener<EventListFragment>(
+						new SupportFragmentTabListener<AllEventsFragment>(
 								R.id.flEventList, this, "All",
-								EventListFragment.class));
+								AllEventsFragment.class));
 		actionBar.addTab(tab1);		
 		actionBar.selectTab(tab1);
 
