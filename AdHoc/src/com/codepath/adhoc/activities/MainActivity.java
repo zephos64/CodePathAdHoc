@@ -73,7 +73,6 @@ public class MainActivity extends ActionBarActivity {
 				if (user == null) {
 					Log.d("debug",
 							"ParseUser is null, cancelling Twitter login");
-					err.printStackTrace();
 				} else {
 					Log.d("debug", "User logged in through Twitter");
 
@@ -89,7 +88,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	public void loginApp() {
 		Intent i = new Intent(getApplicationContext(),
-				EventListActivity.class);
+				CreateEventActivity.class);
 		startActivity(i);
 	}
 	

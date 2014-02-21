@@ -22,7 +22,7 @@ public class ParseClient {
 	}
 	 */
 
-	public void getParseAllEvents(FindCallback<Events> findCallback) {
+	public static void getParseAllEvents(FindCallback<Events> findCallback) {
 		Log.d("DEBUG", "Getting all events");
 		// Define the class we would like to query
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
@@ -30,7 +30,7 @@ public class ParseClient {
 		query.findInBackground(findCallback);
 	}
 	
-	public void getParseUserJoinedEvents(String userId, FindCallback<Events> findCallback) {
+	public static void getParseUserJoinedEvents(String userId, FindCallback<Events> findCallback) {
 		Log.d("DEBUG", "Getting events user joined with id " + userId);
 		
 		// Define the class we would like to query
@@ -52,7 +52,7 @@ public class ParseClient {
 		query.findInBackground(findCallback);
 	}
 	
-	public void getParseEventDetails(String eventId, FindCallback<Events> findCallback) {
+	public static void getParseEventDetails(String eventId, FindCallback<Events> findCallback) {
 		Log.d("DEBUG", "Getting event with id " + eventId);
 		
 		// Define the class we would like to query

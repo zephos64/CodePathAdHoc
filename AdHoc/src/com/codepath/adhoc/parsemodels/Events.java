@@ -2,6 +2,8 @@ package com.codepath.adhoc.parsemodels;
 
 import java.util.Date;
 
+import android.util.Log;
+
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
 import com.parse.ParseClassName;
@@ -21,6 +23,8 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventTime, time);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventHostUserId, hostedId);
+		
+		put(AdHocUtils.eventJoinedUsersId, "");
 	}
 
 	public Events(String state, String name, int maxAttend, String time,
@@ -33,6 +37,8 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventLocLat, latitude);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventHostUserId, hostedId);
+		
+		put(AdHocUtils.eventJoinedUsersId, "");
 	}
 
 	public String getObjectId() {
@@ -78,6 +84,26 @@ public class Events extends ParseObject {
 	public String getHostUserId() {
 		return getString(AdHocUtils.eventHostUserId);
 	}
+	
+	public int getCountUsersJoined() {
+		String listUsers= getString(AdHocUtils.eventJoinedUsersId);
+		if(listUsers.isEmpty()) {
+			return 0;
+		}
+		String[] list = listUsers.split("[,]");
+		return list.length;
+	}
+	
+	public boolean checkUserInJoinedList(String id) {
+		String listUsers= getString(AdHocUtils.eventJoinedUsersId);
+		if(listUsers.isEmpty()) {
+			return false;
+		}
+		if(listUsers.contains(id)) {
+			return true;
+		}
+		return false;
+	}
 
 	public void setEventState(String newState) {
 		put(AdHocUtils.eventState, newState);
@@ -91,15 +117,24 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventLocLat, longi);
 	}
 
-	public void addJoinedUser(String userId, String[] usersJoined) {
-		String listUsers = userId;
-		for (int a = 0; a < usersJoined.length; a++) {
-			listUsers += "," + usersJoined[a];
+	public void addJoinedUser(String userId) {
+		Log.d("DEBUG", "Adding user " + userId + " to event "
+				+ getString(AdHocUtils.eventObjectId));
+		String usersJoined = getString(AdHocUtils.eventJoinedUsersId);
+		Log.d("DEBUG", "Old user list : " + usersJoined);
+		String listUsers;
+		if(usersJoined.isEmpty()) {
+			listUsers = userId;
+		} else {
+			listUsers = usersJoined + "," + userId;
 		}
+
+		Log.d("DEBUG", "New user list : " + listUsers);
 		put(AdHocUtils.eventJoinedUsersId, listUsers);
 	}
 
 	public void removeJoinedUser(String userId, String[] usersJoined) {
+		//TODO fix
 		String listUsers = "";
 		for (int a = 0; a < usersJoined.length; a++) {
 			if (!usersJoined[a].equals(userId)) {

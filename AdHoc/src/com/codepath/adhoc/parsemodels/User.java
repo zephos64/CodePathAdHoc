@@ -43,6 +43,7 @@ public class User extends ParseObject{
 	}
 	
 	public void addEventAttending(String userId, String[] eventsAttending) {
+		//TODO fix
 		String listEvents = userId;
 		for(int a = 0; a < eventsAttending.length; a++) {
 			listEvents += "," + eventsAttending[a];
@@ -51,6 +52,7 @@ public class User extends ParseObject{
 	}
 	
 	public void addEventHosting(String userId, String[] eventsHosting) {
+		//TODO fix
 		String listEvents = userId;
 		for(int a = 0; a < eventsHosting.length; a++) {
 			listEvents += "," + eventsHosting[a];
@@ -59,6 +61,7 @@ public class User extends ParseObject{
 	}
 	
 	public void removeEventsAttending(String userId, String[] eventsAttending) {
+		//TODO fix
 		String listEvents = "";
 		for(int a = 0; a < eventsAttending.length; a++) {
 			if(!eventsAttending[a].equals(userId)) {
@@ -69,6 +72,7 @@ public class User extends ParseObject{
 	}
 	
 	public void removeEventsHosting(String userId, String[] eventsHosting) {
+		//TODO fix
 		String listEvents = "";
 		for(int a = 0; a < eventsHosting.length; a++) {
 			if(!eventsHosting[a].equals(userId)) {
