@@ -1,7 +1,11 @@
 package com.codepath.adhoc.fragments;
 
-import android.graphics.Color;
-import android.hardware.GeomagneticField;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -74,7 +79,7 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(getActivity(),this, this);
 			locationclient.connect();
-			Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
+//			Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
 			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
@@ -88,10 +93,8 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 	@Override
 	public void onMarkerDrag(Marker marker) {
 		LatLng pos = marker.getPosition();
-		Log.e("DragPos:", String.valueOf(pos.latitude)+"\n"+String.valueOf(pos.longitude));
-		myPosMarker.setTitle(String.valueOf(pos.latitude)+"\n"+String.valueOf(pos.longitude));
-		myPosMarker.showInfoWindow();
-	}
+    	setAddressOnMarker(myPosMarker,pos.latitude, pos.longitude);
+    }
 
 	@Override
 	public void onMarkerDragEnd(Marker marker) {
@@ -107,20 +110,25 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 
 	@Override
 	public void onLocationChanged(Location location) {
+//		String [] address = new String [] {"Unknown","Unknown"};
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
-		Toast.makeText(getActivity(), "Received onLocation :" + String.valueOf(currentLat) + 
-													   "  : " + String.valueOf(currentLng) , 
-													   Toast.LENGTH_SHORT).show();
-
-		myPos = new LatLng(currentLat,currentLng);
+//		address = getAddressFromGeoCode(currentLat, currentLng);
+//		if (address != null) {
+//			Log.e("ADDRESS " , address[0]+" " +address[1] +" " + address[2]);
+//		}
+		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 			map = fragment.getMap();
 			if (map != null) 
 			{
 			    	map.setOnMarkerDragListener(this);
-			    	myPosMarker = map.addMarker(new MarkerOptions().position(myPos).title(String.valueOf(currentLat)+"\n" +String.valueOf(currentLng)));
+			    	myPosMarker = map.addMarker(new MarkerOptions()
+			    									.position(myPos)
+//			    									.title(address[0])
+			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
 			    	myPosMarker.setDraggable(true);
+			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
 			    	myPosMarker.showInfoWindow();
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 			}
@@ -130,6 +138,34 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 		}
 	}
 
+	private void setAddressOnMarker(Marker marker, double latitude, double longitude) {
+		String [] address = null;
+		address = getAddressFromGeoCode(latitude, longitude);
+		if (address != null) {
+			marker.setTitle(address[0]);
+		}
+		marker.showInfoWindow();
+	}
+	// Method to translate geo coded location to human readable address
+	private  String[] getAddressFromGeoCode(double latitude, double longitude) {
+		Geocoder geocoder;
+		List<Address> addresses;
+		String [] textAddresses = null;
+		geocoder = new Geocoder(getActivity(), Locale.getDefault());
+		try {
+			addresses = geocoder.getFromLocation(latitude, longitude, 1);
+			textAddresses = new String[3];
+			textAddresses[0] = addresses.get(0).getAddressLine(0);
+			textAddresses[1]= addresses.get(0).getAddressLine(1);
+			textAddresses[2]= addresses.get(0).getAddressLine(2);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return textAddresses;
+	}
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
 	}
@@ -145,6 +181,4 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }
