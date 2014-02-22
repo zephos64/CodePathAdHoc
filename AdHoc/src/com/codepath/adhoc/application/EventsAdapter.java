@@ -38,9 +38,6 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 			convertView = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
 		}
 		
-		//EventItem eventItem = (EventItem) getItem(position);
-		
-		//ParseUser user = eventItem.getUser();
 //		Log.d("DEBUG", mEvents.toString());
 		Events events = mEvents.get(position);
 		//User user = mUser.get(position);
