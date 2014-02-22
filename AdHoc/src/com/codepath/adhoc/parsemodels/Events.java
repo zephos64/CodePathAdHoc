@@ -1,13 +1,19 @@
 package com.codepath.adhoc.parsemodels;
 
 import java.util.Date;
+import java.util.List;
 
 import android.util.Log;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
+import com.codepath.adhoc.application.ParseClient;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 @ParseClassName("Events")
 public class Events extends ParseObject {
@@ -16,19 +22,19 @@ public class Events extends ParseObject {
 	}
 	
 	public Events(EventStates tbs, String name, int maxAttend, String time,
-			String desc, String hostedId) {
+			String desc, ParseUser hostUser) {		
 		put(AdHocUtils.eventState, tbs.toString());
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
 		put(AdHocUtils.eventTime, time);
 		put(AdHocUtils.eventDesc, desc);
-		put(AdHocUtils.eventHostUserId, hostedId);
 		
-		put(AdHocUtils.eventJoinedUsersId, "");
+		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
+		relation.add(hostUser);
 	}
 
 	public Events(String state, String name, int maxAttend, String time,
-			int longitude, int latitude, String desc, String hostedId) {
+			int longitude, int latitude, String desc, ParseUser hostUser) {
 		put(AdHocUtils.eventState, state);
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
@@ -36,9 +42,9 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventLocLong, longitude);
 		put(AdHocUtils.eventLocLat, latitude);
 		put(AdHocUtils.eventDesc, desc);
-		put(AdHocUtils.eventHostUserId, hostedId);
-		
-		put(AdHocUtils.eventJoinedUsersId, "");
+
+		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
+		relation.add(hostUser);
 	}
 
 	public String getEventState() {
@@ -81,20 +87,34 @@ public class Events extends ParseObject {
 		return getDate(AdHocUtils.eventUpdatedAt);
 	}
 
-	public String getHostUserId() {
-		return getString(AdHocUtils.eventHostUserId);
+	public ParseUser getHostUserIdRelation() {
+		//TODO check
+		return getParseUser(AdHocUtils.eventHostUserId);
 	}
 	
+	public ParseRelation<User> getJoinedUsersRelation() {
+	      return getRelation(AdHocUtils.eventJoinedUsersId);
+	  }
+	
 	public int getCountUsersJoined() {
-		String listUsers= getString(AdHocUtils.eventJoinedUsersId);
-		if(listUsers.isEmpty()) {
-			return 0;
-		}
-		String[] list = listUsers.split("[,]");
-		return list.length;
+		//TODO check
+		ParseClient.getCountJoinedUsers(this, new FindCallback<Events>() {
+			
+			@Override
+			public void done(List<Events> listUsers, ParseException e) {
+				if (e == null) {
+		            // Access the array of results here
+		            //return listUsers.size();
+		        } else {
+		            Log.d("ERROR", "Error: " + e.getMessage());
+		        }
+			}
+		});
+		return -1;
 	}
 	
 	public boolean checkUserInJoinedList(String id) {
+		//TODO fix
 		String listUsers= getString(AdHocUtils.eventJoinedUsersId);
 		if(listUsers.isEmpty()) {
 			return false;
@@ -118,6 +138,7 @@ public class Events extends ParseObject {
 	}
 
 	public void addJoinedUser(String userId) {
+		//TODO fix
 		Log.d("DEBUG", "Adding user " + userId + " to event "
 				+ this.getObjectId());
 		String usersJoined = getString(AdHocUtils.eventJoinedUsersId);

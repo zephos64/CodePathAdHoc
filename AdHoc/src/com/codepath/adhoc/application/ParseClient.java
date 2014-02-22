@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.parsemodels.Events;
+import com.codepath.adhoc.parsemodels.User;
 import com.parse.FindCallback;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 public class ParseClient {
 	/* Example FindCallback<>
@@ -59,6 +61,17 @@ public class ParseClient {
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 		// Define our query conditions
 		query.whereEqualTo(AdHocUtils.objectId, eventId);
+		// Execute the find asynchronously
+		query.findInBackground(findCallback);
+	}
+	
+	public static void getCountJoinedUsers(Events event, FindCallback<Events> findCallback) {
+		Log.d("DEBUG", "Getting count of joined users for event : " + event.getObjectId());
+		
+		// Define the class we would like to query
+		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
+		// Define our query conditions
+		//query.whereEqualTo(AdHocUtils.objectId, eventId);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
 	}

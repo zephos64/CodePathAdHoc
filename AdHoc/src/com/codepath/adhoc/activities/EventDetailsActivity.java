@@ -103,7 +103,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		    		tvTime.setText(item.getEventTime());
 		    		tvDesc.setText(item.getDesc());
 		    		
-		    		if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+/* TODO fix		    		if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
 		    			tvStatus.setText("HOST");
 		    			btnAction.setText("CANCEL");
 		    			isHost = true;
@@ -114,7 +114,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		    		} else {
 		    			tvStatus.setText("");
 		    			btnAction.setText("JOIN");
-		    		}
+		    		}*/
 		    		
 		    		tvLoc.setText("TESTING");
 		    		

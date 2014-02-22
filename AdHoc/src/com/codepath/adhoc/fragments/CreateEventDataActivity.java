@@ -155,7 +155,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 				Integer.valueOf(etMaxAttendees.getText().toString()),
 				tempTime.getTime().toString(),
 				etDescription.getText().toString(),
-				ParseUser.getCurrentUser().getObjectId());
+				ParseUser.getCurrentUser());
 		return newEvent;
 	}
 	

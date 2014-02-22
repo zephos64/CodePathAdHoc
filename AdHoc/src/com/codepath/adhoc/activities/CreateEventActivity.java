@@ -1,8 +1,11 @@
 package com.codepath.adhoc.activities;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
@@ -10,13 +13,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
+import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.fragments.CreateEventDataActivity;
-import com.codepath.adhoc.fragments.CreateEventMapActivity;
 import com.codepath.adhoc.parsemodels.Events;
+import com.codepath.adhoc.parsemodels.User;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class CreateEventActivity extends ActionBarActivity {	
 	@Override
@@ -27,7 +36,8 @@ public class CreateEventActivity extends ActionBarActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		setupTabs();
+		//setupTabs();
+		setupFragment();
 	}
 
 	@Override
@@ -96,6 +106,14 @@ public class CreateEventActivity extends ActionBarActivity {
 //		actionBar.addTab(tab2);
 	}
 	
+	private void setupFragment() {
+		CreateEventDataActivity data = new CreateEventDataActivity();
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction fts = fm.beginTransaction();
+		fts.replace(R.id.flContainerEvent, data);
+		fts.commit();
+	}
+	
 	public void clickSave(View v) {
 		Log.d("DEBUG", "Saving new event...");
 		FragmentManager fm = getSupportFragmentManager();
@@ -105,16 +123,29 @@ public class CreateEventActivity extends ActionBarActivity {
 		// not sure if above line is correct - Ryan
 		//dataMap.checkData();
 		
-		Events newEvent = dataAct.getEvent();
+		final Events newEvent = dataAct.getEvent();
 		//Events newMap = dataMap.getEvent();
-		
-		//newEvent.setLocLat(newMap.getLocLat());
-		//newEvent.setLocLong(newMap.getLocLong());
-		
-		newEvent.saveEventually();
+
+		newEvent.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				if(e == null) {
+					Log.d("DEBUG", "Saving host...");
+					User hostUser = (User)ParseUser.getCurrentUser();
+					hostUser.getEventsHostingRelation().add(newEvent);
+					hostUser.saveInBackground();
+					Log.d("DEBUG", "Save completed for host");
+		        } else {
+		            Log.e("ERROR", "Error: " + e.getMessage());
+		        }
+				
+			}
+		});
+
 		Log.d("DEBUG", "Save completed for event");
 		
 		Intent listIntent = new Intent(this, EventListActivity.class);
-		startActivity(listIntent);
+		//startActivity(listIntent);
 	}
 }

@@ -3,9 +3,11 @@ package com.codepath.adhoc.parsemodels;
 import com.codepath.adhoc.AdHocUtils;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
-@ParseClassName("User")
-public class User extends ParseObject{
+@ParseClassName("_User")
+public class User extends ParseUser {
 	// TODO ensure setters work (add/remove)
 	
 	public User() {
@@ -28,12 +30,22 @@ public class User extends ParseObject{
 		return getString(AdHocUtils.userPhoneNum);
 	}
 	
+	public ParseRelation<Events> getEventsHostingRelation() {
+		return getRelation(AdHocUtils.userEventsCreated);
+	}
+	
+	public ParseRelation<Events> getEventsJoinedRelation() {
+		return getRelation(AdHocUtils.userEventsAttending);
+	}
+	
 	public String[] getEventsAttending() {
+		//TODO fix
 		String listEvents = getString(AdHocUtils.userEventsAttending);
 		return listEvents.split("[,]");
 	}
 	
 	public String[] getEventsCreated() {
+		//TODO fix
 		String listEvents = getString(AdHocUtils.userEventsCreated);
 		return listEvents.split("[,]");
 	}
@@ -47,13 +59,14 @@ public class User extends ParseObject{
 		put(AdHocUtils.userEventsAttending, listEvents);
 	}
 	
-	public void addEventHosting(String userId, String[] eventsHosting) {
-		//TODO fix
-		String listEvents = userId;
+	public void addEventHosting(Events eventObj) {
+		//TODO check
+		/*String listEvents = userId;
 		for(int a = 0; a < eventsHosting.length; a++) {
 			listEvents += "," + eventsHosting[a];
 		}
-		put(AdHocUtils.userEventsCreated, listEvents);
+		put(AdHocUtils.userEventsCreated, listEvents);*/
+		getEventsHostingRelation().add(eventObj);
 	}
 	
 	public void removeEventsAttending(String userId, String[] eventsAttending) {
