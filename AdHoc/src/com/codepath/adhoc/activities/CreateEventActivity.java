@@ -133,7 +133,7 @@ public class CreateEventActivity extends ActionBarActivity {
 				if(e == null) {
 					Log.d("DEBUG", "Saving host...");
 					User hostUser = (User)ParseUser.getCurrentUser();
-					hostUser.getEventsHostingRelation().add(newEvent);
+					hostUser.addEventHosting(newEvent);
 					hostUser.saveInBackground();
 					Log.d("DEBUG", "Save completed for host");
 		        } else {
@@ -146,6 +146,6 @@ public class CreateEventActivity extends ActionBarActivity {
 		Log.d("DEBUG", "Save completed for event");
 		
 		Intent listIntent = new Intent(this, EventListActivity.class);
-		//startActivity(listIntent);
+		startActivity(listIntent);
 	}
 }

@@ -7,7 +7,7 @@ import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
 import com.parse.FindCallback;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
+import com.parse.ParseRelation;
 
 public class ParseClient {
 	/* Example FindCallback<>
@@ -32,25 +32,19 @@ public class ParseClient {
 		query.findInBackground(findCallback);
 	}
 	
-	public static void getParseUserJoinedEvents(String userId, FindCallback<Events> findCallback) {
-		Log.d("DEBUG", "Getting events user joined with id " + userId);
+	public static void getParseUserJoinedEvents(User userObj, FindCallback<Events> findCallback) {
+		Log.d("DEBUG", "Getting events user joined with id " + userObj.getObjectId());
 		
-		// Define the class we would like to query
-		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-		// Define our query conditions
-		query.whereContains(AdHocUtils.eventJoinedUsersId, userId);
-		// Execute the find asynchronously
+		ParseRelation<Events> userRel = userObj.getEventsAttendingRelation();
+		ParseQuery<Events> query = userRel.getQuery();
 		query.findInBackground(findCallback);
 	}
 	
-	public static void getParseUserCreatedEvents(String userId, FindCallback<Events> findCallback) {
-		Log.d("DEBUG", "Getting events user created with id " + userId);
+	public static void getParseUserCreatedEvents(User userObj, FindCallback<Events> findCallback) {
+		Log.d("DEBUG", "Getting events user created with id " + userObj.getObjectId());
 		
-		// Define the class we would like to query
-		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-		// Define our query conditions
-		query.whereEqualTo(AdHocUtils.eventHostUserId, userId);
-		// Execute the find asynchronously
+		ParseRelation<Events> userRel = userObj.getEventsHostingRelation();
+		ParseQuery<Events> query = userRel.getQuery();
 		query.findInBackground(findCallback);
 	}
 	
@@ -65,14 +59,19 @@ public class ParseClient {
 		query.findInBackground(findCallback);
 	}
 	
-	public static void getCountJoinedUsers(Events event, FindCallback<Events> findCallback) {
-		Log.d("DEBUG", "Getting count of joined users for event : " + event.getObjectId());
+	public static void getJoinedUsers(Events event, FindCallback<User> findCallback) {
+		Log.d("DEBUG", "Getting joined users for event : " + event.getObjectId());
 		
-		// Define the class we would like to query
-		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
-		// Define our query conditions
-		//query.whereEqualTo(AdHocUtils.objectId, eventId);
-		// Execute the find asynchronously
+		ParseRelation<User> userRel = event.getJoinedUsersRelation();
+		ParseQuery<User> query = userRel.getQuery();
+		query.findInBackground(findCallback);
+	}
+	
+	public static void getHostUser(Events event, FindCallback<User> findCallback) {
+		Log.d("DEBUG", "Getting host user for event : " + event.getObjectId());
+		
+		ParseRelation<User> userRel = event.getHostUserIdRelation();
+		ParseQuery<User> query = userRel.getQuery();
 		query.findInBackground(findCallback);
 	}
 }

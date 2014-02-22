@@ -2,14 +2,11 @@ package com.codepath.adhoc.parsemodels;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("_User")
 public class User extends ParseUser {
-	// TODO ensure setters work (add/remove)
-	
 	public User() {
 		super();
 	}
@@ -34,60 +31,25 @@ public class User extends ParseUser {
 		return getRelation(AdHocUtils.userEventsCreated);
 	}
 	
-	public ParseRelation<Events> getEventsJoinedRelation() {
+	public ParseRelation<Events> getEventsAttendingRelation() {
 		return getRelation(AdHocUtils.userEventsAttending);
 	}
 	
-	public String[] getEventsAttending() {
-		//TODO fix
-		String listEvents = getString(AdHocUtils.userEventsAttending);
-		return listEvents.split("[,]");
-	}
-	
-	public String[] getEventsCreated() {
-		//TODO fix
-		String listEvents = getString(AdHocUtils.userEventsCreated);
-		return listEvents.split("[,]");
-	}
-	
-	public void addEventAttending(String userId, String[] eventsAttending) {
-		//TODO fix
-		String listEvents = userId;
-		for(int a = 0; a < eventsAttending.length; a++) {
-			listEvents += "," + eventsAttending[a];
-		}
-		put(AdHocUtils.userEventsAttending, listEvents);
+	public void addEventAttending(Events eventObj) {
+		getEventsAttendingRelation().add(eventObj);
 	}
 	
 	public void addEventHosting(Events eventObj) {
-		//TODO check
-		/*String listEvents = userId;
-		for(int a = 0; a < eventsHosting.length; a++) {
-			listEvents += "," + eventsHosting[a];
-		}
-		put(AdHocUtils.userEventsCreated, listEvents);*/
 		getEventsHostingRelation().add(eventObj);
 	}
 	
-	public void removeEventsAttending(String userId, String[] eventsAttending) {
-		//TODO fix
-		String listEvents = "";
-		for(int a = 0; a < eventsAttending.length; a++) {
-			if(!eventsAttending[a].equals(userId)) {
-				listEvents += "," + eventsAttending[a];
-			}
-		}
-		put(AdHocUtils.userEventsAttending, listEvents);
+	public void removeEventsAttending(Events eventObj) {
+		//TODO check
+		getEventsAttendingRelation().remove(eventObj);
 	}
 	
-	public void removeEventsHosting(String userId, String[] eventsHosting) {
-		//TODO fix
-		String listEvents = "";
-		for(int a = 0; a < eventsHosting.length; a++) {
-			if(!eventsHosting[a].equals(userId)) {
-				listEvents += "," + eventsHosting[a];
-			}
-		}
-		put(AdHocUtils.userEventsCreated, listEvents);
+	public void removeEventsHosting(Events eventObj) {
+		//TODO check
+		getEventsHostingRelation().remove(eventObj);
 	}
 }

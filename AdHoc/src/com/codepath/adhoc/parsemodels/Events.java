@@ -1,16 +1,10 @@
 package com.codepath.adhoc.parsemodels;
 
 import java.util.Date;
-import java.util.List;
-
-import android.util.Log;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
-import com.codepath.adhoc.application.ParseClient;
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -88,43 +82,13 @@ public class Events extends ParseObject {
 		return getDate(AdHocUtils.eventUpdatedAt);
 	}
 
-	public ParseUser getHostUserIdRelation() {
-		//TODO check
-		return getParseUser(AdHocUtils.eventHostUserId);
+	public ParseRelation<User> getHostUserIdRelation() {
+		return getRelation(AdHocUtils.eventHostUserId);
 	}
 	
 	public ParseRelation<User> getJoinedUsersRelation() {
 	      return getRelation(AdHocUtils.eventJoinedUsersId);
 	  }
-	
-	public int getCountUsersJoined() {
-		//TODO check
-		ParseClient.getCountJoinedUsers(this, new FindCallback<Events>() {
-			
-			@Override
-			public void done(List<Events> listUsers, ParseException e) {
-				if (e == null) {
-		            // Access the array of results here
-		            //return listUsers.size();
-		        } else {
-		            Log.d("ERROR", "Error: " + e.getMessage());
-		        }
-			}
-		});
-		return -1;
-	}
-	
-	public boolean checkUserInJoinedList(String id) {
-		//TODO fix
-		String listUsers= getString(AdHocUtils.eventJoinedUsersId);
-		if(listUsers.isEmpty()) {
-			return false;
-		}
-		if(listUsers.contains(id)) {
-			return true;
-		}
-		return false;
-	}
 
 	public void setEventState(String newState) {
 		put(AdHocUtils.eventState, newState);
@@ -138,31 +102,11 @@ public class Events extends ParseObject {
 		put(AdHocUtils.eventLocLat, longi);
 	}
 
-	public void addJoinedUser(String userId) {
-		//TODO fix
-		Log.d("DEBUG", "Adding user " + userId + " to event "
-				+ this.getObjectId());
-		String usersJoined = getString(AdHocUtils.eventJoinedUsersId);
-		Log.d("DEBUG", "Old user list : " + usersJoined);
-		String listUsers;
-		if(usersJoined.isEmpty()) {
-			listUsers = userId;
-		} else {
-			listUsers = usersJoined + "," + userId;
-		}
-
-		Log.d("DEBUG", "New user list : " + listUsers);
-		put(AdHocUtils.eventJoinedUsersId, listUsers);
+	public void addJoinedUser(User userObj) {
+		getJoinedUsersRelation().add(userObj);
 	}
 
-	public void removeJoinedUser(String userId, String[] usersJoined) {
-		//TODO fix
-		String listUsers = "";
-		for (int a = 0; a < usersJoined.length; a++) {
-			if (!usersJoined[a].equals(userId)) {
-				listUsers += "," + usersJoined[a];
-			}
-		}
-		put(AdHocUtils.eventJoinedUsersId, listUsers);
+	public void removeJoinedUser(User userObj) {
+		getJoinedUsersRelation().remove(userObj);
 	}
 }
