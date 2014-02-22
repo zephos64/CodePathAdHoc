@@ -60,8 +60,8 @@ public class CreateEventMapActivity extends Fragment implements GooglePlayServic
 		View view = inf.inflate(R.layout.fragment_create_event_map, parent, false);
 		return view;
 	}
-	@Override
 
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		android.support.v4.app.FragmentManager fm = getChildFragmentManager();

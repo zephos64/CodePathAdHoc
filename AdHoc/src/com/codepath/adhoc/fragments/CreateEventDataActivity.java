@@ -8,11 +8,13 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -21,16 +23,19 @@ import android.widget.TimePicker;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.activities.LocationActivity;
+import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
 
-public class CreateEventDataActivity extends CreateEventFragment {
+public class CreateEventDataActivity extends CreateEventFragment implements OnFocusChangeListener{
 	Spinner spListEvents;
 	EditText etStartTime;
 	EditText etEndTime;
 	EditText etMaxAttendees;
 	EditText etDescription;
-	
+	EditText etLocation;
+	static final int LOCATION_ACTIVITY = 100;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,16 +45,15 @@ public class CreateEventDataActivity extends CreateEventFragment {
 	public View onCreateView(LayoutInflater inf, ViewGroup parent,
 			Bundle savedInstanceState) {
 		View view = inf.inflate(R.layout.fragment_create_event_data, parent, false);
-		
 		spListEvents = (Spinner) view.findViewById(R.id.spListEvents);
 		etMaxAttendees = (EditText) view.findViewById(R.id.etMaxAttendees);
 		etDescription = (EditText) view.findViewById(R.id.etDescription);
 		etStartTime = (EditText) view.findViewById(R.id.etStartTime);
-		etEndTime = (EditText) view.findViewById(R.id.etEndTime);
-		
+		etEndTime  = (EditText) view.findViewById(R.id.etEndTime);
 		setTimeListeners(etStartTime, "Start Time", true);
 		setTimeListeners(etEndTime, "End Time", false);
-		
+		etLocation = (EditText) view.findViewById(R.id.etLocation);
+		etLocation.setOnFocusChangeListener(this);	
 		return view;
 	}
 	
@@ -214,4 +218,24 @@ public class CreateEventDataActivity extends CreateEventFragment {
 			}
 		});
 	}
+
+	@Override
+	public void onFocusChange(View view, boolean focusOn) {
+		if (view.getId() == R.id.etLocation){
+			if (focusOn) {
+				Intent i = new Intent(getActivity(), LocationActivity.class);
+				startActivityForResult(i, LOCATION_ACTIVITY);
+			}	
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  // REQUEST_CODE is defined above
+	  if (resultCode == getActivity().RESULT_OK && requestCode == LOCATION_ACTIVITY) {
+	     // Extract name value from result extras
+	     LocationData lcn = (LocationData) data.getSerializableExtra("Location");
+	     etLocation.setText(lcn.getAddress()[0]);
+	  }
+	}		
 }

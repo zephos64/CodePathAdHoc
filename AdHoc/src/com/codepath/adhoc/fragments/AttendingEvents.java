@@ -2,7 +2,7 @@ package com.codepath.adhoc.fragments;
 
 import android.os.Bundle;
 
-public class AttendingEvents extends EventList {
+public class AttendingEvents extends EventListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -13,7 +13,6 @@ public class AttendingEvents extends EventList {
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	@Override
 	void getMoreListData(int numNewItems) {
 		// TODO Auto-generated method stub
 

@@ -84,16 +84,16 @@ public class CreateEventActivity extends ActionBarActivity {
 								CreateEventDataActivity.class));
 		actionBar.addTab(tab1);		
 		actionBar.selectTab(tab1);
-
-		Tab tab2 = actionBar
-				.newTab()
-				.setText("Map")
-				.setTag("Map")
-				.setTabListener(
-						new SupportFragmentTabListener<CreateEventMapActivity>(
-								R.id.flContainerEvent, this, "Map",
-								CreateEventMapActivity.class));
-		actionBar.addTab(tab2);
+//
+//		Tab tab2 = actionBar
+//				.newTab()
+//				.setText("Map")
+//				.setTag("Map")
+//				.setTabListener(
+//						new SupportFragmentTabListener<CreateEventMapActivity>(
+//								R.id.flContainerEvent, this, "Map",
+//								CreateEventMapActivity.class));
+//		actionBar.addTab(tab2);
 	}
 	
 	public void clickSave(View v) {

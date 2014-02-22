@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvStopTime"
+            android:layout_below="@+id/tvLocation"
             android:layout_marginTop="18dp"
             android:text="@string/desc"
             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -86,17 +86,6 @@
             android:ems="10"
             android:gravity="right" />
 
-        <EditText
-            android:id="@+id/etEndTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tvDescription"
-            android:layout_alignLeft="@+id/etStartTime"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/etStartTime"
-            android:ems="10"
-            android:gravity="right" />
-
         <TextView
             android:id="@+id/tvStopTime"
             android:layout_width="wrap_content"
@@ -107,6 +96,37 @@
             android:text="@string/endTime"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <EditText
+            android:id="@+id/etLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvDescription"
+            android:layout_alignLeft="@+id/etEndTime"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/etEndTime"
+            android:ems="10"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvStopTime"
+            android:layout_marginTop="10dp"
+            android:text="@string/location"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/etEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvLocation"
+            android:layout_alignLeft="@+id/etStartTime"
+            android:layout_alignParentRight="true"
+            android:ems="10"
+            android:gravity="right" />
+        
     </RelativeLayout>
 
 </ScrollView>

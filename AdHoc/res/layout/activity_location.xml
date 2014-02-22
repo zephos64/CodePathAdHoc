@@ -8,4 +8,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LocationActivity" >
 
+    
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.MapFragment" />
+    
+<!-- 	<RelativeLayout -->
+<!--         android:id="@+id/mapView" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:layout_alignParentLeft="true" -->
+<!--         android:layout_alignParentTop="true"  -->
+<!--         android:name="com.google.android.gms.maps.MapFragment"> -->
+<!--     </RelativeLayout> -->
+    
 </RelativeLayout>

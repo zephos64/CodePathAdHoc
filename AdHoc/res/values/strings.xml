@@ -24,5 +24,6 @@
     <string name="save">Save</string>
     <string name="startTime">Event start time:</string>
     <string name="endTime">Event end time:</string>
-
+    <string name="location">Location:</string>
+    
 </resources>

@@ -3,6 +3,7 @@ package com.codepath.adhoc.application;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		//EventItem eventItem = (EventItem) getItem(position);
 		
 		//ParseUser user = eventItem.getUser();
-		Log.d("DEBUG", mEvents.toString());
+//		Log.d("DEBUG", mEvents.toString());
 		Events events = mEvents.get(position);
 		//User user = mUser.get(position);
 		
