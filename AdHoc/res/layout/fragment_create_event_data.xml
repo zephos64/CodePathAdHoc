@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="461dp" >
+        android:layout_height="356dp" >
 
         <com.codepath.adhoc.CustomEventSpinner
             android:id="@+id/spListEvents"

@@ -40,5 +40,7 @@
     <string name="errNoStartTime">Please select a start time</string>
     <string name="errNoEndTime">Please select an end time</string>
     <string name="errMissingDataTitle">Missing data in field</string>
+    <string name="hintStartTime">Click to select a start time</string>
+    <string name="getData">Getting event data...</string>
     
 </resources>
