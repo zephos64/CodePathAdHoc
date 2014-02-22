@@ -1,12 +1,8 @@
 package com.codepath.adhoc.activities;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -48,6 +44,11 @@ public class EventDetailsActivity extends ActionBarActivity {
 		
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		// for screen rotation
+		if(savedInstanceState != null) {
+			item = (Events)savedInstanceState.getSerializable("event");
+		}
 	}
 
 	@Override
@@ -65,9 +66,21 @@ public class EventDetailsActivity extends ActionBarActivity {
 		
 		btnAction = (Button) findViewById(R.id.button1);
 		
-		populateDetails("3wXCAyexxW");
+		// for screen rotation
+		if(item == null) {
+			getItem("3wXCAyexxW");
+		} else {
+			populateDetails();
+		}
+			
 		
 		return true;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    outState.putSerializable("event", item);
 	}
 
 	@Override
@@ -101,77 +114,87 @@ public class EventDetailsActivity extends ActionBarActivity {
 		return true;
 	}
 	
-	public void populateDetails(String eventId) {
+	public void getItem(String eventId) {
+		Log.d("DEBUG", "API call to get event details for event : " + eventId);
 		ParseClient.getParseEventDetails(eventId, new FindCallback<Events>() {
 		    public void done(List<Events> itemList, ParseException e) {
 		        if (e == null) {
 		            // Access the array of results here
 		            item = itemList.get(0);
-		            tvTitle.setText(item.getEventName());
-					tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
-		            tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
-		    		tvDesc.setText(item.getDesc());
-		    		
-		    		ParseClient.getHostUser(item, new FindCallback<User>() {
-						@Override
-						public void done(List<User> listUsersJoined,
-								ParseException e) {
-							if (e == null) {
-								if (listUsersJoined.size() > 0 &&
-										listUsersJoined.get(0).getObjectId().equals(ParseUser
-										.getCurrentUser().getObjectId())) {
-									tvStatus.setText("HOST");
-									btnAction.setText("CANCEL");
-									isHost = true;
-								} else {
-									ParseClient.getJoinedUsers(item, new FindCallback<User>() {
-										@Override
-										public void done(List<User> listUsersJoined,
-												ParseException e) {
-											if (e == null) {
-												if (listUsersJoined.contains(ParseUser
-														.getCurrentUser())) {
-													joinEvent();
-									    		} else {
-									    			leaveEvent();
-									    		}
-											} else {
-												Log.e("ERROR", "Error getting userId for event details");
-												e.printStackTrace();
-											}
-										}
-									});
-								}
-							} else {
-								Log.e("ERROR", "Error getting userId for event details");
-								e.printStackTrace();
-							}
-						}
-					});
-		    		
-		    		tvLoc.setText("TESTING");
-		    		
-		    		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
-						@Override
-						public void done(List<User> listUsersJoined,
-								ParseException e) {
-							if (e == null) {
-								tvAttendance.setText(
-										listUsersJoined.size()
-										+" / " +
-										item.getMaxAttendees());
-							} else {
-								Log.e("ERROR", "Error getting joined users for event details");
-								e.printStackTrace();
-							}
-						}
-					});
-		    		
+		            populateDetails();
 		        } else {
 		            Log.d("item", "Error in populating details : " + e.getMessage());
 		        }
 		    }
 		});
+	}
+	
+	public void populateDetails() {
+
+		tvTitle.setText(item.getEventName());
+		tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
+		tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
+		tvDesc.setText(item.getDesc());
+
+		ParseClient.getHostUser(item, new FindCallback<User>() {
+			@Override
+			public void done(List<User> listUsersJoined, ParseException e) {
+				if (e == null) {
+					if (listUsersJoined.size() > 0
+							&& listUsersJoined
+									.get(0)
+									.getObjectId()
+									.equals(ParseUser.getCurrentUser()
+											.getObjectId())) {
+						tvStatus.setText("HOST");
+						btnAction.setText("CANCEL");
+						isHost = true;
+					} else {
+						ParseClient.getJoinedUsers(item,
+								new FindCallback<User>() {
+									@Override
+									public void done(
+											List<User> listUsersJoined,
+											ParseException e) {
+										if (e == null) {
+											if (listUsersJoined
+													.contains(ParseUser
+															.getCurrentUser())) {
+												joinEvent();
+											} else {
+												leaveEvent();
+											}
+										} else {
+											Log.e("ERROR",
+													"Error getting userId for event details");
+											e.printStackTrace();
+										}
+									}
+								});
+					}
+				} else {
+					Log.e("ERROR", "Error getting userId for event details");
+					e.printStackTrace();
+				}
+			}
+		});
+
+		tvLoc.setText("TESTING");
+
+		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
+			@Override
+			public void done(List<User> listUsersJoined, ParseException e) {
+				if (e == null) {
+					tvAttendance.setText(listUsersJoined.size() + " / "
+							+ item.getMaxAttendees());
+				} else {
+					Log.e("ERROR",
+							"Error getting joined users for event details");
+					e.printStackTrace();
+				}
+			}
+		});
+
 	}
 	
 	public void onAction(View v) {

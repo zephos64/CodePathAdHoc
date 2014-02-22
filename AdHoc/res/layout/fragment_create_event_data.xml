@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateEventDataActivity" >
+    tools:context=".CreateEventDataFragment" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,8 +62,6 @@
             android:ems="10"
             android:hint="@string/descBody"
             android:paddingBottom="8dp" >
-
-            <requestFocus />
         </EditText>
 
         <TextView

@@ -1,7 +1,5 @@
 package com.codepath.adhoc.activities;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -13,16 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
-import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
-import com.codepath.adhoc.application.ParseClient;
-import com.codepath.adhoc.fragments.CreateEventDataActivity;
+import com.codepath.adhoc.fragments.CreateEventDataFragment;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -36,8 +30,16 @@ public class CreateEventActivity extends ActionBarActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		//setupTabs();
-		setupFragment();
+		CreateEventDataFragment data;
+		FragmentManager fm = getSupportFragmentManager();
+		if(savedInstanceState != null) {
+			data = (CreateEventDataFragment)fm.findFragmentByTag("createData");
+		} else {
+			data = new CreateEventDataFragment();
+			FragmentTransaction fts = fm.beginTransaction();
+			fts.add(R.id.flContainerEvent, data, "createData");
+			fts.commit();
+		}
 	}
 
 	@Override
@@ -45,6 +47,11 @@ public class CreateEventActivity extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.create_event, menu);
 		return true;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -89,9 +96,9 @@ public class CreateEventActivity extends ActionBarActivity {
 				.setText("Data")
 				.setTag("Data")
 				.setTabListener(
-						new SupportFragmentTabListener<CreateEventDataActivity>(
+						new SupportFragmentTabListener<CreateEventDataFragment>(
 								R.id.flContainerEvent, this, "Data",
-								CreateEventDataActivity.class));
+								CreateEventDataFragment.class));
 		actionBar.addTab(tab1);		
 		actionBar.selectTab(tab1);
 //
@@ -106,18 +113,10 @@ public class CreateEventActivity extends ActionBarActivity {
 //		actionBar.addTab(tab2);
 	}
 	
-	private void setupFragment() {
-		CreateEventDataActivity data = new CreateEventDataActivity();
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction fts = fm.beginTransaction();
-		fts.replace(R.id.flContainerEvent, data);
-		fts.commit();
-	}
-	
 	public void clickSave(View v) {
 		Log.d("DEBUG", "Saving new event...");
 		FragmentManager fm = getSupportFragmentManager();
-		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
+		CreateEventDataFragment dataAct = (CreateEventDataFragment)fm.getFragments().get(0);		
 		if(!dataAct.checkData()) {
 			return;
 		}

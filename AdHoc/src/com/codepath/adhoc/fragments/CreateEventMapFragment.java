@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CreateEventMapActivity extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks,
+public class CreateEventMapFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks,
 																GooglePlayServicesClient.OnConnectionFailedListener,
 																LocationListener, 
 																OnMarkerDragListener{

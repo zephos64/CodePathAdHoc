@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
-import android.app.TimePickerDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -29,13 +29,16 @@ import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
 
-public class CreateEventDataActivity extends CreateEventFragment implements OnFocusChangeListener{
+public class CreateEventDataFragment extends CreateEventFragment implements OnFocusChangeListener{
 	CustomEventSpinner spListEvents;
 	EditText etStartTime;
 	EditText etEndTime;
 	EditText etMaxAttendees;
 	EditText etDescription;
 	EditText etLocation;
+	
+	int hour = 0;
+	int min = 0;
 	
 	static final int LOCATION_ACTIVITY = 100;
 	LocationData lcn;
@@ -58,6 +61,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 		setTimeListeners(etEndTime, getString(R.string.dialogEndTime), false);
 		etLocation = (EditText) view.findViewById(R.id.etLocation);
 		etLocation.setOnFocusChangeListener(this);	
+		
 		return view;
 	}
 		
@@ -132,6 +136,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 				return false;
 			}
 		}
+		Log.d("DEBUG", "Time valid");
 		return true;
 	}
 	
@@ -161,7 +166,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return cal.get(Calendar.HOUR);
+		return cal.get(Calendar.HOUR_OF_DAY);
 	}
 	
 	private int getMinutes(String time) {
@@ -197,69 +202,123 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 	}
 	
 	public void setTimeListeners(final EditText etField, final String title, final boolean isStart) {
-		
 		etField.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					Calendar cal = Calendar.getInstance();
-					int hour;
-					int min;
 					if(etField.getId() == R.id.etEndTime &&
 							!etStartTime.getText().toString().isEmpty()) {
 						// if have start time and choosing end
 						// have time be no less than start time
+						Log.d("DEBUG", "Setting end time after start time already set");
+						
 						hour = getHours(etStartTime.getText().toString());
 						min = getMinutes(etStartTime.getText().toString());
 					} else if(etField.getText().toString().isEmpty()) {
+						Log.d("DEBUG", "Time field empty, getting calendar time");
 						hour = cal.get(Calendar.HOUR_OF_DAY);
 						min = cal.get(Calendar.MINUTE);
 					} else {
 						hour = getHours(etField.getText().toString());
 						min = getMinutes(etField.getText().toString());
+						
+						Log.d("DEBUG", "Time field not empty, getting time "+hour+":"+min);
 					}
 					
 					// if selecting end hour, add 1 hour
 					//  user can go less, but this assumes 
 					//  default length of event is 1 hour
 					if(etField.getId() == R.id.etEndTime) {
-						hour+=1;
+						hour += 1;
 					}
-					final TimePickerDialog tpDialog = new TimePickerDialog(
+					
+					showCustomTimePicker(title, isStart, etField);
+					/*final TimePickerDialog tpDialog = new TimePickerDialog(
 							getActivity(),
 							new TimePickerDialog.OnTimeSetListener() {								
 								@Override
 								public void onTimeSet(TimePicker timePicker,
 										int selectedHour, int selectedMinute) {
-
-									Calendar cal = Calendar.getInstance();
-									cal.set(Calendar.HOUR_OF_DAY, selectedHour);
-									cal.set(Calendar.MINUTE, selectedMinute);
-									SimpleDateFormat format = new SimpleDateFormat(AdHocUtils.dateFormat);
-									
-									if(checkTime(isStart, selectedHour, selectedMinute)) {
-										etField.setText(format.format(cal.getTime()));
-									}
+										hour = selectedHour;
+										min = selectedMinute;
+										Log.d("DEBUG", "New time is "+hour+":"+min);
+										Calendar cal = Calendar.getInstance();
+										cal.set(Calendar.HOUR_OF_DAY, hour);
+										cal.set(Calendar.MINUTE, min);
+										SimpleDateFormat format = new SimpleDateFormat(AdHocUtils.dateFormat);
+										Log.d("DEBUG", "Setting time as "+hour+":"+min);
+										
+										if(checkTime(isStart, hour, min)) {
+											etField.setText(format.format(cal.getTime()));
+										}
 								}
 							}, hour, min, false);
 					tpDialog.setTitle(title);
-					tpDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new OnClickListener() {
+					/*tpDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							tpDialog.dismiss();
 						}
-					});
-					tpDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Set", new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// Do nothing, logic in onTimeSet
-						}
-					});
-					tpDialog.show();
+					});*
+					tpDialog.show();*/
+					
 				}
 				return false;
 			}
 		});
+	}
+	
+	/*
+	 * Must create custom time view, bug in android time view that
+	 *  makes Cancel button not function
+	 *  http://stackoverflow.com/questions/15165328/timepickerdialog-ontimesetlistener-not-called
+	 */
+	public void showCustomTimePicker(String title, final boolean isStart,
+			final EditText etField) {
+
+		final TimePicker mTimePicker = (TimePicker) getLayoutInflater(
+				getArguments()).inflate(R.layout.time_picker_view, null);
+		// Set an initial date for the picker
+		mTimePicker.setIs24HourView(false);
+		mTimePicker.setCurrentHour(hour);
+		mTimePicker.setCurrentMinute(min);
+
+		// create the dialog
+		AlertDialog.Builder mBuilder = new Builder(getActivity());
+		// set the title
+		mBuilder.setTitle(title)
+				// set our date picker
+				.setView(mTimePicker)
+				// set the buttons
+				.setPositiveButton(android.R.string.ok, new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Log.d("DEBUG", "New time is " + hour + ":" + min);
+						Calendar cal = Calendar.getInstance();
+						cal.set(Calendar.HOUR_OF_DAY, hour);
+						cal.set(Calendar.MINUTE, min);
+						SimpleDateFormat format = new SimpleDateFormat(
+								AdHocUtils.dateFormat);
+						Log.d("DEBUG", "Setting time as " + hour + ":" + min);
+
+						if (checkTime(isStart, hour, min)) {
+							etField.setText(format.format(cal.getTime()));
+						}
+					}
+				})
+				.setNegativeButton(android.R.string.cancel,
+						new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						})
+				// create the dialog and show it.
+				.create()
+				.show();
 	}
 
 	@Override

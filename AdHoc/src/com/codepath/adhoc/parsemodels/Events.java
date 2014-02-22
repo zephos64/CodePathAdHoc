@@ -1,5 +1,6 @@
 package com.codepath.adhoc.parsemodels;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.codepath.adhoc.AdHocUtils;
@@ -10,7 +11,12 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("Events")
-public class Events extends ParseObject {
+public class Events extends ParseObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Events() {
 
 	}

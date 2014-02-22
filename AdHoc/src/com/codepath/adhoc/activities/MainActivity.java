@@ -88,7 +88,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	public void loginApp() {
 		Intent i = new Intent(getApplicationContext(),
-				CreateEventActivity.class);
+				EventListActivity.class);
 		startActivity(i);
 	}
 	
