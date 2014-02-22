@@ -17,7 +17,7 @@ import com.codepath.adhoc.parsemodels.Events;
 
 import eu.erikw.PullToRefreshListView;
 
-public class EventListFragment extends Fragment {
+public abstract class EventListFragment extends Fragment {
 	
 	EventsAdapter eventsAdapter;
 	PullToRefreshListView lvEvents;
@@ -66,5 +66,7 @@ public class EventListFragment extends Fragment {
 	public EventsAdapter getAdapter() {
 		return eventsAdapter;
 	}
+	
+	abstract void getMoreItems(int moreItems);
 
 }
