@@ -1,13 +1,17 @@
 package com.codepath.adhoc;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.util.Log;
+import android.app.Activity;
+import android.view.ViewConfiguration;
 
 public class AdHocUtils {
 	public final static String objectId = "objectId";
 	public final static String dateFormat = "hh:mm aa";
+	
+	public final static String intentDetailsId = "intent_item_details";
 	
 	public final static String eventState = "event_state";
 	public final static String eventName = "event_name";
@@ -57,5 +61,24 @@ public class AdHocUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat(AdHocUtils.dateFormat);
 		
 		return sdf.format(cal.getTime());
+	}
+	
+	/**
+	 * Forces actionbar items to be in actionbar
+	 *  otherwise phones might show it in bottom bar spinner
+	 *  instead of actionbar
+	 * @param the activity, should be 'this'
+	 */
+	public static void forceShowActionBar(Activity act) {
+		try {
+	        ViewConfiguration config = ViewConfiguration.get(act);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        if(menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	    } catch (Exception ex) {
+	        // Ignore
+	    }
 	}
 }

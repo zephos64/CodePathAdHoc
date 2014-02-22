@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar.Tab;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.AllEventsFragment;
@@ -26,6 +27,7 @@ public class EventListActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_list);
 		
+		AdHocUtils.forceShowActionBar(this);
 		setupTabs();
 	}
 

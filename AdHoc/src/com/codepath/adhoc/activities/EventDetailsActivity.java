@@ -33,6 +33,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	Button btnAction;
 	
 	Events item;
+	String itemId;
 	
 	private boolean isHost = false;
 	private boolean hasJoined = false;
@@ -48,7 +49,13 @@ public class EventDetailsActivity extends ActionBarActivity {
 		// for screen rotation
 		if(savedInstanceState != null) {
 			item = (Events)savedInstanceState.getSerializable("event");
+		} else {
+			Intent prevIntent = getIntent();
+			itemId = prevIntent.getStringExtra(AdHocUtils.intentDetailsId);
+			Log.d("DEBUG", "Got item id : " + itemId);
 		}
+		
+		AdHocUtils.forceShowActionBar(this);
 	}
 
 	@Override
@@ -68,7 +75,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		
 		// for screen rotation
 		if(item == null) {
-			getItem("3wXCAyexxW");
+			getItem(itemId);
 		} else {
 			populateDetails();
 		}

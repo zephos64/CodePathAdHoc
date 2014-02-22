@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.models.LocationData;
 import com.google.android.gms.common.ConnectionResult;
@@ -54,6 +55,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		AdHocUtils.forceShowActionBar(this);
+		
 		setContentView(R.layout.activity_location);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -113,7 +116,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		currentLng = location.getLongitude();
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
-			 map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+			 map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
 				        .getMap();
 			if (map != null) 
 			{

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.CreateEventDataFragment;
@@ -40,6 +41,8 @@ public class CreateEventActivity extends ActionBarActivity {
 			fts.add(R.id.flContainerEvent, data, "createData");
 			fts.commit();
 		}
+		
+		AdHocUtils.forceShowActionBar(this);
 	}
 
 	@Override

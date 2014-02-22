@@ -3,6 +3,7 @@ package com.codepath.adhoc.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,8 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.activities.EventDetailsActivity;
 import com.codepath.adhoc.application.EventsAdapter;
 import com.codepath.adhoc.parsemodels.Events;
 
@@ -53,6 +58,18 @@ public abstract class EventListFragment extends Fragment {
 		//Log.d("DEBUG", "listview: " + lvEvents.toString());
 		//setListAdapter(getAdapter());
 		lvEvents.setAdapter(getAdapter());
+		lvEvents.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View item, int pos,
+					long id) {
+				Log.d("DEBUG", "Clicked item at [" + pos +
+						"] with Event id ["+events.get(pos).getObjectId()+"]");
+				Intent itemDetails = new Intent(getActivity(), EventDetailsActivity.class);
+				itemDetails.putExtra(AdHocUtils.intentDetailsId, events.get(pos).getObjectId());
+				startActivity(itemDetails);
+			}
+		});
 		//Log.d("DEBUG", "listview: " + lvEvents.toString());
 		return mContentView;
 	}
