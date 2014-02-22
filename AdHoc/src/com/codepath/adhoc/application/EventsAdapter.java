@@ -38,21 +38,18 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 			convertView = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
 		}
 		
-//		Log.d("DEBUG", mEvents.toString());
 		Events events = mEvents.get(position);
-		//User user = mUser.get(position);
 		
 		TextView tvLoginTitle = (TextView) convertView.findViewById(R.id.tvLoginTitle);
 		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
 		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
-		RadioButton rbSelectedEvent = (RadioButton) convertView.findViewById(R.id.rbSelectedEvent);
 		
 		tvLoginTitle.setText(events.getEventName());
-		//tvDistance.setText(events.getLocLat());
-		//tvRemainingSpots.setText(events.getMaxAttendees());
-		//tvTime.setText(events.getEventTime());
-				
+		tvDistance.setText("Lat: " + events.getLocLat() + ", Long: " + events.getLocLong());
+		tvRemainingSpots.setText("Max attendees: " + events.getMaxAttendees());
+		tvTime.setText("Event time: " + events.getEventTime());
+		
 		return convertView;
 	}
 

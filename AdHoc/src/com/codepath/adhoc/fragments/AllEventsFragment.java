@@ -27,4 +27,10 @@ public class AllEventsFragment extends EventListFragment {
 		});
 		
 	}
+
+	@Override
+	void getMoreItems(int moreItems) {
+		// TODO Auto-generated method stub
+		
+	}
 }
