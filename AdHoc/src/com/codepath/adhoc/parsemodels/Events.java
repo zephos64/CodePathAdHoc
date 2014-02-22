@@ -15,9 +15,9 @@ public class Events extends ParseObject {
 
 	}
 	
-	public Events(EventStates tbs, String name, int maxAttend, String time, String endTime,
+	public Events(EventStates state, String name, int maxAttend, String time, String endTime,
 			String desc, ParseUser hostUser) {		
-		put(AdHocUtils.eventState, tbs.toString());
+		put(AdHocUtils.eventState, state.toString());
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
 		put(AdHocUtils.eventTime, time);
@@ -28,15 +28,16 @@ public class Events extends ParseObject {
 		relation.add(hostUser);
 	}
 
-	public Events(String state, String name, int maxAttend, String time, String endTime,
-			int longitude, int latitude, String desc, ParseUser hostUser) {
-		put(AdHocUtils.eventState, state);
+	public Events(EventStates state, String name, int maxAttend, String time, String endTime,
+			String desc, ParseUser hostUser, double longitude, double latitude) {
+		put(AdHocUtils.eventState, state.toString());
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
+		put(AdHocUtils.eventTime, time);
 		put(AdHocUtils.eventTimeEnd, endTime);
+		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventLocLong, longitude);
 		put(AdHocUtils.eventLocLat, latitude);
-		put(AdHocUtils.eventDesc, desc);
 
 		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
 		relation.add(hostUser);

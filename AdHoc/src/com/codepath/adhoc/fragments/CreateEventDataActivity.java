@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.codepath.adhoc.AdHocUtils;
+import com.codepath.adhoc.CustomEventSpinner;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.activities.LocationActivity;
 import com.codepath.adhoc.models.LocationData;
@@ -29,13 +30,16 @@ import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
 
 public class CreateEventDataActivity extends CreateEventFragment implements OnFocusChangeListener{
-	Spinner spListEvents;
+	CustomEventSpinner spListEvents;
 	EditText etStartTime;
 	EditText etEndTime;
 	EditText etMaxAttendees;
 	EditText etDescription;
 	EditText etLocation;
+	
 	static final int LOCATION_ACTIVITY = 100;
+	LocationData lcn;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,28 +49,30 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 	public View onCreateView(LayoutInflater inf, ViewGroup parent,
 			Bundle savedInstanceState) {
 		View view = inf.inflate(R.layout.fragment_create_event_data, parent, false);
-		spListEvents = (Spinner) view.findViewById(R.id.spListEvents);
+		spListEvents = (CustomEventSpinner) view.findViewById(R.id.spListEvents);
 		etMaxAttendees = (EditText) view.findViewById(R.id.etMaxAttendees);
 		etDescription = (EditText) view.findViewById(R.id.etDescription);
 		etStartTime = (EditText) view.findViewById(R.id.etStartTime);
 		etEndTime  = (EditText) view.findViewById(R.id.etEndTime);
-		setTimeListeners(etStartTime, "Start Time", true);
-		setTimeListeners(etEndTime, "End Time", false);
+		setTimeListeners(etStartTime, getString(R.string.dialogStartTime), true);
+		setTimeListeners(etEndTime, getString(R.string.dialogEndTime), false);
 		etLocation = (EditText) view.findViewById(R.id.etLocation);
 		etLocation.setOnFocusChangeListener(this);	
 		return view;
 	}
-	
-	//TODO initial spinner:
-	// http://stackoverflow.com/questions/867518/how-to-make-an-android-spinner-with-initial-text-select-one?rq=1
-	
+		
 	@Override
 	public void checkData() {
+		//TODO add better errors
 		if(spListEvents.getSelectedItemPosition() == Spinner.INVALID_POSITION) {
 			Log.e("err", "Item not selected");
 		}
 		if(etMaxAttendees.getText().length() == 0) {
 			Log.e("err", "Max Attendees not inputted");
+		}
+		
+		if(lcn == null) {
+			Log.e("err", "Location not inputted");
 		}
 		
 		Log.d("DEBUG", "Finished checking data consistency");
@@ -127,7 +133,6 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 		try {
 			cal.setTime(new SimpleDateFormat(AdHocUtils.dateFormat).parse(time));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cal.get(Calendar.HOUR);
@@ -138,7 +143,6 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 		try {
 			cal.setTime(new SimpleDateFormat(AdHocUtils.dateFormat).parse(time));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cal.get(Calendar.MINUTE);
@@ -160,7 +164,9 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 				tempTime.getTime().toString(),
 				tempEndTime.getTime().toString(),
 				etDescription.getText().toString(),
-				ParseUser.getCurrentUser());
+				ParseUser.getCurrentUser(),
+				lcn.getLattitude(),
+				lcn.getLongitude());
 		return newEvent;
 	}
 	
@@ -173,12 +179,25 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 					Calendar cal = Calendar.getInstance();
 					int hour;
 					int min;
-					if(etField.getText().toString().isEmpty()) {
+					if(etField.getId() == R.id.etEndTime &&
+							!etStartTime.getText().toString().isEmpty()) {
+						// if have start time and choosing end
+						// have time be no less than start time
+						hour = getHours(etStartTime.getText().toString());
+						min = getMinutes(etStartTime.getText().toString());
+					} else if(etField.getText().toString().isEmpty()) {
 						hour = cal.get(Calendar.HOUR_OF_DAY);
 						min = cal.get(Calendar.MINUTE);
 					} else {
 						hour = getHours(etField.getText().toString());
 						min = getMinutes(etField.getText().toString());
+					}
+					
+					// if selecting end hour, add 1 hour
+					//  user can go less, but this assumes 
+					//  default length of event is 1 hour
+					if(etField.getId() == R.id.etEndTime) {
+						hour+=1;
 					}
 					final TimePickerDialog tpDialog = new TimePickerDialog(
 							getActivity(),
@@ -186,14 +205,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 								@Override
 								public void onTimeSet(TimePicker timePicker,
 										int selectedHour, int selectedMinute) {
-									int newHour = selectedHour;
-									String diff = " AM";
-									if(selectedHour > 12) {
-										newHour-=12;
-										diff=" PM";
-									} else if(selectedHour == 0) {
-										newHour = 12;
-									}
+
 									Calendar cal = Calendar.getInstance();
 									cal.set(Calendar.HOUR_OF_DAY, selectedHour);
 									cal.set(Calendar.MINUTE, selectedMinute);
@@ -239,7 +251,7 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 	  // REQUEST_CODE is defined above
 	  if (resultCode == getActivity().RESULT_OK && requestCode == LOCATION_ACTIVITY) {
 	     // Extract name value from result extras
-	     LocationData lcn = (LocationData) data.getSerializableExtra("Location");
+	     lcn = (LocationData) data.getSerializableExtra("Location");
 	     etLocation.setText(lcn.getAddress()[0]);
 	  }
 	}		

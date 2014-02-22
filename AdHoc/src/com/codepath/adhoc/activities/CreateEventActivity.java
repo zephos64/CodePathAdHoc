@@ -119,12 +119,8 @@ public class CreateEventActivity extends ActionBarActivity {
 		FragmentManager fm = getSupportFragmentManager();
 		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
 		dataAct.checkData();
-		//CreateEventMapActivity dataMap = (CreateEventMapActivity)fm.getFragments().get(1);
-		// not sure if above line is correct - Ryan
-		//dataMap.checkData();
 		
 		final Events newEvent = dataAct.getEvent();
-		//Events newMap = dataMap.getEvent();
 
 		newEvent.saveInBackground(new SaveCallback() {
 			

@@ -1,8 +1,12 @@
 package com.codepath.adhoc.activities;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -101,11 +105,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 		ParseClient.getParseEventDetails(eventId, new FindCallback<Events>() {
 		    public void done(List<Events> itemList, ParseException e) {
 		        if (e == null) {
-		        	SimpleDateFormat sdf = new SimpleDateFormat(AdHocUtils.dateFormat);
+		        	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd kk:mm:ss zzz yyyy");
 		            // Access the array of results here
 		            item = itemList.get(0);
 		            tvTitle.setText(item.getEventName());
 		            try {
+		            	
 						tvTime.setText((sdf.parse(item.getEventTime())).toString());
 		            	tvTimeEnd.setText((sdf.parse(item.getEventTimeEnd())).toString());
 		            } catch (java.text.ParseException e1) {
@@ -133,12 +138,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 											if (e == null) {
 												if (listUsersJoined.contains(ParseUser
 														.getCurrentUser())) {
-													tvStatus.setText("JOINED");
-									    			btnAction.setText("LEAVE");
-									    			hasJoined=true;
+													joinEvent();
 									    		} else {
-									    			tvStatus.setText("");
-									    			btnAction.setText("JOIN");
+									    			leaveEvent();
 									    		}
 											} else {
 												Log.e("ERROR", "Error getting userId for event details");
@@ -194,34 +196,71 @@ public class EventDetailsActivity extends ActionBarActivity {
 			btnAction.setVisibility(View.INVISIBLE);
 		} else if(hasJoined) {
 			//remove name from event list	
-			
+
 			User curUser = (User) ParseUser.getCurrentUser();
 			Log.d("DEBUG", "Remove user [" + curUser.getObjectId()
-				+"] from event [" + item.getObjectId()+"]");
+					+"] from event [" + item.getObjectId()+"]");
 			item.removeJoinedUser(curUser);
 			curUser.removeEventsAttending(item);
 			item.saveInBackground();
 			curUser.saveInBackground();
-			
-			tvStatus.setText("");
-			btnAction.setText("JOIN");
-			hasJoined=false;
+		
+			leaveEvent();
 		} else {
 			//add name to event list
 
-			User curUser = (User) ParseUser.getCurrentUser();
-			Log.d("DEBUG", "Adding user [" + curUser.getObjectId()
-					+"] from event [" + item.getObjectId()+"]");
-			item.addJoinedUser(curUser);
-			curUser.addEventAttending(item);
-			item.saveInBackground();
-			curUser.saveInBackground();
-			
-			tvStatus.setText("JOINED");
-			btnAction.setText("LEAVE");
-			hasJoined=true;
+			checkEventStatus(item, new FindCallback<Events>() {
+				@Override
+				public void done(List<Events> listEvents, ParseException e) {
+					if(e == null) {
+						String eventStatus = listEvents.get(0).getEventState(); 
+						if(!eventStatus.equals(AdHocUtils.EventStates.CANCELLED.toString())
+							&& !eventStatus.equals(AdHocUtils.EventStates.FINISHED.toString())) {
+								User curUser = (User) ParseUser.getCurrentUser();
+								Log.d("DEBUG", "Adding user [" + curUser.getObjectId()
+									+"] from event [" + item.getObjectId()+"]");
+								item.addJoinedUser(curUser);
+								curUser.addEventAttending(item);
+								item.saveInBackground();
+								curUser.saveInBackground();
+							
+								joinEvent();
+						} else {
+							showErrDialog();
+						}
+					} else {
+						Log.e("ERROR", "Error: " + e);
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 
 		item.saveEventually();
+	}
+	
+	private void joinEvent() {
+		tvStatus.setText("JOINED");
+		btnAction.setText("LEAVE");
+		hasJoined=true;
+	}
+	
+	private void leaveEvent() {
+		tvStatus.setText("");
+		btnAction.setText("JOIN");
+		hasJoined=false;
+	}
+	
+	private void checkEventStatus(Events event, FindCallback<Events> fcb) {
+		ParseClient.getParseEventDetails(event.getObjectId(), fcb);
+	}
+	
+	private void showErrDialog() {
+		AlertDialog.Builder badEvent = new AlertDialog.Builder(
+				this);
+		badEvent.setTitle(getString(R.string.errSaveEventTitle));
+		badEvent.setMessage(getString(R.string.errSaveEventMsg));
+		badEvent.setNegativeButton(getString(R.string.OK), null);
+		badEvent.show();
 	}
 }
