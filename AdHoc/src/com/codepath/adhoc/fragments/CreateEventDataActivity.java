@@ -150,10 +150,15 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 		tempTime.set(Calendar.HOUR_OF_DAY, getHours(etStartTime.getText().toString()));
 		tempTime.set(Calendar.MINUTE, getMinutes(etStartTime.getText().toString()));
 		
+		Calendar tempEndTime = Calendar.getInstance();
+		tempTime.set(Calendar.HOUR_OF_DAY, getHours(etEndTime.getText().toString()));
+		tempTime.set(Calendar.MINUTE, getMinutes(etEndTime.getText().toString()));
+		
 		Events newEvent = new Events(AdHocUtils.EventStates.TBS,
 				spListEvents.getSelectedItem().toString(),
 				Integer.valueOf(etMaxAttendees.getText().toString()),
 				tempTime.getTime().toString(),
+				tempEndTime.getTime().toString(),
 				etDescription.getText().toString(),
 				ParseUser.getCurrentUser());
 		return newEvent;
