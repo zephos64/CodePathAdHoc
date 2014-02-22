@@ -77,11 +77,6 @@ public class CreateEventActivity extends ActionBarActivity {
 			Intent intLogOut = new Intent(this, MainActivity.class);
 			startActivity(intLogOut);
 			break;
-		case R.id.action_gotodetails:
-			//TODO remove
-			Intent iTest = new Intent(this, EventDetailsActivity.class);
-			startActivity(iTest);
-			break;
 		default:
 			break;
 		}

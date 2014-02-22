@@ -234,35 +234,6 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 					}
 					
 					showCustomTimePicker(title, isStart, etField);
-					/*final TimePickerDialog tpDialog = new TimePickerDialog(
-							getActivity(),
-							new TimePickerDialog.OnTimeSetListener() {								
-								@Override
-								public void onTimeSet(TimePicker timePicker,
-										int selectedHour, int selectedMinute) {
-										hour = selectedHour;
-										min = selectedMinute;
-										Log.d("DEBUG", "New time is "+hour+":"+min);
-										Calendar cal = Calendar.getInstance();
-										cal.set(Calendar.HOUR_OF_DAY, hour);
-										cal.set(Calendar.MINUTE, min);
-										SimpleDateFormat format = new SimpleDateFormat(AdHocUtils.dateFormat);
-										Log.d("DEBUG", "Setting time as "+hour+":"+min);
-										
-										if(checkTime(isStart, hour, min)) {
-											etField.setText(format.format(cal.getTime()));
-										}
-								}
-							}, hour, min, false);
-					tpDialog.setTitle(title);
-					/*tpDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							tpDialog.dismiss();
-						}
-					});*
-					tpDialog.show();*/
-					
 				}
 				return false;
 			}

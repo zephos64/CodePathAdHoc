@@ -60,6 +60,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tvDescription"
             android:ems="10"
+            android:maxLength="200"
             android:hint="@string/descBody"
             android:paddingBottom="8dp" >
         </EditText>
