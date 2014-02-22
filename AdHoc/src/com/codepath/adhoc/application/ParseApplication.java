@@ -19,18 +19,6 @@ public class ParseApplication extends Application {
 		
 		// Parse initialization with API keys
 		Parse.initialize(this, "SldbNf6UPU5POie3S7bo76x3iEH7tRbkHJmEew5J", "3c2SDflnsYwN2Nhno1sCCb8hKS1P8M3NWz2b36be");
-		
-		//EventItem ei = new EventItem("Let's play soccer!");
-		
-		// Set the current user, who we think is the person signed onto the app
-		//ei.setOwner(ParseUser.getCurrentUser());
-		
-		// Now save the data asynchronously
-		//ei.saveInBackground();
-		
-		// for more robust offline save
-		// ei.saveEventually();
-		
 	}
 
 }

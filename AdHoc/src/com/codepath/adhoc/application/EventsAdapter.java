@@ -44,7 +44,6 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
 		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
-		//RadioButton rbSelectedEvent = (RadioButton) convertView.findViewById(R.id.rbSelectedEvent);
 		
 		tvLoginTitle.setText(events.getEventName());
 		tvDistance.setText("Lat: " + events.getLocLat() + ", Long: " + events.getLocLong());
