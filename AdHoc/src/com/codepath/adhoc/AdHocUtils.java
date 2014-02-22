@@ -1,5 +1,10 @@
 package com.codepath.adhoc;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import android.util.Log;
+
 public class AdHocUtils {
 	public final static String objectId = "objectId";
 	public final static String dateFormat = "hh:mm aa";
@@ -39,4 +44,18 @@ public class AdHocUtils {
 	public final static String userPhoneNum = "phone";
 	public final static String userEventsAttending = "events_attending";
 	public final static String userEventsCreated = "events_created";
+	
+	public static String getTime(String time) {
+		String[] broken = time.split("");
+		String hour = broken[12]+broken[13];
+		String min = broken[15]+broken[16];
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hour));
+		cal.set(Calendar.MINUTE, Integer.valueOf(min));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(AdHocUtils.dateFormat);
+		
+		return sdf.format(cal.getTime());
+	}
 }

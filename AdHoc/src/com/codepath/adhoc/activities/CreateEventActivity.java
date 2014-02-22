@@ -118,7 +118,9 @@ public class CreateEventActivity extends ActionBarActivity {
 		Log.d("DEBUG", "Saving new event...");
 		FragmentManager fm = getSupportFragmentManager();
 		CreateEventDataActivity dataAct = (CreateEventDataActivity)fm.getFragments().get(0);		
-		dataAct.checkData();
+		if(!dataAct.checkData()) {
+			return;
+		}
 		
 		final Events newEvent = dataAct.getEvent();
 

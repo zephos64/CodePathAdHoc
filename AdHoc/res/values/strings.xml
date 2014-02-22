@@ -30,5 +30,15 @@
     <string name="errSaveEventMsg">Sorry but this event is finished or cancelled, please join another event</string>
     <string name="dialogStartTime">Start Time</string>
     <string name="dialogEndTime">End Time</string>
+    <string name="errSetTime">Error with setting time</string>
+    <string name="errLowEnd">End time is not greater than start time</string>
+    <string name="errHighStart">Start time is greater than end time</string>
+    <string name="errLowTime">Time is before current time</string>
+    <string name="errNoEvent">No event selected</string>
+    <string name="errNoAtt">Please input max amount of people who can join the event</string>
+    <string name="errNoLoc">No location selected</string>
+    <string name="errNoStartTime">Please select a start time</string>
+    <string name="errNoEndTime">Please select an end time</string>
+    <string name="errMissingDataTitle">Missing data in field</string>
     
 </resources>

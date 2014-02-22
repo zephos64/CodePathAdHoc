@@ -62,27 +62,50 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 	}
 		
 	@Override
-	public void checkData() {
-		//TODO add better errors
+	public boolean checkData() {
 		if(spListEvents.getSelectedItemPosition() == Spinner.INVALID_POSITION) {
 			Log.e("err", "Item not selected");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errNoEvent));
+			return false;
 		}
 		if(etMaxAttendees.getText().length() == 0) {
 			Log.e("err", "Max Attendees not inputted");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errNoAtt));
+			return false;
+		}
+		
+		if(etStartTime.getText().length() == 0) {
+			Log.e("err", "Start time not inputted");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errNoStartTime));
+			return false;
+		}
+		if(etEndTime.getText().length() == 0) {
+			Log.e("err", "End time not inputted");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errNoEndTime));
+			return false;
 		}
 		
 		if(lcn == null) {
 			Log.e("err", "Location not inputted");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errNoLoc));
+			return false;
 		}
 		
 		Log.d("DEBUG", "Finished checking data consistency");
+		return true;
 	}
 	
 	public boolean checkTime(boolean isStart, int hour, int min) {
 		Calendar cal = Calendar.getInstance();
 		if (!checkTimeDetails(cal.get(Calendar.HOUR_OF_DAY),
 				cal.get(Calendar.MINUTE), hour, min)) {
-			showErrDialog("Time is before current time");
+			showErrDialog(getString(R.string.errSetTime),
+					getString(R.string.errLowTime));
 			return false;
 		}
 		
@@ -92,7 +115,8 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 					min,
 					getHours(etEndTime.getText().toString()),
 					getMinutes(etEndTime.getText().toString()))) {
-				showErrDialog("Start time is greater than end time");
+				showErrDialog(getString(R.string.errSetTime),
+						getString(R.string.errHighStart));
 				return false;
 			}
 		}
@@ -103,17 +127,19 @@ public class CreateEventDataActivity extends CreateEventFragment implements OnFo
 					getMinutes(etStartTime.getText().toString()),
 					hour,
 					min)) {
-				showErrDialog("End time is not greater than start time");
+				showErrDialog(getString(R.string.errSetTime),
+						getString(R.string.errLowEnd));
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public void showErrDialog(String msg) {
+	public void showErrDialog(String title, String msg) {
 		AlertDialog.Builder adBuilderErr = new AlertDialog.Builder(getActivity());
-		adBuilderErr.setTitle("Error with setting time");
+		adBuilderErr.setTitle(title);
 		adBuilderErr.setMessage(msg);
+		adBuilderErr.setNegativeButton(getString(R.string.OK), null);
 		adBuilderErr.show();
 	}
 	

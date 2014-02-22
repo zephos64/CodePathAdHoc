@@ -105,18 +105,11 @@ public class EventDetailsActivity extends ActionBarActivity {
 		ParseClient.getParseEventDetails(eventId, new FindCallback<Events>() {
 		    public void done(List<Events> itemList, ParseException e) {
 		        if (e == null) {
-		        	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd kk:mm:ss zzz yyyy");
 		            // Access the array of results here
 		            item = itemList.get(0);
 		            tvTitle.setText(item.getEventName());
-		            try {
-		            	
-						tvTime.setText((sdf.parse(item.getEventTime())).toString());
-		            	tvTimeEnd.setText((sdf.parse(item.getEventTimeEnd())).toString());
-		            } catch (java.text.ParseException e1) {
-		            	Log.e("ERROR", "Error parsing time");
-		            	e1.printStackTrace();
-		            }
+					tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
+		            tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
 		    		tvDesc.setText(item.getDesc());
 		    		
 		    		ParseClient.getHostUser(item, new FindCallback<User>() {
