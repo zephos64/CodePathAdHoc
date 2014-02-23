@@ -126,6 +126,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 //				        .getMap();
 			if (map != null) 
 			{
+					setMarkerCurrentUserLocation();
 			    	map.setOnMarkerDragListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
@@ -223,5 +224,21 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		}
 
 		return true;
+	}
+	
+	public void setMarkerCurrentUserLocation() {
+		Location mCurrentLocation;
+		LatLng userLoc;
+		
+        mCurrentLocation = locationclient.getLastLocation();
+        userLoc = new LatLng(mCurrentLocation.getLatitude(),
+        		mCurrentLocation.getLongitude());
+        
+        Log.d("DEBUG", "Current user location is: lat["+
+        mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
+        
+        Marker usermarker = map.addMarker(new MarkerOptions()
+        .position(userLoc)
+        .draggable(false));
 	}
 }

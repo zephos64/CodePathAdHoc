@@ -196,6 +196,7 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				tempEndTime.getTime().toString(),
 				etDescription.getText().toString(),
 				ParseUser.getCurrentUser(),
+				etLocation.getText().toString(),
 				lcn.getLongitude(),
 				lcn.getLattitude());
 		return newEvent;

@@ -22,26 +22,28 @@ public class Events extends ParseObject implements Serializable{
 	}
 	
 	public Events(EventStates state, String name, int maxAttend, String time, String endTime,
-			String desc, ParseUser hostUser) {		
+			String desc, ParseUser hostUser, String addr) {		
 		put(AdHocUtils.eventState, state.toString());
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
 		put(AdHocUtils.eventTime, time);
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
+		put(AdHocUtils.eventAddress, addr);
 		
 		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
 		relation.add(hostUser);
 	}
 
 	public Events(EventStates state, String name, int maxAttend, String time, String endTime,
-			String desc, ParseUser hostUser, double longitude, double latitude) {
+			String desc, ParseUser hostUser, String addr, double longitude, double latitude) {
 		put(AdHocUtils.eventState, state.toString());
 		put(AdHocUtils.eventName, name);
 		put(AdHocUtils.eventMaxAttend, maxAttend);
 		put(AdHocUtils.eventTime, time);
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
+		put(AdHocUtils.eventAddress, addr);
 		put(AdHocUtils.eventLocLong, longitude);
 		put(AdHocUtils.eventLocLat, latitude);
 
@@ -69,12 +71,12 @@ public class Events extends ParseObject implements Serializable{
 		return getString(AdHocUtils.eventTimeEnd);
 	}
 
-	public int getLocLong() {
-		return getInt(AdHocUtils.eventLocLong);
+	public double getLocLong() {
+		return getDouble(AdHocUtils.eventLocLong);
 	}
 
-	public int getLocLat() {
-		return getInt(AdHocUtils.eventLocLat);
+	public double getLocLat() {
+		return getDouble(AdHocUtils.eventLocLat);
 	}
 
 	public String getDesc() {
@@ -87,6 +89,10 @@ public class Events extends ParseObject implements Serializable{
 
 	public Date getUpdatedAt() {
 		return getDate(AdHocUtils.eventUpdatedAt);
+	}
+	
+	public String getAddress() {
+		return getString(AdHocUtils.eventAddress);
 	}
 
 	public ParseRelation<User> getHostUserIdRelation() {
@@ -101,11 +107,11 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventState, newState);
 	}
 	
-	public void setLocLat(int lat) {
+	public void setLocLat(double lat) {
 		put(AdHocUtils.eventLocLat, lat);
 	}
 	
-	public void setLocLong(int longi) {
+	public void setLocLong(double longi) {
 		put(AdHocUtils.eventLocLat, longi);
 	}
 

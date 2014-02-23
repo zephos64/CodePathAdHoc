@@ -7,6 +7,7 @@ import java.util.Locale;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -107,6 +108,7 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 					"  Map " + String.valueOf(map));
 			if (map != null) 
 			{
+					setMarkerCurrentUserLocation();
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
@@ -194,10 +196,26 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 
 	public void setLocaion(double lattitude, double longitude) {
 		this.mapMode =  MapMode.EVENT_DISPLAY; 
-		Log.e("MAP MODE SET", "Called");
+		Log.e("MAP MODE SET", "Called with lat["+lattitude+"] and long["+longitude+"]");
 		currentLat = lattitude;
 		currentLng = longitude;
 		locationSet  = true;
 		//		locationclient.removeLocationUpdates(this);
+	}
+	
+	public void setMarkerCurrentUserLocation() {
+		Location mCurrentLocation;
+		LatLng userLoc;
+		
+        mCurrentLocation = locationclient.getLastLocation();
+        userLoc = new LatLng(mCurrentLocation.getLatitude(),
+        		mCurrentLocation.getLongitude());
+        
+        Log.d("DEBUG", "Current user location is: lat["+
+        mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
+        
+        Marker usermarker = map.addMarker(new MarkerOptions()
+        .position(userLoc)
+        .draggable(false));
 	}
 }

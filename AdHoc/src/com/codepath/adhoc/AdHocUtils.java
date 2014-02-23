@@ -25,6 +25,7 @@ public class AdHocUtils {
 	public final static String eventUpdatedAt = "updateAt";
 	public final static String eventHostUserId = "hosted_by_id";
 	public final static String eventJoinedUsersId = "joined_user_id";
+	public final static String eventAddress = "address";
 
 	public enum EventStates {
 		INPROG ("IN PROGRESS"),
