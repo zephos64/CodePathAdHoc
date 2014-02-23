@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.codepath.adhoc.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -23,13 +22,13 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class AdhocMapFragment extends MapFragment implements GooglePlayServicesClient.ConnectionCallbacks,
+public class AdhocMapFragment extends SupportMapFragment implements GooglePlayServicesClient.ConnectionCallbacks,
 												  GooglePlayServicesClient.OnConnectionFailedListener,
 												  LocationListener, 
 												  OnMarkerDragListener{
@@ -59,10 +58,10 @@ public class AdhocMapFragment extends MapFragment implements GooglePlayServicesC
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(getActivity(),this, this);
 			locationclient.connect();
-			Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
+			//Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
-			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
+			//Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
 		}				
 		mLocationRequest = LocationRequest.create();
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -99,7 +98,7 @@ public class AdhocMapFragment extends MapFragment implements GooglePlayServicesC
 
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
-			map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 			if (map != null) 
 			{
 			    	map.setOnMarkerDragListener(this);

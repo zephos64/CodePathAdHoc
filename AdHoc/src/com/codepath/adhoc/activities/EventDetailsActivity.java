@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	
 	TextView tvLoad;
 	ProgressBar pbProgress;
+	LinearLayout llProgress;
 	
 	Events item;
 	String itemId;
@@ -60,9 +62,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		mapFrg = (AdhocMapFragment) getFragmentManager().findFragmentById(R.id.map);
+		mapFrg = (AdhocMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 		Log.e("MAP Frag", String.valueOf(mapFrg));
-		mapFrg.setLocaion(0,0);
+		
 		// for screen rotation
 		if(savedInstanceState != null) {
 			item = (Events)savedInstanceState.getSerializable("event");
@@ -90,6 +92,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		
 		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
 		tvLoad = (TextView) findViewById(R.id.tvLoad);
+		llProgress = (LinearLayout) findViewById(R.id.llProgress);
 		
 		btnAction = (Button) findViewById(R.id.button1);
 		
@@ -278,7 +281,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 				tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
 				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
 				tvDesc.setText(item.getDesc());
-				tvLoc.setText("TESTING");
+				tvLoc.setText("TESTING LOC");
+				
+				mapFrg.setLocaion(item.getLocLat(),item.getLocLong());
 				
 				gotDetails = true;
 				hideProgressBar();
@@ -383,6 +388,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		if(gotAtt && gotState && gotDetails) {
 			pbProgress.setVisibility(View.INVISIBLE);
 			tvLoad.setVisibility(View.INVISIBLE);
+			llProgress.setVisibility(View.INVISIBLE);
 		}
 	}
 }

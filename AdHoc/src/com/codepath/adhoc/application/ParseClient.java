@@ -33,7 +33,7 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
-		query.orderByDescending(AdHocUtils.eventTime);
+		query.orderByAscending(AdHocUtils.eventTime);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
 	}
@@ -46,7 +46,7 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
-		query.orderByDescending(AdHocUtils.eventTime);
+		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
 	}
 	
@@ -58,7 +58,7 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
-		query.orderByDescending(AdHocUtils.eventTime);
+		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
 	}
 	

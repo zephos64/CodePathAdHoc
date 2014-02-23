@@ -3,8 +3,8 @@ package com.codepath.adhoc.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,10 +12,9 @@ import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.AllEventsFragment;
-import com.codepath.adhoc.fragments.CreateEventDataFragment;
-import com.codepath.adhoc.fragments.CreateEventMapFragment;
+import com.codepath.adhoc.fragments.AttendingEvents;
+import com.codepath.adhoc.fragments.CreatedEvents;
 import com.codepath.adhoc.fragments.EventListFragment;
-import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 public class EventListActivity extends ActionBarActivity {
@@ -83,9 +82,9 @@ public class EventListActivity extends ActionBarActivity {
 				.setText("Joined")
 				.setTag("Joined")
 				.setTabListener(
-						new SupportFragmentTabListener<EventListFragment>(
+						new SupportFragmentTabListener<AttendingEvents>(
 								R.id.flEventList, this, "Joined",
-								EventListFragment.class));
+								AttendingEvents.class));
 		actionBar.addTab(tab2);
 		
 		Tab tab3 = actionBar
@@ -93,9 +92,9 @@ public class EventListActivity extends ActionBarActivity {
 				.setText("Hosted")
 				.setTag("Hosted")
 				.setTabListener(
-						new SupportFragmentTabListener<EventListFragment>(
+						new SupportFragmentTabListener<CreatedEvents>(
 								R.id.flEventList, this, "Hosted",
-								EventListFragment.class));
+								CreatedEvents.class));
 		actionBar.addTab(tab3);
 	}
 }
