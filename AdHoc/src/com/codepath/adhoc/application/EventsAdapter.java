@@ -40,6 +40,20 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		
 		Events events = mEvents.get(position);
 		
+		Geocoder gc;
+		List<Address> addresses;
+		gc = new Geocoder(mContext, Locale.getDefault());
+		try {
+			addresses = gc.getFromLocation(events.getLocLat(), events.getLocLong(), 1);
+			if (addresses != null && addresses.size() > 0)
+				Log.d("DBG", "Address: " + addresses.get(position).getAddressLine(1) + " " + addresses.get(position).getAddressLine(2));
+			else
+				Toast.makeText(mContext, "Nothing returned", Toast.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		TextView tvLoginTitle = (TextView) convertView.findViewById(R.id.tvLoginTitle);
 		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
 		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
@@ -48,7 +62,7 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		tvLoginTitle.setText(events.getEventName());
 		tvDistance.setText("Lat: " + events.getLocLat() + ", Long: " + events.getLocLong());
 		tvRemainingSpots.setText("Max attendees: " + events.getMaxAttendees());
-		tvTime.setText("Event time: " + events.getEventTime());
+		tvTime.setText("Event time: " + AdHocUtils.getTime(events.getEventTime()));
 		
 		return convertView;
 	}
