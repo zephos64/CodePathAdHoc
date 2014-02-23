@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.application.ParseClient;
+import com.codepath.adhoc.fragments.AdhocMapFragment;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
 import com.parse.FindCallback;
@@ -34,7 +35,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	
 	Events item;
 	String itemId;
-	
+	private AdhocMapFragment mapFrg = null;
 	private boolean isHost = false;
 	private boolean hasJoined = false;
 	
@@ -46,6 +47,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		mapFrg = (AdhocMapFragment) getFragmentManager().findFragmentById(R.id.map);
+		Log.e("MAP Frag", String.valueOf(mapFrg));
+		mapFrg.setLocaion(0,0);
 		// for screen rotation
 		if(savedInstanceState != null) {
 			item = (Events)savedInstanceState.getSerializable("event");

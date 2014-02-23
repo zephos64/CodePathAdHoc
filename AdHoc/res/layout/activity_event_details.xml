@@ -9,40 +9,13 @@
     tools:context=".EventDetailsActivity" >
 
     <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
-
     </FrameLayout>
-
-    <Button
-        android:id="@+id/button1"
-        android:onClick="onAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Button" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_toLeftOf="@+id/button1"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView4"
@@ -52,15 +25,6 @@
         android:layout_alignParentRight="true"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginLeft="16dp"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/textView6"
@@ -83,9 +47,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
-        android:layout_toRightOf="@+id/textView5"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/textView5"
         android:text=" to "
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -96,6 +60,61 @@
         android:layout_alignBaseline="@+id/textView7"
         android:layout_alignBottom="@+id/textView7"
         android:layout_toRightOf="@+id/textView7"
+        android:text="TextView" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView3"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_marginBottom="58dp" >
+    </FrameLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.codepath.adhoc.fragments.AdhocMapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/frameLayout1"
+        android:layout_below="@+id/frameLayout2"
+        android:layout_toRightOf="@+id/frameLayout1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_marginBottom="108dp"
+        android:layout_toLeftOf="@+id/button1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView4"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp"
+        android:onClick="onAction"
+        android:text="Button" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView7"
+        android:layout_alignLeft="@+id/textView7"
+        android:layout_marginBottom="17dp"
         android:text="TextView" />
 
 </RelativeLayout>

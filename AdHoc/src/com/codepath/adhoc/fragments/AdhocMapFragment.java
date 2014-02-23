@@ -1,23 +1,19 @@
-package com.codepath.adhoc.activities;
+package com.codepath.adhoc.fragments;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
-import com.codepath.adhoc.models.LocationData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,17 +24,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.ParseUser;
 
-public class LocationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
-																   GooglePlayServicesClient.OnConnectionFailedListener,
-																   LocationListener, 
-																   OnMarkerDragListener{
+public class AdhocMapFragment extends MapFragment implements GooglePlayServicesClient.ConnectionCallbacks,
+												  GooglePlayServicesClient.OnConnectionFailedListener,
+												  LocationListener, 
+												  OnMarkerDragListener{
+
+	public class MapMode {
+		   public static final int EVENT_DISPLAY   = 1;
+		   public static final int EVENT_SELECTION = 2;
+	};
+	private int mapMode    = MapMode.EVENT_DISPLAY;
 	private GoogleMap 			map;
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
@@ -51,73 +51,55 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-    
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		AdHocUtils.forceShowActionBar(this);
-		
-		setContentView(R.layout.activity_location);
-		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+    @Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
 		if(resp == ConnectionResult.SUCCESS){
-			locationclient = new LocationClient(this,this, this);
+			locationclient = new LocationClient(getActivity(),this, this);
 			locationclient.connect();
-			Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
-			Toast.makeText(this, "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
 		}				
-		 mLocationRequest = LocationRequest.create();
-	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	     mLocationRequest.setInterval(UPDATE_INTERVAL);
-	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+		mLocationRequest = LocationRequest.create();
+	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	    mLocationRequest.setInterval(UPDATE_INTERVAL);
+	    mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+		return;
+	}
+
+
+	@Override
+	public void onMarkerDrag(Marker arg0) {
 	}
 
 	@Override
-	public void onMarkerDrag(Marker marker) {
-		LatLng pos = marker.getPosition();
-    	setAddressOnMarker(myPosMarker,pos.latitude, pos.longitude);
-    }
-
-	@Override
-	public void onMarkerDragEnd(Marker marker) {
+	public void onMarkerDragEnd(Marker arg0) {
 		// TODO Auto-generated method stub
-		String [] address = null;
-		LatLng pos = marker.getPosition();
-		address = getAddressFromGeoCode(pos.latitude, pos.longitude);
-		LocationData lcn = new LocationData(pos.latitude, pos.longitude);
-		lcn.setAddress(address);
-		Intent data = new Intent();
-		data.putExtra("Location", lcn);
-		setResult(RESULT_OK, data); // set result code and bundle data for response
-		finish();				
+		
 	}
 
 	@Override
-	public void onMarkerDragStart(Marker marker) {
+	public void onMarkerDragStart(Marker arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
+		if (this.mapMode ==  MapMode.EVENT_SELECTION) {
+			currentLat = location.getLatitude();
+			currentLng = location.getLongitude();
+		}
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
+
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
-//			SupportMapFragment fragment;
 			map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-//			fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//			Log.e("## Fragment", String.valueOf(fragment));
-//			if (fragment != null ) {
-//				map = fragment.getMap();
-//			}
-//
-//			 map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-//				        .getMap();
 			if (map != null) 
 			{
 			    	map.setOnMarkerDragListener(this);
@@ -142,13 +124,13 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			marker.setTitle(address[0]);
 		}
 		marker.showInfoWindow();
-	}
+	}	
 	// Method to translate geo coded location to human readable address
 	private  String[] getAddressFromGeoCode(double latitude, double longitude) {
 		Geocoder geocoder;
 		List<Address> addresses;
 		String [] textAddresses = null;
-		geocoder = new Geocoder(this, Locale.getDefault());
+		geocoder = new Geocoder(getActivity(), Locale.getDefault());
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
 			textAddresses = new String[3];
@@ -163,8 +145,11 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 		return textAddresses;
 	}
+	
 	@Override
-	public void onConnectionFailed(ConnectionResult result) {
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -173,43 +158,17 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 				(com.google.android.gms.location.LocationListener) this);
 	}
 
+	
 	@Override
 	public void onDisconnected() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setLocaion(double lattitude, double longitude) {
+		this.mapMode =  MapMode.EVENT_DISPLAY; 
+		currentLat = lattitude;
+		currentLng = longitude;
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.location, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			onBackPressed();
-			break;
-		case R.id.action_create_event:
-			Intent iCreate = new Intent(this, CreateEventActivity.class);
-			startActivity(iCreate);
-			break;
-		case R.id.action_list_events:
-			Intent iList = new Intent(this, EventListActivity.class);
-			startActivity(iList);
-			break;
-		case R.id.action_logout:
-			ParseUser.logOut();
-			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
-			Intent intLogOut = new Intent(this, MainActivity.class);
-			startActivity(intLogOut);
-			break;
-		default:
-			break;
-		}
-
-		return true;
 	}
 }
