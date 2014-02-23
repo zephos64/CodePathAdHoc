@@ -8,9 +8,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.codepath.adhoc.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -37,7 +36,8 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		   public static final int EVENT_DISPLAY   = 1;
 		   public static final int EVENT_SELECTION = 2;
 	};
-	private int mapMode    = MapMode.EVENT_DISPLAY;
+	public int mapMode    = MapMode.EVENT_DISPLAY;
+	private boolean             locationSet  = false;
 	private GoogleMap 			map;
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
@@ -58,10 +58,9 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(getActivity(),this, this);
 			locationclient.connect();
-			//Toast.makeText(getActivity(), "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
-			//Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
 		}				
 		mLocationRequest = LocationRequest.create();
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -93,27 +92,46 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 			currentLat = location.getLatitude();
 			currentLng = location.getLongitude();
 		}
-		currentLat = location.getLatitude();
-		currentLng = location.getLongitude();
+		else if (locationSet == false) {
+			return;
+		}
+//		Log.e("Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
+//				"  Map " + String.valueOf(map));
+//		currentLat = location.getLatitude();
+//		currentLng = location.getLongitude();
 
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+			Log.e("@@@@ Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
+					"  Map " + String.valueOf(map));
 			if (map != null) 
 			{
-			    	map.setOnMarkerDragListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			    	myPosMarker.setDraggable(true);
+					if (this.mapMode ==  MapMode.EVENT_SELECTION) {
+						map.setOnMarkerDragListener(this);
+				    	myPosMarker.setDraggable(true);
+				    	Log.e ("Draggable Marker", "True");
+					}
+					else {
+						myPosMarker.setDraggable(false);
+						Log.e ("Draggable Marker", "False");
+					}
 			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
-			    	myPosMarker.showInfoWindow();
+			    	myPosMarker.showInfoWindow();	
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 			}
-		}
+		}	
 		else{
 			myPosMarker.setPosition(myPos);
+			myPosMarker.showInfoWindow();
 		}
+//		if (this.mapMode !=  MapMode.EVENT_SELECTION) {
+//			locationclient.removeLocationUpdates(this);
+//		}
+
 	}
 
 	private void setAddressOnMarker(Marker marker, double latitude, double longitude) {
@@ -132,14 +150,23 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		geocoder = new Geocoder(getActivity(), Locale.getDefault());
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-			textAddresses = new String[3];
-			textAddresses[0] = addresses.get(0).getAddressLine(0);
-			textAddresses[1]= addresses.get(0).getAddressLine(1);
-			textAddresses[2]= addresses.get(0).getAddressLine(2);
+			if ((addresses != null) && (addresses.size() > 0)){
+				textAddresses = new String[3];
+				textAddresses[0] = addresses.get(0).getAddressLine(0);
+				textAddresses[1]= addresses.get(0).getAddressLine(1);
+				textAddresses[2]= addresses.get(0).getAddressLine(2);
+			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e) {
+			Log.e("INVALID Location" , "Latitude : " + String.valueOf(latitude)
+									  + " Longitude : " + String.valueOf(longitude)
+									  + "Lat Range = -90 , 90  Lng Range = -180, 180");
+			e.printStackTrace();
+			
 		}
 
 		return textAddresses;
@@ -153,6 +180,7 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 
 	@Override
 	public void onConnected(Bundle connectionHint) {
+		Log.e("ON Connected" , String.valueOf(this.mapMode));
         locationclient.requestLocationUpdates(mLocationRequest, 
 				(com.google.android.gms.location.LocationListener) this);
 	}
@@ -166,8 +194,10 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 
 	public void setLocaion(double lattitude, double longitude) {
 		this.mapMode =  MapMode.EVENT_DISPLAY; 
+		Log.e("MAP MODE SET", "Called");
 		currentLat = lattitude;
 		currentLng = longitude;
-	
+		locationSet  = true;
+		//		locationclient.removeLocationUpdates(this);
 	}
 }

@@ -44,6 +44,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private Marker 				myPosMarker;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
+    private boolean             mapUpdateRcvd = false;
     private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
@@ -84,8 +85,12 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
 	public void onMarkerDragEnd(Marker marker) {
 		// TODO Auto-generated method stub
-		String [] address = null;
 		LatLng pos = marker.getPosition();
+		sendDetailsBack(pos);
+	}
+	
+	public void sendDetailsBack(LatLng pos) {
+		String [] address = null;
 		address = getAddressFromGeoCode(pos.latitude, pos.longitude);
 		LocationData lcn = new LocationData(pos.latitude, pos.longitude);
 		lcn.setAddress(address);
@@ -105,6 +110,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	public void onLocationChanged(Location location) {
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
+		mapUpdateRcvd = true;
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 //			SupportMapFragment fragment;
@@ -166,7 +172,13 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
 	}
-
+	@Override
+    protected void onPause() {
+        super.onPause();
+        if (this.mapUpdateRcvd == true) {
+        	sendDetailsBack(myPos);
+        }
+    }
 	@Override
 	public void onConnected(Bundle connectionHint) {
         locationclient.requestLocationUpdates(mLocationRequest, 

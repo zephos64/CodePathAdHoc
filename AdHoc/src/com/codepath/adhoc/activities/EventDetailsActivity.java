@@ -68,6 +68,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 		// for screen rotation
 		if(savedInstanceState != null) {
 			item = (Events)savedInstanceState.getSerializable("event");
+			double longitude  = item.getLocLong();
+			double latitude  = item.getLocLat();
+			mapFrg.setLocaion(latitude, longitude);
 		} else {
 			Intent prevIntent = getIntent();
 			itemId = prevIntent.getStringExtra(AdHocUtils.intentDetailsId);

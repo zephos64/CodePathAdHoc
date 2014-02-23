@@ -196,8 +196,8 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				tempEndTime.getTime().toString(),
 				etDescription.getText().toString(),
 				ParseUser.getCurrentUser(),
-				lcn.getLattitude(),
-				lcn.getLongitude());
+				lcn.getLongitude(),
+				lcn.getLattitude());
 		return newEvent;
 	}
 	
@@ -297,6 +297,7 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 		if (view.getId() == R.id.etLocation){
 			if (focusOn) {
 				Intent i = new Intent(getActivity(), LocationActivity.class);
+				Log.e("INTENT MAP", "Already Started");
 				startActivityForResult(i, LOCATION_ACTIVITY);
 			}	
 		}
