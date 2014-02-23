@@ -1,16 +1,21 @@
 package com.codepath.adhoc.application;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
