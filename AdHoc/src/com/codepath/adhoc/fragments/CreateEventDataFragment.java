@@ -208,6 +208,7 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					Calendar cal = Calendar.getInstance();
 					if(etField.getId() == R.id.etEndTime &&
+							etEndTime.getText().toString().isEmpty() &&
 							!etStartTime.getText().toString().isEmpty()) {
 						// if have start time and choosing end
 						// have time be no less than start time
@@ -229,7 +230,8 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 					// if selecting end hour, add 1 hour
 					//  user can go less, but this assumes 
 					//  default length of event is 1 hour
-					if(etField.getId() == R.id.etEndTime) {
+					if(etField.getId() == R.id.etEndTime &&
+							etEndTime.getText().toString().isEmpty()) {
 						hour += 1;
 					}
 					
@@ -265,6 +267,8 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				.setPositiveButton(android.R.string.ok, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						hour = mTimePicker.getCurrentHour();
+						min = mTimePicker.getCurrentMinute();
 						Log.d("DEBUG", "New time is " + hour + ":" + min);
 						Calendar cal = Calendar.getInstance();
 						cal.set(Calendar.HOUR_OF_DAY, hour);
