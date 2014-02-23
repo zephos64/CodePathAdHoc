@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.codepath.adhoc.AdHocUtils;
@@ -23,6 +25,10 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+/**
+ * runOnUiThread exist because data retrieved async
+ *  but must run on UI thread to change views
+ */
 public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvTitle;
 	TextView tvTime;
@@ -33,11 +39,18 @@ public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvStatus;
 	Button btnAction;
 	
+	TextView tvLoad;
+	ProgressBar pbProgress;
+	
 	Events item;
 	String itemId;
 	private AdhocMapFragment mapFrg = null;
 	private boolean isHost = false;
 	private boolean hasJoined = false;
+	
+	private boolean gotDetails = false;
+	private boolean gotAtt = false;
+	private boolean gotState = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +88,16 @@ public class EventDetailsActivity extends ActionBarActivity {
 		tvDesc = (TextView) findViewById(R.id.textView2);
 		tvStatus = (TextView) findViewById(R.id.textView1);
 		
+		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
+		tvLoad = (TextView) findViewById(R.id.tvLoad);
+		
 		btnAction = (Button) findViewById(R.id.button1);
 		
 		// for screen rotation
 		if(item == null) {
 			getItem(itemId);
 		} else {
-			populateDetails();
+			populateItems();
 		}
 			
 		
@@ -132,80 +148,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 		        if (e == null) {
 		            // Access the array of results here
 		            item = itemList.get(0);
-		            populateDetails();
+		            populateItems();
 		        } else {
 		            Log.d("item", "Error in populating details : " + e.getMessage());
 		        }
 		    }
 		});
-	}
-	
-	public void populateDetails() {
-
-		tvTitle.setText(item.getEventName());
-		tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
-		tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
-		tvDesc.setText(item.getDesc());
-
-		ParseClient.getHostUser(item, new FindCallback<User>() {
-			@Override
-			public void done(List<User> listUsersJoined, ParseException e) {
-				if (e == null) {
-					if (listUsersJoined.size() > 0
-							&& listUsersJoined
-									.get(0)
-									.getObjectId()
-									.equals(ParseUser.getCurrentUser()
-											.getObjectId())) {
-						tvStatus.setText("HOST");
-						btnAction.setText("CANCEL");
-						isHost = true;
-					} else {
-						ParseClient.getJoinedUsers(item,
-								new FindCallback<User>() {
-									@Override
-									public void done(
-											List<User> listUsersJoined,
-											ParseException e) {
-										if (e == null) {
-											if (listUsersJoined
-													.contains(ParseUser
-															.getCurrentUser())) {
-												joinEvent();
-											} else {
-												leaveEvent();
-											}
-										} else {
-											Log.e("ERROR",
-													"Error getting userId for event details");
-											e.printStackTrace();
-										}
-									}
-								});
-					}
-				} else {
-					Log.e("ERROR", "Error getting userId for event details");
-					e.printStackTrace();
-				}
-			}
-		});
-
-		tvLoc.setText("TESTING");
-
-		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
-			@Override
-			public void done(List<User> listUsersJoined, ParseException e) {
-				if (e == null) {
-					tvAttendance.setText(listUsersJoined.size() + " / "
-							+ item.getMaxAttendees());
-				} else {
-					Log.e("ERROR",
-							"Error getting joined users for event details");
-					e.printStackTrace();
-				}
-			}
-		});
-
 	}
 	
 	public void onAction(View v) {
@@ -289,5 +237,152 @@ public class EventDetailsActivity extends ActionBarActivity {
 		badEvent.setMessage(getString(R.string.errSaveEventMsg));
 		badEvent.setNegativeButton(getString(R.string.OK), null);
 		badEvent.show();
+	}
+	
+	private class AsyncPopulateDetails extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			populateDetails();
+			return null;
+		}
+	}
+	private class AsyncPopulateAttendance extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			populateAttendance();
+			return null;
+		}
+	}
+	private class AsyncPopulateState extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			populateUserState();
+			return null;
+		}
+	}
+	
+	private void populateItems() {
+		AsyncPopulateDetails apd = new AsyncPopulateDetails();
+		AsyncPopulateAttendance apa = new AsyncPopulateAttendance();
+		AsyncPopulateState aps = new AsyncPopulateState();
+		apd.execute();
+		apa.execute();
+		aps.execute();
+	}
+	
+	private void populateDetails() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				tvTitle.setText(item.getEventName());
+				tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
+				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
+				tvDesc.setText(item.getDesc());
+				tvLoc.setText("TESTING");
+				
+				gotDetails = true;
+				hideProgressBar();
+			}
+		});
+	}
+	
+	private void populateAttendance() {
+		ParseClient.getHostUser(item, new FindCallback<User>() {
+			@Override
+			public void done(List<User> listUsersJoined, ParseException e) {
+				if (e == null) {
+					if (listUsersJoined.size() > 0
+							&& listUsersJoined
+									.get(0)
+									.getObjectId()
+									.equals(ParseUser.getCurrentUser()
+											.getObjectId())) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								tvStatus.setText("HOST");
+								btnAction.setText("CANCEL");
+								isHost = true;
+								gotAtt = true;
+								hideProgressBar();
+							}
+						});
+						
+					} else {
+						ParseClient.getJoinedUsers(item,
+								new FindCallback<User>() {
+									@Override
+									public void done(
+											List<User> listUsersJoined,
+											ParseException e) {
+										if (e == null) {
+											if (listUsersJoined
+													.contains(ParseUser
+															.getCurrentUser())) {
+												
+												runOnUiThread(new Runnable() {
+													@Override
+													public void run() {
+														joinEvent();
+														gotAtt = true;
+														hideProgressBar();
+													}
+												});
+											} else {
+												runOnUiThread(new Runnable() {
+													@Override
+													public void run() {
+														leaveEvent();
+														gotAtt = true;
+														hideProgressBar();
+													}
+												});
+											}
+										} else {
+											Log.e("ERROR",
+													"Error getting userId for event details");
+											e.printStackTrace();
+										}
+									}
+								});
+					}
+				} else {
+					Log.e("ERROR", "Error getting userId for event details");
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+		
+	private void populateUserState() {
+		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
+			@Override
+			public void done(final List<User> listUsersJoined, ParseException e) {
+				if (e == null) {
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							tvAttendance.setText(listUsersJoined.size() + " / "
+									+ item.getMaxAttendees());
+							gotState = true;
+							hideProgressBar();
+						}
+					});
+					
+				} else {
+					Log.e("ERROR",
+							"Error getting joined users for event details");
+					e.printStackTrace();
+				}
+			}
+		});
+		
+	}
+	
+	private void hideProgressBar() {
+		if(gotAtt && gotState && gotDetails) {
+			pbProgress.setVisibility(View.INVISIBLE);
+			tvLoad.setVisibility(View.INVISIBLE);
+		}
 	}
 }
