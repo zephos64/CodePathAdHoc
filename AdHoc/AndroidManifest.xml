@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="10"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -79,7 +79,7 @@ to match your app's package name + ".permission.C2D_MESSAGE".
             android:value="@string/app_id" />
 		<meta-data
      		android:name="com.google.android.maps.v2.API_KEY"
-     		android:value="AIzaSyASn7zKQiYbGsxezFzGDCvEqh5TeO2R5YQ" />
+     		android:value="AIzaSyCcG3Q0t9o7zUV5Bj3QvUFPNTLM3Aj_huY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

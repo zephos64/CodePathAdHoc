@@ -13,7 +13,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -27,7 +26,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -65,10 +63,11 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(this,this, this);
 			locationclient.connect();
-			Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
-			Toast.makeText(this, "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
+			Log.e("ERROR", "Error with Google play services " + resp);
 		}				
 		 mLocationRequest = LocationRequest.create();
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -109,7 +108,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 //			SupportMapFragment fragment;
-			map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+			SupportMapFragment supportMap = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+			map = supportMap.getMap();
 //			fragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //			Log.e("## Fragment", String.valueOf(fragment));
 //			if (fragment != null ) {
