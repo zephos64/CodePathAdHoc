@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -46,6 +47,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
     private Marker 				myPosMarker;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
+    LocationData				prevLoc;
     private boolean             mapUpdateRcvd = false;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
     
@@ -54,7 +56,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		super.onCreate(savedInstanceState);
 		AdHocUtils.forceShowActionBar(this);
 		
-		setContentView(R.layout.activity_location);
+		setContentView(R.layout.activity_location_create);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -71,25 +73,45 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	     //mLocationRequest.setInterval(UPDATE_INTERVAL);
 	     //mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+	     
+	     Intent intent = getIntent();
+	     prevLoc = (LocationData) intent.getSerializableExtra("PrevLoc");
 	}
 
-	public void sendDetailsBack(LatLng pos) {
+    //public void sendDetailsBack(LatLng pos) {
+	public void onClickSave(View v) {
 		String [] address = null;
-		address = getAddressFromGeoCode(pos.latitude, pos.longitude);
-		LocationData lcn = new LocationData(pos.latitude, pos.longitude);
+		address = getAddressFromGeoCode(myPos.latitude, myPos.longitude);
+		LocationData lcn = new LocationData(myPos.latitude, myPos.longitude);
 		lcn.setAddress(address);
 		Intent data = new Intent();
 		data.putExtra("Location", lcn);
 		setResult(RESULT_OK, data); // set result code and bundle data for response
 		finish();				
 	}
+	
+	public void onClickCancel(View v) {
+		Intent data = new Intent();
+		//data.putExtra("Location", null);
+		setResult(RESULT_CANCELED, data);
+		finish();
+	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		currentLat = location.getLatitude();
-		currentLng = location.getLongitude();
-		mapUpdateRcvd = true;
+		if(prevLoc != null) {
+	    	 Log.d("DEBUG", "Previous locaiton not null, using that");
+	    	 currentLat = prevLoc.getLattitude();
+	    	 currentLng = prevLoc.getLongitude();
+	     } else {
+	    	 currentLat = location.getLatitude();
+	    	 currentLng = location.getLongitude();
+	     }
+		
 		myPos      = new LatLng(currentLat,currentLng);
+		mapUpdateRcvd = true;
+	     
+		
 		if (map == null) {
 			Log.d("DEBUG", "Map creation is null");
 
@@ -149,9 +171,9 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	@Override
     protected void onPause() {
         super.onPause();
-        if (this.mapUpdateRcvd == true) {
+        /*if (this.mapUpdateRcvd == true) {
         	sendDetailsBack(myPos);
-        }
+        }*/
     }
 	@Override
 	public void onConnected(Bundle connectionHint) {
@@ -221,13 +243,18 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		setAddressOnMarker(myPosMarker, latLng.latitude, latLng.longitude);
 		//this.myPos = latLng;
 		//sendDetailsBack(latLng);
+		
+		Log.d("DEBUG", "Map clicked at lat["+latLng.latitude+
+				"], long["+latLng.longitude+"]");
+		myPos = latLng;
 	}
 
 	@Override
 	public boolean onMarkerClick(Marker marker) {
-		// TODO Auto-generated method stub
+		Log.d("DEBUG", "Marker clicked at lat["+marker.getPosition().latitude+
+				"], long["+marker.getPosition().longitude+"]");
 		myPos = marker.getPosition();
-		sendDetailsBack(myPos);
+		//sendDetailsBack(myPos);
 		return true;
 	}
 }

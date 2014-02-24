@@ -29,7 +29,7 @@ import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
 
-public class CreateEventDataFragment extends CreateEventFragment implements OnFocusChangeListener{
+public class CreateEventDataFragment extends CreateEventFragment {
 	CustomEventSpinner spListEvents;
 	EditText etStartTime;
 	EditText etEndTime;
@@ -39,6 +39,8 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 	
 	int hour = 0;
 	int min = 0;
+	
+	boolean clickedLocBtn = false;
 	
 	static final int LOCATION_ACTIVITY = 100;
 	LocationData lcn;
@@ -60,7 +62,9 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 		setTimeListeners(etStartTime, getString(R.string.dialogStartTime), true);
 		setTimeListeners(etEndTime, getString(R.string.dialogEndTime), false);
 		etLocation = (EditText) view.findViewById(R.id.etLocation);
-		etLocation.setOnFocusChangeListener(this);	
+//		etLocation.setOnFocusChangeListener(this);	
+		
+		locationTouchListener();
 		
 		return view;
 	}
@@ -297,7 +301,7 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				.show();
 	}
 
-	@Override
+	/*@Override
 	public void onFocusChange(View view, boolean focusOn) {
 		if (view.getId() == R.id.etLocation){
 			if (focusOn) {
@@ -306,15 +310,37 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 				startActivityForResult(i, LOCATION_ACTIVITY);
 			}	
 		}
+	}*/
+	
+	public void locationTouchListener() {
+		etLocation.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(!clickedLocBtn) {
+					clickedLocBtn = true;
+					Intent i = new Intent(getActivity(), LocationCreationActivity.class);
+					i.putExtra("PrevLoc", lcn);
+					Log.e("INTENT MAP", "Already Started");
+					startActivityForResult(i, LOCATION_ACTIVITY);
+				}
+				return false;
+			}
+		});
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  // REQUEST_CODE is defined above
 	  if (resultCode == getActivity().RESULT_OK && requestCode == LOCATION_ACTIVITY) {
-	     // Extract name value from result extras
-	     lcn = (LocationData) data.getSerializableExtra("Location");
-	     etLocation.setText(lcn.getAddress()[0]);
+		  // Extract name value from result extras
+		  LocationData returnedLoc = (LocationData) data.getSerializableExtra("Location"); 
+		  if(returnedLoc != null) {
+			  lcn =returnedLoc;
+			  etLocation.setText(lcn.getAddress()[0]);
+		  }
+	  }
+	  if(requestCode == LOCATION_ACTIVITY) {
+		  clickedLocBtn = false;
 	  }
 	}		
 }
