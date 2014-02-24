@@ -1,7 +1,6 @@
 package com.codepath.adhoc.activities;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,9 +16,7 @@ import android.view.MenuItem;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
-import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.models.LocationData;
-import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,18 +25,15 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class LocationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
+public class LocationCreationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
 																   GooglePlayServicesClient.OnConnectionFailedListener,
 																   LocationListener, 
 																   OnMarkerDragListener{
@@ -48,7 +42,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private double 				currentLat = 0;
     private double 				currentLng = 0;
     private Marker 				myPosMarker;
-    private List<Marker>		eventsMarkers;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
     private boolean             mapUpdateRcvd = false;
@@ -85,47 +78,61 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 	@Override
 	public void onMarkerDrag(Marker marker) {
+		LatLng pos = marker.getPosition();
+    	setAddressOnMarker(myPosMarker,pos.latitude, pos.longitude);
     }
 
 	@Override
 	public void onMarkerDragEnd(Marker marker) {
 		// TODO Auto-generated method stub
+		LatLng pos = marker.getPosition();
+		sendDetailsBack(pos);
+	}
+	
+	public void sendDetailsBack(LatLng pos) {
+		String [] address = null;
+		address = getAddressFromGeoCode(pos.latitude, pos.longitude);
+		LocationData lcn = new LocationData(pos.latitude, pos.longitude);
+		lcn.setAddress(address);
+		Intent data = new Intent();
+		data.putExtra("Location", lcn);
+		setResult(RESULT_OK, data); // set result code and bundle data for response
+		finish();				
 	}
 
 	@Override
 	public void onMarkerDragStart(Marker marker) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
 		mapUpdateRcvd = true;
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
-			Log.d("DEBUG", "Map is null");
+			Log.d("DEBUG", "Map creation is null");
 
 			SupportMapFragment supportMap = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
 			map = supportMap.getMap();
 
 			if (map != null) {
 					setMarkerCurrentUserLocation();
-					addListOfEvents();
-			    	/*map.setOnMarkerDragListener(this);
+			    	map.setOnMarkerDragListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			    	myPosMarker.setDraggable(false);
+			    	myPosMarker.setDraggable(true);
 			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
 			    	myPosMarker.showInfoWindow();
-			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));*/
+			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 			}
 		}
-		else{
-			Log.d("DEBUG", "Map is not null");
-//			myPosMarker.setPosition(myPos);
+		else {
+			Log.d("DEBUG", "Map creation is not null");
+			myPosMarker.setPosition(myPos);
 		}
 	}
 
@@ -145,17 +152,10 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		geocoder = new Geocoder(this, Locale.getDefault());
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-			Log.d("DEBUG", "With geopoints (lat["+latitude+"],long["+longitude+
-					"]) found this many locations: " + addresses.size());
-			if(addresses.size() > 0) {
-				textAddresses = new String[3];
-				textAddresses[0] = addresses.get(0).getAddressLine(0);
-				textAddresses[1]= addresses.get(0).getAddressLine(1);
-				textAddresses[2]= addresses.get(0).getAddressLine(2);
-			} else {
-				textAddresses = new String[3];
-				textAddresses[0]="";
-			}
+			textAddresses = new String[3];
+			textAddresses[0] = addresses.get(0).getAddressLine(0);
+			textAddresses[1]= addresses.get(0).getAddressLine(1);
+			textAddresses[2]= addresses.get(0).getAddressLine(2);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -170,17 +170,18 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
     protected void onPause() {
         super.onPause();
+        if (this.mapUpdateRcvd == true) {
+        	sendDetailsBack(myPos);
+        }
     }
-	
 	@Override
 	public void onConnected(Bundle connectionHint) {
-        locationclient.requestLocationUpdates(mLocationRequest,
+        locationclient.requestLocationUpdates(mLocationRequest, 
 				(com.google.android.gms.location.LocationListener) this);
 	}
 
 	@Override
 	public void onDisconnected() {
-		Log.d("DEBUG", "Map disconnected");
 		// TODO Auto-generated method stub
 		
 	}
@@ -226,36 +227,12 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
         mCurrentLocation = locationclient.getLastLocation();
         userLoc = new LatLng(mCurrentLocation.getLatitude(),
         		mCurrentLocation.getLongitude());
-		
+        
         Log.d("DEBUG", "Current user location is: lat["+
-        myPos.latitude + "] long is [" + myPos.longitude+"]");
+        mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
         
         Marker usermarker = map.addMarker(new MarkerOptions()
         .position(userLoc)
         .draggable(false));
-	}
-	
-	public void addListOfEvents() {
-		map.setOnMarkerDragListener(this);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
-		eventsMarkers = new ArrayList<Marker>();
-		ParseClient.getParseAllEvents(new FindCallback<Events>() {
-			@Override
-			public void done(List<Events> listEvents, ParseException arg1) {
-				for(int a = 0; a < listEvents.size(); a++) {
-					Log.d("DEBUG", "Creating marker ["+a+"] at loc: lat["+
-							listEvents.get(a).getLocLat()+"] and long[" +
-							listEvents.get(a).getLocLong()+"]");
-					
-					eventsMarkers.add(map.addMarker(new MarkerOptions()
-						.position(myPos)
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
-					eventsMarkers.get(a).setDraggable(false);
-					eventsMarkers.get(a).setPosition(new LatLng(listEvents.get(a).getLocLat(),
-							listEvents.get(a).getLocLong()));
-					eventsMarkers.get(a).showInfoWindow();
-				}
-			}
-		});
 	}
 }

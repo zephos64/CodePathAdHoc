@@ -72,6 +72,10 @@ to match your app's package name + ".permission.C2D_MESSAGE".
             android:name="com.codepath.adhoc.activities.LocationActivity"
             android:label="@string/title_activity_location" >
         </activity>
+        <activity
+            android:name="com.codepath.adhoc.activities.LocationCreationActivity"
+            android:label="@string/title_activity_location" >
+        </activity>
 
         <!-- Facebook information -->
         <meta-data

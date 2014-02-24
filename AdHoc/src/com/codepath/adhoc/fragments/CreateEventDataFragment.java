@@ -24,7 +24,7 @@ import android.widget.TimePicker;
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.CustomEventSpinner;
 import com.codepath.adhoc.R;
-import com.codepath.adhoc.activities.LocationActivity;
+import com.codepath.adhoc.activities.LocationCreationActivity;
 import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.parse.ParseUser;
@@ -301,7 +301,7 @@ public class CreateEventDataFragment extends CreateEventFragment implements OnFo
 	public void onFocusChange(View view, boolean focusOn) {
 		if (view.getId() == R.id.etLocation){
 			if (focusOn) {
-				Intent i = new Intent(getActivity(), LocationActivity.class);
+				Intent i = new Intent(getActivity(), LocationCreationActivity.class);
 				Log.e("INTENT MAP", "Already Started");
 				startActivityForResult(i, LOCATION_ACTIVITY);
 			}	

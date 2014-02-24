@@ -7,12 +7,12 @@ import java.util.Locale;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.models.LocationData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -23,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -43,6 +44,8 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
     private double 				currentLng = 0;
+    private double 				currentUserLat = 0;
+    private double 				currentUserLng = 0;
     private Marker 				myPosMarker;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
@@ -53,10 +56,17 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
     @Override
+    public void onCreate(Bundle savedInstancseState) {
+    	super.onCreate(savedInstancseState);    	
+    	
+    }
+    
+    @Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
 		if(resp == ConnectionResult.SUCCESS){
+			Log.d("DEBUG", "Succesfully connected client in map details");
 			locationclient = new LocationClient(getActivity(),this, this);
 			locationclient.connect();
 		}
@@ -65,10 +75,9 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		}				
 		mLocationRequest = LocationRequest.create();
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	    mLocationRequest.setInterval(UPDATE_INTERVAL);
-	    mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
-		return;
-	}
+	    //mLocationRequest.setInterval(UPDATE_INTERVAL);
+	    //mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+    }
 
 
 	@Override
@@ -89,6 +98,8 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 
 	@Override
 	public void onLocationChanged(Location location) {
+		Log.d("DEBUG", "Map details onLocationChanged called");
+		
 		if (this.mapMode ==  MapMode.EVENT_SELECTION) {
 			currentLat = location.getLatitude();
 			currentLng = location.getLongitude();
@@ -98,35 +109,39 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		}
 //		Log.e("Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
 //				"  Map " + String.valueOf(map));
-//		currentLat = location.getLatitude();
-//		currentLng = location.getLongitude();
 
-		myPos      = new LatLng(currentLat,currentLng);
+		myPos = new LatLng(currentLat,currentLng);
 		if (map == null) {
+			Log.d("DEBUG", "Map details is null");
+			
 			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-			Log.e("@@@@ Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
-					"  Map " + String.valueOf(map));
-			if (map != null) 
-			{
-					setMarkerCurrentUserLocation();
-			    	myPosMarker = map.addMarker(new MarkerOptions()
-			    									.position(myPos)
-			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-					if (this.mapMode ==  MapMode.EVENT_SELECTION) {
-						map.setOnMarkerDragListener(this);
-				    	myPosMarker.setDraggable(true);
-				    	Log.e ("Draggable Marker", "True");
-					}
-					else {
-						myPosMarker.setDraggable(false);
-						Log.e ("Draggable Marker", "False");
-					}
-			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
-			    	myPosMarker.showInfoWindow();	
-			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
+			//Log.e("@@@@ Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
+			//		"  Map " + String.valueOf(map));
+			if (map != null) {
+				setMarkerCurrentUserLocation(location);
+				
+				// Disable map controls
+				UiSettings mapUi = map.getUiSettings();
+				mapUi.setAllGesturesEnabled(false);
+				mapUi.setZoomControlsEnabled(false);
+				
+				myPosMarker = map.addMarker(new MarkerOptions().position(myPos)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.ic_map_marker)));
+				if (this.mapMode == MapMode.EVENT_SELECTION) {
+					map.setOnMarkerDragListener(this);
+					myPosMarker.setDraggable(true);
+					Log.e("Draggable Marker", "True");
+				} else {
+					myPosMarker.setDraggable(false);
+					Log.e("Draggable Marker", "False");
+				}
+				setAddressOnMarker(myPosMarker, currentLat, currentLng);
+				myPosMarker.showInfoWindow();
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 			}
-		}	
-		else{
+		} else {
+			Log.d("DEBUG", "Map details is not null");
 			myPosMarker.setPosition(myPos);
 			myPosMarker.showInfoWindow();
 		}
@@ -190,6 +205,7 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 	
 	@Override
 	public void onDisconnected() {
+		Log.d("DEBUG", "Map detail disconnected");
 		// TODO Auto-generated method stub
 		
 	}
@@ -200,14 +216,22 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		currentLat = lattitude;
 		currentLng = longitude;
 		locationSet  = true;
+		Location eventLoc = new Location("asdf");
+		eventLoc.setLatitude(currentLat);
+		eventLoc.setLongitude(currentLng);
+		onLocationChanged(eventLoc);
 		//		locationclient.removeLocationUpdates(this);
 	}
 	
-	public void setMarkerCurrentUserLocation() {
+	public void setMarkerCurrentUserLocation(Location loc) {
 		Location mCurrentLocation;
 		LatLng userLoc;
 		
         mCurrentLocation = locationclient.getLastLocation();
+        if(mCurrentLocation == null) {
+        	Log.e("ERROR", "Current location is null");
+        	return;
+        }
         userLoc = new LatLng(mCurrentLocation.getLatitude(),
         		mCurrentLocation.getLongitude());
         

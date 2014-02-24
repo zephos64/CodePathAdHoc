@@ -284,7 +284,11 @@ public class EventDetailsActivity extends ActionBarActivity {
 				tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
 				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
 				tvDesc.setText(item.getDesc());
-				tvLoc.setText("TESTING LOC");
+				if(item.getAddress() != null) {
+					tvLoc.setText(item.getAddress());
+				} else {
+					tvLoc.setText("");
+				}
 				
 				mapFrg.setLocaion(item.getLocLat(),item.getLocLong());
 				
