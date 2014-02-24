@@ -27,7 +27,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,7 +37,8 @@ import com.parse.ParseUser;
 public class LocationCreationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
 																   GooglePlayServicesClient.OnConnectionFailedListener,
 																   LocationListener, 
-																   OnMapClickListener{
+																   OnMapClickListener,
+																   OnMarkerClickListener{
 	private GoogleMap 			map;
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
@@ -47,14 +47,9 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
     private boolean             mapUpdateRcvd = false;
-    private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
-    private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
-    private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
-    private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
     
-
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AdHocUtils.forceShowActionBar(this);
@@ -104,6 +99,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 			if (map != null) {
 					setMarkerCurrentUserLocation();
 			    	map.setOnMapClickListener(this);
+			    	map.setOnMarkerClickListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
@@ -192,7 +188,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 			break;
 		case R.id.action_logout:
 			ParseUser.logOut();
-			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+			ParseUser.getCurrentUser();
 			Intent intLogOut = new Intent(this, MainActivity.class);
 			startActivity(intLogOut);
 			break;
@@ -205,18 +201,9 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	
 	public void setMarkerCurrentUserLocation() {
 		Location mCurrentLocation;
-		LatLng userLoc;
-		
-        mCurrentLocation = locationclient.getLastLocation();
-        userLoc = new LatLng(mCurrentLocation.getLatitude(),
-        		mCurrentLocation.getLongitude());
-        
+		mCurrentLocation = locationclient.getLastLocation();
         Log.d("DEBUG", "Current user location is: lat["+
         mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
-        
-        Marker usermarker = map.addMarker(new MarkerOptions()
-        .position(userLoc)
-        .draggable(false));
 	}
 
 	@Override
@@ -231,6 +218,15 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		.visible(true)
 		);
 		setAddressOnMarker(myPosMarker, latLng.latitude, latLng.longitude);
-		sendDetailsBack(latLng);
+		//this.myPos = latLng;
+		//sendDetailsBack(latLng);
+	}
+
+	@Override
+	public boolean onMarkerClick(Marker marker) {
+		// TODO Auto-generated method stub
+		myPos = marker.getPosition();
+		sendDetailsBack(myPos);
+		return true;
 	}
 }
