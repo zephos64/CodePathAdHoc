@@ -83,7 +83,7 @@ to match your app's package name + ".permission.C2D_MESSAGE".
             android:value="@string/app_id" />
 		<meta-data
      		android:name="com.google.android.maps.v2.API_KEY"
-     		android:value="AIzaSyCcG3Q0t9o7zUV5Bj3QvUFPNTLM3Aj_huY" />
+     		android:value="AIzaSyDOBr-nd2lzlxJ43x9Wh8mbFdAHfE0l9hU" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

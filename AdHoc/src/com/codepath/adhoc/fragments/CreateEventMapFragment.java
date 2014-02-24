@@ -24,7 +24,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -34,7 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class CreateEventMapFragment extends Fragment implements GooglePlayServicesClient.ConnectionCallbacks,
 																GooglePlayServicesClient.OnConnectionFailedListener,
 																LocationListener, 
-																OnMarkerDragListener{
+																OnMapClickListener{
 	private GoogleMap 			map;
 	private SupportMapFragment  fragment;
     private LocationClient 		locationclient;
@@ -72,7 +72,7 @@ public class CreateEventMapFragment extends Fragment implements GooglePlayServic
 		}
 		map = fragment.getMap();
 		if (map!= null){
-			map.setOnMarkerDragListener(this);
+			map.setOnMapClickListener(this);
 		}
 
 		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
@@ -91,24 +91,6 @@ public class CreateEventMapFragment extends Fragment implements GooglePlayServic
 	}
 
 	@Override
-	public void onMarkerDrag(Marker marker) {
-		LatLng pos = marker.getPosition();
-    	setAddressOnMarker(myPosMarker,pos.latitude, pos.longitude);
-    }
-
-	@Override
-	public void onMarkerDragEnd(Marker marker) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMarkerDragStart(Marker marker) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void onLocationChanged(Location location) {
 //		String [] address = new String [] {"Unknown","Unknown"};
 		currentLat = location.getLatitude();
@@ -122,12 +104,12 @@ public class CreateEventMapFragment extends Fragment implements GooglePlayServic
 			map = fragment.getMap();
 			if (map != null) 
 			{
-			    	map.setOnMarkerDragListener(this);
+			    	map.setOnMapClickListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 //			    									.title(address[0])
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			    	myPosMarker.setDraggable(true);
+			    	//myPosMarker.setDraggable(true);
 			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
 			    	myPosMarker.showInfoWindow();
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
@@ -179,6 +161,22 @@ public class CreateEventMapFragment extends Fragment implements GooglePlayServic
 	@Override
 	public void onDisconnected() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMapClick(LatLng latLng) {
+		// TODO Auto-generated method stub
+		if (myPosMarker != null) {
+			myPosMarker.remove();
+		}
+		myPosMarker = map.addMarker(new MarkerOptions()
+				.position(new LatLng(latLng.latitude, latLng.longitude))
+				.draggable(true)
+				.visible(true)
+				);
+		setAddressOnMarker(myPosMarker, latLng.latitude, latLng.longitude);
+		Log.e("DBG", "LatLng point: " + latLng);
 		
 	}
 }
