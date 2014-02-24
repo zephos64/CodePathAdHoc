@@ -214,8 +214,9 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		}
 		myPosMarker = map.addMarker(new MarkerOptions()
 		.position(latLng)
-		.draggable(true)
+		.draggable(false)
 		.visible(true)
+		.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))
 		);
 		setAddressOnMarker(myPosMarker, latLng.latitude, latLng.longitude);
 		//this.myPos = latLng;
