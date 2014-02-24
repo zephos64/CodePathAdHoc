@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,8 +15,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -30,11 +29,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -61,7 +60,9 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-    
+    private static final long   INTEREST_RADIUS_MILES = 10;
+    private static final double INTEREST_RADIUS_METERS = 1609.34 * INTEREST_RADIUS_MILES;
+    private static final double METER_TO_MILE_FACTOR = 0.000621371;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +86,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		}				
 		 mLocationRequest = LocationRequest.create();
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	     //mLocationRequest.setInterval(UPDATE_INTERVAL);
-	     //mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+	     mLocationRequest.setInterval(UPDATE_INTERVAL);
+	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
 
 	@Override
@@ -111,14 +112,18 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		mapUpdateRcvd = true;
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
-			Log.d("DEBUG", "Map is null");
+			Log.e("DEBUG", "Map is null");
 
 			SupportMapFragment supportMap = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
 			map = supportMap.getMap();
 
 			if (map != null) {
-					setMarkerCurrentUserLocation();
-					addListOfEvents();
+				map.addCircle(new CircleOptions()
+							  .center(new LatLng(location.getLatitude(), location.getLongitude()))
+							  .radius(INTEREST_RADIUS_METERS)
+							  .strokeColor(Color.RED));
+				setMarkerCurrentUserLocation();
+				addListOfEvents();
 			    	/*map.setOnMarkerDragListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
@@ -181,6 +186,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	
 	@Override
 	public void onConnected(Bundle connectionHint) {
+		Log.e("LOCATION", "Connected");
         locationclient.requestLocationUpdates(mLocationRequest,
 				(com.google.android.gms.location.LocationListener) this);
 	}
@@ -234,17 +240,18 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
         userLoc = new LatLng(mCurrentLocation.getLatitude(),
         		mCurrentLocation.getLongitude());
 		
-        Log.d("DEBUG", "Current user location is: lat["+
+        Log.e("DEBUG", "Current user location is: lat["+
         myPos.latitude + "] long is [" + myPos.longitude+"]");
         
         Marker usermarker = map.addMarker(new MarkerOptions()
-        .position(userLoc)
-        .draggable(false));
+        					                 .position(userLoc)
+        					                 .draggable(false)
+        					                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user)));
 	}
 	
 	public void addListOfEvents() {
 		map.setOnMarkerDragListener(this);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 10));
 		eventsMarkers = new ArrayList<Marker>();
 		
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
@@ -268,19 +275,33 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {
 				allEvents = listEvents;
+				int markerCount = 0;
 				for(int a = 0; a < listEvents.size(); a++) {
-					Log.d("DEBUG", "Creating marker ["+a+"] at loc: lat["+
+					double evtLat = 0;
+					double evtLng = 0;
+					Log.e("ERROR", "Creating marker ["+a+"] at loc: lat["+
 							listEvents.get(a).getLocLat()+"] and long[" +
 							listEvents.get(a).getLocLong()+"]");
-					eventsMarkers.add(map.addMarker(new MarkerOptions()
-						.position(myPos)
-						.anchor(0.5f, 1)
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
-					/*setAddressOnMarker(eventsMarkers.get(a),listEvents.get(a).getLocLat(),
-							listEvents.get(a).getLocLong());*/
-					eventsMarkers.get(a).setDraggable(false);
-					eventsMarkers.get(a).setPosition(new LatLng(listEvents.get(a).getLocLat(),
-							listEvents.get(a).getLocLong()));
+					
+					// Get the event location
+					evtLat = listEvents.get(a).getLocLat();
+					evtLng = listEvents.get(a).getLocLong();
+					LatLng 	evtPos =new LatLng(evtLat,evtLng);
+
+					float[] dist  = new float[1];
+					Location.distanceBetween(myPos.latitude, myPos.longitude, evtLat, evtLng, dist);
+					if ((dist[0] * METER_TO_MILE_FACTOR) <= INTEREST_RADIUS_MILES) {
+						Log.d("DEBUG", "Creating marker ["+a+"] at loc: lat["+
+								listEvents.get(a).getLocLat()+"] and long[" +
+								listEvents.get(a).getLocLong()+"]");
+						eventsMarkers.add(map.addMarker(new MarkerOptions()
+							.position(evtPos)
+							.anchor(0.5f, 1)
+							.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
+						/*setAddressOnMarker(eventsMarkers.get(a),listEvents.get(a).getLocLat(),
+								listEvents.get(a).getLocLong());*/
+						eventsMarkers.get(markerCount).setDraggable(false);
+					}
 				}
 
 				map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater(), allEvents));
