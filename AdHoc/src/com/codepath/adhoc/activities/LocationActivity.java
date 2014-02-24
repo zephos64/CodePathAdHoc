@@ -14,11 +14,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.application.CustomInfoWindowAdapter;
 import com.codepath.adhoc.application.ParseClient;
-import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -28,7 +30,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -49,6 +52,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private double 				currentLng = 0;
     private Marker 				myPosMarker;
     private List<Marker>		eventsMarkers;
+    private List<Events>		allEvents;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
     private boolean             mapUpdateRcvd = false;
@@ -63,6 +67,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AdHocUtils.forceShowActionBar(this);
+		
+		allEvents=new ArrayList<Events>();
 		
 		setContentView(R.layout.activity_location);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -135,6 +141,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		if (address != null) {
 			marker.setTitle(address[0]);
 		}
+		
 		marker.showInfoWindow();
 	}
 	// Method to translate geo coded location to human readable address
@@ -239,23 +246,51 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		map.setOnMarkerDragListener(this);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 		eventsMarkers = new ArrayList<Marker>();
+		
+		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+			@Override
+			public void onInfoWindowClick(Marker mark) {
+				Log.d("DEBUG", "Marker " + mark.getId() + " clicked");
+				int id = Integer.valueOf(mark.getId().replace("m", ""));
+				Events event = allEvents.get(id-1);
+				Log.d("DEBUG", "Maps to event: " + event.getObjectId());
+				gotoDetails(event.getObjectId());
+				/*for(int a = 0; a < eventsMarkers.size(); a++) {
+					if(mark.getId().equals(eventsMarkers.get(a).getId())) {
+						Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
+						gotoDetails(allEvents.get(a).getObjectId());
+					}
+				}*/
+			}
+		});
+		
 		ParseClient.getParseAllEvents(new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {
+				allEvents = listEvents;
 				for(int a = 0; a < listEvents.size(); a++) {
 					Log.d("DEBUG", "Creating marker ["+a+"] at loc: lat["+
 							listEvents.get(a).getLocLat()+"] and long[" +
 							listEvents.get(a).getLocLong()+"]");
-					
 					eventsMarkers.add(map.addMarker(new MarkerOptions()
 						.position(myPos)
+						.anchor(0.5f, 1)
 						.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
+					/*setAddressOnMarker(eventsMarkers.get(a),listEvents.get(a).getLocLat(),
+							listEvents.get(a).getLocLong());*/
 					eventsMarkers.get(a).setDraggable(false);
 					eventsMarkers.get(a).setPosition(new LatLng(listEvents.get(a).getLocLat(),
 							listEvents.get(a).getLocLong()));
-					eventsMarkers.get(a).showInfoWindow();
 				}
+
+				map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater(), allEvents));
 			}
 		});
+	}
+	
+	private void gotoDetails(String objId) {
+		Intent itemDetails = new Intent(this, EventDetailsActivity.class);
+		itemDetails.putExtra(AdHocUtils.intentDetailsId, objId);
+		startActivity(itemDetails);
 	}
 }

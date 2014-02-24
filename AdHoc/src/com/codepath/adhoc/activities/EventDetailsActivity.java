@@ -85,13 +85,13 @@ public class EventDetailsActivity extends ActionBarActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.event_details, menu);
 		
-		tvTitle = (TextView) findViewById(R.id.textView3);
+		tvTitle = (TextView) findViewById(R.id.tvInfoAttendance);
 		tvTime = (TextView) findViewById(R.id.textView5);
 		tvTimeEnd = (TextView) findViewById(R.id.textView8);
 		tvLoc = (TextView) findViewById(R.id.textView6);
 		tvAttendance = (TextView) findViewById(R.id.textView4);
-		tvDesc = (TextView) findViewById(R.id.textView2);
-		tvStatus = (TextView) findViewById(R.id.textView1);
+		tvDesc = (TextView) findViewById(R.id.tvInfoStartTime);
+		tvStatus = (TextView) findViewById(R.id.tvInfoTitle);
 		
 		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
 		tvLoad = (TextView) findViewById(R.id.tvLoad);

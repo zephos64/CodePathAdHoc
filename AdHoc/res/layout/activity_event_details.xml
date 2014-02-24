@@ -12,7 +12,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignBottom="@+id/tvInfoAttendance"
         android:layout_alignParentRight="true"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -26,7 +26,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvInfoStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -37,7 +37,7 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/tvInfoAttendance"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/textView5"
@@ -58,15 +58,15 @@
         android:name="com.codepath.adhoc.fragments.AdhocMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView3"
-        android:layout_alignLeft="@+id/textView3"
+        android:layout_above="@+id/tvInfoAttendance"
+        android:layout_alignLeft="@+id/tvInfoAttendance"
         android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignLeft="@+id/tvInfoAttendance"
         android:layout_below="@+id/textView4"
         android:text="TextView" />
 
@@ -80,16 +80,16 @@
         android:text="Button" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvInfoAttendance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignLeft="@+id/tvInfoStartTime"
         android:layout_centerVertical="true"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tvInfoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView6"
