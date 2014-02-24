@@ -25,6 +25,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -36,7 +38,7 @@ import com.parse.ParseUser;
 public class LocationCreationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
 																   GooglePlayServicesClient.OnConnectionFailedListener,
 																   LocationListener, 
-																   OnMarkerDragListener{
+																   OnMapClickListener{
 	private GoogleMap 			map;
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
@@ -76,19 +78,6 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	     //mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
 
-	@Override
-	public void onMarkerDrag(Marker marker) {
-		LatLng pos = marker.getPosition();
-    	setAddressOnMarker(myPosMarker,pos.latitude, pos.longitude);
-    }
-
-	@Override
-	public void onMarkerDragEnd(Marker marker) {
-		// TODO Auto-generated method stub
-		LatLng pos = marker.getPosition();
-		sendDetailsBack(pos);
-	}
-	
 	public void sendDetailsBack(LatLng pos) {
 		String [] address = null;
 		address = getAddressFromGeoCode(pos.latitude, pos.longitude);
@@ -98,12 +87,6 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		data.putExtra("Location", lcn);
 		setResult(RESULT_OK, data); // set result code and bundle data for response
 		finish();				
-	}
-
-	@Override
-	public void onMarkerDragStart(Marker marker) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -120,11 +103,11 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 
 			if (map != null) {
 					setMarkerCurrentUserLocation();
-			    	map.setOnMarkerDragListener(this);
+			    	map.setOnMapClickListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
 			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			    	myPosMarker.setDraggable(true);
+			    	//myPosMarker.setDraggable(true);
 			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
 			    	myPosMarker.showInfoWindow();
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
@@ -234,5 +217,20 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
         Marker usermarker = map.addMarker(new MarkerOptions()
         .position(userLoc)
         .draggable(false));
+	}
+
+	@Override
+	public void onMapClick(LatLng latLng) {
+		// TODO Auto-generated method stub
+		if (myPosMarker != null) {
+			myPosMarker.remove();
+		}
+		myPosMarker = map.addMarker(new MarkerOptions()
+		.position(latLng)
+		.draggable(true)
+		.visible(true)
+		);
+		setAddressOnMarker(myPosMarker, latLng.latitude, latLng.longitude);
+		sendDetailsBack(latLng);
 	}
 }
