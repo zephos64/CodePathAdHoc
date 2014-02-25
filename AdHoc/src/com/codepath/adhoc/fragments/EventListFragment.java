@@ -3,7 +3,6 @@ package com.codepath.adhoc.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +19,7 @@ import com.codepath.adhoc.R;
 import com.codepath.adhoc.activities.EventDetailsActivity;
 import com.codepath.adhoc.application.EventsAdapter;
 import com.codepath.adhoc.parsemodels.Events;
+import com.google.android.gms.maps.model.LatLng;
 
 import eu.erikw.PullToRefreshListView;
 
@@ -29,6 +29,8 @@ public abstract class EventListFragment extends Fragment {
 	PullToRefreshListView lvEvents;
 	ArrayList<Events> events;
 	FragmentActivity activityListener;
+	
+	LatLng loc;
 	
 	private View mContentView = null;
 		
@@ -46,6 +48,9 @@ public abstract class EventListFragment extends Fragment {
 		events = new ArrayList<Events>();
 		eventsAdapter = new EventsAdapter(getActivity(), events);
 		//Log.d("DEBUG", "list of events: " + events.toString());
+		
+		loc = new LatLng(getArguments().getDouble("lat"),
+				getArguments().getDouble("long"));
 		
 	}
 	

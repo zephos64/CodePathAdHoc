@@ -2,7 +2,6 @@ package com.codepath.adhoc.activities;
 
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -29,7 +28,7 @@ import com.parse.ParseUser;
 public class EventListActivity extends ActionBarActivity 
 								implements GooglePlayServicesClient.ConnectionCallbacks,
 								GooglePlayServicesClient.OnConnectionFailedListener,
-								LocationListener{
+								LocationListener {
 	// list sorted by % full (fuller = better)
 	// then by what's happening soonest
 
@@ -44,7 +43,6 @@ public class EventListActivity extends ActionBarActivity
 		
 		AdHocUtils.forceShowActionBar(this);
 		getCurrentUserLoc();
-		setupTabs();
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class EventListActivity extends ActionBarActivity
 				.setTabListener(
 						new SupportFragmentTabListener<AllEventsFragment>(
 								R.id.flEventList, this, "All",
-								AllEventsFragment.class));
+								AllEventsFragment.class, userLoc));
 		actionBar.addTab(tab1);		
 		actionBar.selectTab(tab1);
 
@@ -101,7 +99,7 @@ public class EventListActivity extends ActionBarActivity
 				.setTabListener(
 						new SupportFragmentTabListener<AttendingEvents>(
 								R.id.flEventList, this, "Joined",
-								AttendingEvents.class));
+								AttendingEvents.class, userLoc));
 		actionBar.addTab(tab2);
 		
 		Tab tab3 = actionBar
@@ -111,8 +109,18 @@ public class EventListActivity extends ActionBarActivity
 				.setTabListener(
 						new SupportFragmentTabListener<CreatedEvents>(
 								R.id.flEventList, this, "Hosting",
-								CreatedEvents.class));
+								CreatedEvents.class, userLoc));
 		actionBar.addTab(tab3);
+		
+		/*getSupportFragmentManager().executePendingTransactions();
+		AllEventsFragment fragAll =
+				(AllEventsFragment) getSupportFragmentManager().findFragmentByTag("All");
+		if(userLoc==null) {
+			Log.e("ERROR", "userloc null");
+		} else if(fragAll == null) {
+			Log.e("ERROR", "fragall null");
+		}
+		fragAll.setLoc(userLoc);*/
 	}
 	
 	public void getCurrentUserLoc() {
@@ -142,6 +150,8 @@ public class EventListActivity extends ActionBarActivity
 				loc.getLatitude() + "," + loc.getLongitude());
 		userLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
 		locationclient.disconnect();
+		
+		setupTabs();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.codepath.adhoc.fragments;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.parsemodels.Events;
@@ -14,7 +15,7 @@ public class AllEventsFragment extends EventListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		ParseClient.getParseAllEvents(
+		ParseClient.getParseAllEvents(loc,
 				new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {

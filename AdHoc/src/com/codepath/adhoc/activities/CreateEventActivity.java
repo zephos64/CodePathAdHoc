@@ -84,7 +84,7 @@ public class CreateEventActivity extends ActionBarActivity {
 		return true;
 	}
 	
-	private void setupTabs() {
+	/*private void setupTabs() {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(true);
@@ -109,7 +109,7 @@ public class CreateEventActivity extends ActionBarActivity {
 //								R.id.flContainerEvent, this, "Map",
 //								CreateEventMapActivity.class));
 //		actionBar.addTab(tab2);
-	}
+	}*/
 	
 	public void clickSave(View v) {
 		Log.d("DEBUG", "Saving new event...");

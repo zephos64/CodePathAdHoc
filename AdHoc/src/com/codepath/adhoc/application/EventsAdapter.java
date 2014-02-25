@@ -1,6 +1,7 @@
 package com.codepath.adhoc.application;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -28,12 +28,28 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 	private Context mContext;
 	private List<Events> mEvents;
 	private List<User> mUser;
+	
+	private List<Integer> mAttendance;
 
 	public EventsAdapter(Context context, List<Events> objects) {
 		super(context, com.codepath.adhoc.R.layout.fragment_item_event, objects);
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 		this.mEvents = objects;
+	}
+	
+	public void blah(final int a) {
+		ParseClient.getCountJoinedUsers(mEvents.get(a), new CountCallback() {
+			@Override
+			public void done(int count, ParseException e) {
+				if(e == null) {
+					mAttendance.set(a, count);
+					//tvRemainingSpots.setText(count + " / " + events.getMaxAttendees());
+				} else {
+					Log.e("ERROR", "Events adapter count error");
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -48,6 +64,8 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		
 		final Events events = mEvents.get(position);
 		
+		Log.d("DEBUG", "Position getView at " + position);
+		
 		Geocoder gc;
 		List<Address> addresses;
 		gc = new Geocoder(mContext, Locale.getDefault());
@@ -58,7 +76,6 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 //			else
 //				Toast.makeText(mContext, "Nothing returned", Toast.LENGTH_SHORT).show();
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		
@@ -71,17 +88,8 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		ParseGeoPoint point = events.getLoc();
 
 		tvDistance.setText("Lat: " + point.getLatitude() + ", Long: " + point.getLongitude());
-		ParseClient.getCountJoinedUsers(events, new CountCallback() {
-			
-			@Override
-			public void done(int count, ParseException e) {
-				if(e == null) {
-					tvRemainingSpots.setText(count + " / " + events.getMaxAttendees());
-				} else {
-					Log.e("ERROR", "Events adapter count error");
-				}
-			}
-		});
+		//tvRemainingSpots.setText(mAttendance.get(position) + " / " + events.getMaxAttendees());
+		tvRemainingSpots.setText("test / " + events.getMaxAttendees());
 		
 		tvTime.setText("Event time: " + AdHocUtils.getTime(events.getEventTime()));
 		

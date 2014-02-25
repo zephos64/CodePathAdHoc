@@ -7,7 +7,10 @@ import android.util.Log;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
+import com.codepath.adhoc.application.ParseClient;
+import com.parse.CountCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
@@ -21,7 +24,6 @@ public class Events extends ParseObject implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	public Events() {
-
 	}
 	
 	public Events(EventStates state, String name, int maxAttend, String time, String endTime,

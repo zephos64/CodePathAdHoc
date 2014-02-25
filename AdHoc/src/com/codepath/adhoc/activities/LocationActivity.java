@@ -272,7 +272,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			}
 		});
 		
-		ParseClient.getParseAllEvents(new FindCallback<Events>() {
+		ParseClient.getParseAllEvents(myPos, new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {
 				allEvents = listEvents;
