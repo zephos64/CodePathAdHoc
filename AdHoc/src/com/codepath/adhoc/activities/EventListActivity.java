@@ -1,10 +1,13 @@
 package com.codepath.adhoc.activities;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,19 +17,33 @@ import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.AllEventsFragment;
 import com.codepath.adhoc.fragments.AttendingEvents;
 import com.codepath.adhoc.fragments.CreatedEvents;
-import com.codepath.adhoc.fragments.EventListFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseUser;
 
-public class EventListActivity extends ActionBarActivity {
+public class EventListActivity extends ActionBarActivity 
+								implements GooglePlayServicesClient.ConnectionCallbacks,
+								GooglePlayServicesClient.OnConnectionFailedListener,
+								LocationListener{
 	// list sorted by % full (fuller = better)
 	// then by what's happening soonest
 
+	LatLng userLoc;
+	LocationClient locationclient;
+	LocationRequest mLocationRequest;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_list);
 		
 		AdHocUtils.forceShowActionBar(this);
+		getCurrentUserLoc();
 		setupTabs();
 	}
 
@@ -89,12 +106,54 @@ public class EventListActivity extends ActionBarActivity {
 		
 		Tab tab3 = actionBar
 				.newTab()
-				.setText("Hosted")
-				.setTag("Hosted")
+				.setText("Hosting")
+				.setTag("Hosting")
 				.setTabListener(
 						new SupportFragmentTabListener<CreatedEvents>(
-								R.id.flEventList, this, "Hosted",
+								R.id.flEventList, this, "Hosting",
 								CreatedEvents.class));
 		actionBar.addTab(tab3);
+	}
+	
+	public void getCurrentUserLoc() {
+		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		locationclient = new LocationClient(this,this, this);
+		if(resp == ConnectionResult.SUCCESS) {
+			locationclient.connect();
+		} else {
+			Log.e("ERROR", "Error with Google play services " + resp);
+		}				
+		 mLocationRequest = LocationRequest.create();
+	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		locationclient.requestLocationUpdates(mLocationRequest,
+				(com.google.android.gms.location.LocationListener) this);
+	}
+
+	@Override
+	public void onLocationChanged(Location loc) {
+		// TODO Auto-generated method stub
+		Log.d("DEBUG", "Event list onLocaitonChanged");
+		
+		Log.d("DEBUG", "Current user location (for event list) is: " +
+				loc.getLatitude() + "," + loc.getLongitude());
+		userLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
+		locationclient.disconnect();
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		
+	}
+
+	@Override
+	public void onDisconnected() {
+	}
+	
+	public LatLng getUserLoc() {
+		return userLoc;
 	}
 }

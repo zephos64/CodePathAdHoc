@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 public class LocationActivity extends ActionBarActivity implements GooglePlayServicesClient.ConnectionCallbacks,
@@ -86,8 +87,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		}				
 		 mLocationRequest = LocationRequest.create();
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	     mLocationRequest.setInterval(UPDATE_INTERVAL);
-	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+//	     mLocationRequest.setInterval(UPDATE_INTERVAL);
+//	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
 
 	@Override
@@ -258,16 +259,16 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			@Override
 			public void onInfoWindowClick(Marker mark) {
 				Log.d("DEBUG", "Marker " + mark.getId() + " clicked");
-				int id = Integer.valueOf(mark.getId().replace("m", ""));
+				/*int id = Integer.valueOf(mark.getId().replace("m", ""));
 				Events event = allEvents.get(id-1);
 				Log.d("DEBUG", "Maps to event: " + event.getObjectId());
-				gotoDetails(event.getObjectId());
-				/*for(int a = 0; a < eventsMarkers.size(); a++) {
+				gotoDetails(event.getObjectId());*/
+				for(int a = 0; a < eventsMarkers.size(); a++) {
 					if(mark.getId().equals(eventsMarkers.get(a).getId())) {
 						Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
 						gotoDetails(allEvents.get(a).getObjectId());
 					}
-				}*/
+				}
 			}
 		});
 		
@@ -279,21 +280,23 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 				for(int a = 0; a < listEvents.size(); a++) {
 					double evtLat = 0;
 					double evtLng = 0;
-					Log.e("ERROR", "Creating marker ["+a+"] at loc: lat["+
-							listEvents.get(a).getLocLat()+"] and long[" +
-							listEvents.get(a).getLocLong()+"]");
+					ParseGeoPoint point = listEvents.get(a).getLoc();
+					
+					Log.d("DEBUG", "CHECKING creating marker ["+a+"] at loc: lat["+
+							point.getLatitude()+"] and long[" +
+							point.getLongitude()+"] for "+listEvents.get(a).getObjectId());
 					
 					// Get the event location
-					evtLat = listEvents.get(a).getLocLat();
-					evtLng = listEvents.get(a).getLocLong();
+					evtLat = point.getLatitude();
+					evtLng = point.getLongitude();
 					LatLng 	evtPos =new LatLng(evtLat,evtLng);
 
 					float[] dist  = new float[1];
 					Location.distanceBetween(myPos.latitude, myPos.longitude, evtLat, evtLng, dist);
 					if ((dist[0] * METER_TO_MILE_FACTOR) <= INTEREST_RADIUS_MILES) {
 						Log.d("DEBUG", "Creating marker ["+a+"] at loc: lat["+
-								listEvents.get(a).getLocLat()+"] and long[" +
-								listEvents.get(a).getLocLong()+"]");
+								point.getLatitude()+"] and long[" +
+								point.getLongitude()+"] for "+listEvents.get(a).getObjectId());
 						eventsMarkers.add(map.addMarker(new MarkerOptions()
 							.position(evtPos)
 							.anchor(0.5f, 1)
@@ -301,6 +304,10 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 						/*setAddressOnMarker(eventsMarkers.get(a),listEvents.get(a).getLocLat(),
 								listEvents.get(a).getLocLong());*/
 						eventsMarkers.get(markerCount).setDraggable(false);
+					} else {
+						Log.d("DEBUG", "Removed event " + listEvents.get(a).getObjectId());
+						listEvents.remove(a);
+						a--;
 					}
 				}
 

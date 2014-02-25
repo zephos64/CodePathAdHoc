@@ -7,7 +7,10 @@ import android.util.Log;
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
+import com.google.android.gms.maps.model.LatLng;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 
@@ -26,13 +29,16 @@ public class ParseClient {
 	}
 	 */
 
-	public static void getParseAllEvents(FindCallback<Events> findCallback) {
+	public static void getParseAllEvents( FindCallback<Events> findCallback) {
 		Log.d("DEBUG", "Getting all events");
 		// Define the class we would like to query
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
+	/*	query.whereWithinMiles(AdHocUtils.eventLoc,
+				new ParseGeoPoint(loc.latitude, loc.longitude),
+				AdHocUtils.milesLocRadius);*/
 		query.orderByAscending(AdHocUtils.eventTime);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
@@ -71,6 +77,14 @@ public class ParseClient {
 		query.whereEqualTo(AdHocUtils.objectId, eventId);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
+	}
+	
+	public static void getCountJoinedUsers(Events event, CountCallback callback) {
+		Log.d("DEBUG", "Counting users joined event, for event with id " + event.getObjectId());
+		
+		ParseRelation<User> userRel = event.getJoinedUsersRelation();
+		ParseQuery<User> query = userRel.getQuery();
+		query.countInBackground(callback);
 	}
 	
 	public static void getJoinedUsers(Events event, FindCallback<User> findCallback) {

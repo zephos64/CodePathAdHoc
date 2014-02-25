@@ -14,7 +14,8 @@ public class AllEventsFragment extends EventListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		ParseClient.getParseAllEvents(new FindCallback<Events>() {
+		ParseClient.getParseAllEvents(
+				new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {
 				getAdapter().clear();

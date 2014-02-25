@@ -13,13 +13,14 @@ public class AdHocUtils {
 	
 	public final static String intentDetailsId = "intent_item_details";
 	
+	public final static int milesLocRadius = 10;
+	
 	public final static String eventState = "event_state";
 	public final static String eventName = "event_name";
 	public final static String eventMaxAttend = "max_attendees";
 	public final static String eventTime = "event_time";
 	public final static String eventTimeEnd = "event_time_end";
-	public final static String eventLocLong = "longitude";
-	public final static String eventLocLat = "latitude";
+	public final static String eventLoc = "location";
 	public final static String eventDesc = "description";
 	public final static String eventCreatedAt = "createdAt";
 	public final static String eventUpdatedAt = "updateAt";

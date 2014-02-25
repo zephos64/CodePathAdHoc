@@ -22,8 +22,10 @@ import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.fragments.AdhocMapFragment;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 /**
@@ -68,8 +70,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 		// for screen rotation
 		if(savedInstanceState != null) {
 			item = (Events)savedInstanceState.getSerializable("event");
-			double longitude  = item.getLocLong();
-			double latitude  = item.getLocLat();
+			ParseGeoPoint point = item.getLoc();
+			double longitude  = point.getLongitude();
+			double latitude  = point.getLatitude();
 			mapFrg.setLocaion(latitude, longitude);
 		} else {
 			Intent prevIntent = getIntent();
@@ -290,7 +293,8 @@ public class EventDetailsActivity extends ActionBarActivity {
 					tvLoc.setText("");
 				}
 				
-				mapFrg.setLocaion(item.getLocLat(),item.getLocLong());
+				ParseGeoPoint point = item.getLoc();
+				mapFrg.setLocaion(point.getLatitude(),point.getLongitude());
 				
 				gotDetails = true;
 				hideProgressBar();
@@ -367,14 +371,15 @@ public class EventDetailsActivity extends ActionBarActivity {
 	}
 		
 	private void populateUserState() {
-		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
+		ParseClient.getCountJoinedUsers(item, new CountCallback() {
+			
 			@Override
-			public void done(final List<User> listUsersJoined, ParseException e) {
+			public void done(final int count, ParseException e) {
 				if (e == null) {
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							tvAttendance.setText(listUsersJoined.size() + " / "
+							tvAttendance.setText(count + " / "
 									+ item.getMaxAttendees());
 							gotState = true;
 							hideProgressBar();
@@ -386,9 +391,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 							"Error getting joined users for event details");
 					e.printStackTrace();
 				}
+				
 			}
 		});
-		
 	}
 	
 	private void hideProgressBar() {

@@ -3,9 +3,12 @@ package com.codepath.adhoc.parsemodels;
 import java.io.Serializable;
 import java.util.Date;
 
+import android.util.Log;
+
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
 import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -44,8 +47,9 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventAddress, addr);
-		put(AdHocUtils.eventLocLong, longitude);
-		put(AdHocUtils.eventLocLat, latitude);
+		//put(AdHocUtils.eventLocLong, longitude);
+		//put(AdHocUtils.eventLocLat, latitude);
+		put(AdHocUtils.eventLoc, new ParseGeoPoint(latitude, longitude));
 
 		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
 		relation.add(hostUser);
@@ -71,12 +75,16 @@ public class Events extends ParseObject implements Serializable{
 		return getString(AdHocUtils.eventTimeEnd);
 	}
 
-	public double getLocLong() {
+	/*public double getLocLong() {
 		return getDouble(AdHocUtils.eventLocLong);
 	}
 
 	public double getLocLat() {
 		return getDouble(AdHocUtils.eventLocLat);
+	}*/
+	
+	public ParseGeoPoint getLoc() {
+		return getParseGeoPoint(AdHocUtils.eventLoc);
 	}
 
 	public String getDesc() {
@@ -107,12 +115,16 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventState, newState);
 	}
 	
-	public void setLocLat(double lat) {
+	/*public void setLocLat(double lat) {
 		put(AdHocUtils.eventLocLat, lat);
 	}
 	
 	public void setLocLong(double longi) {
 		put(AdHocUtils.eventLocLat, longi);
+	}*/
+	
+	public void setLoc(double lat, double longi) {
+		put(AdHocUtils.eventLoc, new ParseGeoPoint(lat, longi));
 	}
 
 	public void addJoinedUser(User userObj) {

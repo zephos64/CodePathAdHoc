@@ -19,6 +19,9 @@ import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
+import com.parse.CountCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 
 public class EventsAdapter extends ArrayAdapter<Events> {
 	
@@ -43,7 +46,7 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 			convertView = inflater.inflate(com.codepath.adhoc.R.layout.fragment_item_event, null);
 		}
 		
-		Events events = mEvents.get(position);
+		final Events events = mEvents.get(position);
 		
 		Geocoder gc;
 		List<Address> addresses;
@@ -61,12 +64,25 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		
 		TextView tvLoginTitle = (TextView) convertView.findViewById(R.id.tvLoginTitle);
 		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
-		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
+		final TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
 		
 		tvLoginTitle.setText(events.getEventName());
-		tvDistance.setText("Lat: " + events.getLocLat() + ", Long: " + events.getLocLong());
-		tvRemainingSpots.setText("Max attendees: " + events.getMaxAttendees());
+		ParseGeoPoint point = events.getLoc();
+
+		tvDistance.setText("Lat: " + point.getLatitude() + ", Long: " + point.getLongitude());
+		ParseClient.getCountJoinedUsers(events, new CountCallback() {
+			
+			@Override
+			public void done(int count, ParseException e) {
+				if(e == null) {
+					tvRemainingSpots.setText(count + " / " + events.getMaxAttendees());
+				} else {
+					Log.e("ERROR", "Events adapter count error");
+				}
+			}
+		});
+		
 		tvTime.setText("Event time: " + AdHocUtils.getTime(events.getEventTime()));
 		
 		return convertView;

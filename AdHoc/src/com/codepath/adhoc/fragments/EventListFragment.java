@@ -3,6 +3,7 @@ package com.codepath.adhoc.fragments;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +31,7 @@ public abstract class EventListFragment extends Fragment {
 	FragmentActivity activityListener;
 	
 	private View mContentView = null;
-	
+		
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
