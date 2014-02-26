@@ -22,6 +22,7 @@ import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.maps.model.LatLng;
 
 import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public abstract class EventListFragment extends Fragment {
 	
@@ -76,6 +77,14 @@ public abstract class EventListFragment extends Fragment {
 				startActivity(itemDetails);
 			}
 		});
+		
+		lvEvents.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				Log.d("DEBUG", "Refreshing list view");
+				loadList();
+			}
+		});
 		//Log.d("DEBUG", "listview: " + lvEvents.toString());
 		return mContentView;
 	}
@@ -90,6 +99,6 @@ public abstract class EventListFragment extends Fragment {
 		return eventsAdapter;
 	}
 	
-	abstract void getMoreItems(int moreItems);
+	abstract void loadList();
 
 }

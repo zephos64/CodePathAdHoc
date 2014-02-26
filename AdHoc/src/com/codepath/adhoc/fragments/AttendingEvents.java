@@ -15,15 +15,7 @@ public class AttendingEvents extends EventListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		ParseClient.getParseUserJoinedEvents((User)ParseUser.getCurrentUser(),
-				new FindCallback<Events>() {
-			@Override
-			public void done(List<Events> listEvents, ParseException arg1) {
-				getAdapter().clear();
-				getAdapter().addAll(listEvents);
-			}
-		});
+		loadList();
 	}
 
 	@Override
@@ -31,15 +23,17 @@ public class AttendingEvents extends EventListFragment {
 		super.onActivityCreated(savedInstanceState);
 	}
 
-	void getMoreListData(int numNewItems) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
-	void getMoreItems(int moreItems) {
-		// TODO Auto-generated method stub
-		
+	public void loadList() {
+		ParseClient.getParseUserJoinedEvents((User)ParseUser.getCurrentUser(),
+				new FindCallback<Events>() {
+			@Override
+			public void done(List<Events> listEvents, ParseException arg1) {
+				getAdapter().clear();
+				getAdapter().addAll(listEvents);
+				lvEvents.onRefreshComplete();
+			}
+		});
 	}
 
 }

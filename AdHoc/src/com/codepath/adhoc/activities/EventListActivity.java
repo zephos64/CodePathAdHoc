@@ -111,16 +111,6 @@ public class EventListActivity extends ActionBarActivity
 								R.id.flEventList, this, "Hosting",
 								CreatedEvents.class, userLoc));
 		actionBar.addTab(tab3);
-		
-		/*getSupportFragmentManager().executePendingTransactions();
-		AllEventsFragment fragAll =
-				(AllEventsFragment) getSupportFragmentManager().findFragmentByTag("All");
-		if(userLoc==null) {
-			Log.e("ERROR", "userloc null");
-		} else if(fragAll == null) {
-			Log.e("ERROR", "fragall null");
-		}
-		fragAll.setLoc(userLoc);*/
 	}
 	
 	public void getCurrentUserLoc() {
@@ -143,7 +133,6 @@ public class EventListActivity extends ActionBarActivity
 
 	@Override
 	public void onLocationChanged(Location loc) {
-		// TODO Auto-generated method stub
 		Log.d("DEBUG", "Event list onLocaitonChanged");
 		
 		Log.d("DEBUG", "Current user location (for event list) is: " +

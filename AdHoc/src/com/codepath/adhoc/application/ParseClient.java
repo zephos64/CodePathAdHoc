@@ -36,10 +36,10 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
-/*		query.whereWithinMiles(AdHocUtils.eventLoc,
+		query.whereWithinMiles(AdHocUtils.eventLoc,
 				new ParseGeoPoint(loc.latitude, loc.longitude),
 				AdHocUtils.milesLocRadius);
-*/
+		query.setLimit(AdHocUtils.userLoadLimit);
 		query.orderByAscending(AdHocUtils.eventTime);
 		// Execute the find asynchronously
 		query.findInBackground(findCallback);
@@ -53,6 +53,7 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
+		query.setLimit(AdHocUtils.userLoadLimit);
 		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
 	}
@@ -65,6 +66,7 @@ public class ParseClient {
 		query.whereNotContainedIn(AdHocUtils.eventState, 
 				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
 						AdHocUtils.EventStates.CANCELLED.toString()));
+		query.setLimit(AdHocUtils.userLoadLimit);
 		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
 	}
@@ -80,13 +82,13 @@ public class ParseClient {
 		query.findInBackground(findCallback);
 	}
 	
-	public static void getCountJoinedUsers(Events event, CountCallback callback) {
+	/*public static void getCountJoinedUsers(Events event, CountCallback callback) {
 		Log.d("DEBUG", "Counting users joined event, for event with id " + event.getObjectId());
 		
 		ParseRelation<User> userRel = event.getJoinedUsersRelation();
 		ParseQuery<User> query = userRel.getQuery();
 		query.countInBackground(callback);
-	}
+	}*/
 	
 	public static void getJoinedUsers(Events event, FindCallback<User> findCallback) {
 		Log.d("DEBUG", "Getting joined users for event : " + event.getObjectId());

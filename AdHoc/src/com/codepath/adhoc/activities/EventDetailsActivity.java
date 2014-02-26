@@ -2,6 +2,8 @@ package com.codepath.adhoc.activities;
 
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,11 +24,11 @@ import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.fragments.AdhocMapFragment;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * runOnUiThread exist because data retrieved async
@@ -220,7 +222,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 			});
 		}
 
-		item.saveEventually();
+		item.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException arg0) {
+				populateUserState();
+			}
+		});
 	}
 	
 	private void joinEvent() {
@@ -316,6 +323,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
+								Log.d("DEBUG", "User is host of event");
 								tvStatus.setText("HOST");
 								btnAction.setText("CANCEL");
 								isHost = true;
@@ -323,44 +331,42 @@ public class EventDetailsActivity extends ActionBarActivity {
 								hideProgressBar();
 							}
 						});
-						
+
+					}
+				} else {
+					Log.e("ERROR", "Error getting userId for event details");
+					e.printStackTrace();
+				}
+			}
+		});
+		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
+			@Override
+			public void done(List<User> listUsersJoined, ParseException e) {
+				if (e == null) {
+					Log.d("DEBUG", "Size of joined user list: " +listUsersJoined.size());
+					for(int a = 0; a < listUsersJoined.size(); a++) {
+						Log.d("DEBUG", "Event has user in it: " + listUsersJoined.get(a).getObjectId());
+					}
+					if (listUsersJoined.contains(ParseUser.getCurrentUser())) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Log.d("DEBUG", "User has joined event");
+								leaveEvent();
+								gotAtt = true;
+								hideProgressBar();
+							}
+						});
 					} else {
-						ParseClient.getJoinedUsers(item,
-								new FindCallback<User>() {
-									@Override
-									public void done(
-											List<User> listUsersJoined,
-											ParseException e) {
-										if (e == null) {
-											if (listUsersJoined
-													.contains(ParseUser
-															.getCurrentUser())) {
-												
-												runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														joinEvent();
-														gotAtt = true;
-														hideProgressBar();
-													}
-												});
-											} else {
-												runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														leaveEvent();
-														gotAtt = true;
-														hideProgressBar();
-													}
-												});
-											}
-										} else {
-											Log.e("ERROR",
-													"Error getting userId for event details");
-											e.printStackTrace();
-										}
-									}
-								});
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								Log.d("DEBUG", "User has NOT joined event");
+								joinEvent();
+								gotAtt = true;
+								hideProgressBar();
+							}
+						});
 					}
 				} else {
 					Log.e("ERROR", "Error getting userId for event details");
@@ -371,7 +377,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	}
 		
 	private void populateUserState() {
-		ParseClient.getCountJoinedUsers(item, new CountCallback() {
+		/*ParseClient.getCountJoinedUsers(item, new CountCallback() {
 			
 			@Override
 			public void done(final int count, ParseException e) {
@@ -392,6 +398,15 @@ public class EventDetailsActivity extends ActionBarActivity {
 					e.printStackTrace();
 				}
 				
+			}
+		});*/
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				tvAttendance.setText(item.getAttendanceCount() + " / "
+						+ item.getMaxAttendees());
+				gotState = true;
+				hideProgressBar();
 			}
 		});
 	}

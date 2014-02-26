@@ -35,6 +35,7 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventAddress, addr);
+		put(AdHocUtils.eventAttendanceCount, 0);
 		
 		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
 		relation.add(hostUser);
@@ -52,6 +53,7 @@ public class Events extends ParseObject implements Serializable{
 		//put(AdHocUtils.eventLocLong, longitude);
 		//put(AdHocUtils.eventLocLat, latitude);
 		put(AdHocUtils.eventLoc, new ParseGeoPoint(latitude, longitude));
+		put(AdHocUtils.eventAttendanceCount, 0);
 
 		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
 		relation.add(hostUser);
@@ -104,6 +106,10 @@ public class Events extends ParseObject implements Serializable{
 	public String getAddress() {
 		return getString(AdHocUtils.eventAddress);
 	}
+	
+	public int getAttendanceCount() {
+		return getInt(AdHocUtils.eventAttendanceCount);
+	}
 
 	public ParseRelation<User> getHostUserIdRelation() {
 		return getRelation(AdHocUtils.eventHostUserId);
@@ -131,9 +137,11 @@ public class Events extends ParseObject implements Serializable{
 
 	public void addJoinedUser(User userObj) {
 		getJoinedUsersRelation().add(userObj);
+		increment(AdHocUtils.eventAttendanceCount);
 	}
 
 	public void removeJoinedUser(User userObj) {
 		getJoinedUsersRelation().remove(userObj);
+		increment(AdHocUtils.eventAttendanceCount, -1);
 	}
 }

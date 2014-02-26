@@ -14,6 +14,7 @@ public class AdHocUtils {
 	public final static String intentDetailsId = "intent_item_details";
 	
 	public final static int milesLocRadius = 10;
+	public final static int userLoadLimit = 100;
 	
 	public final static String eventState = "event_state";
 	public final static String eventName = "event_name";
@@ -27,6 +28,7 @@ public class AdHocUtils {
 	public final static String eventHostUserId = "hosted_by_id";
 	public final static String eventJoinedUsersId = "joined_user_id";
 	public final static String eventAddress = "address";
+	public final static String eventAttendanceCount = "attendanceCount";
 
 	public enum EventStates {
 		INPROG ("IN PROGRESS"),
