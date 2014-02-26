@@ -30,30 +30,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class AdhocMapFragment extends SupportMapFragment implements GooglePlayServicesClient.ConnectionCallbacks,
-												  GooglePlayServicesClient.OnConnectionFailedListener,
-												  LocationListener, 
-												  OnMarkerDragListener{
+												  GooglePlayServicesClient.OnConnectionFailedListener {
 
-	public class MapMode {
-		   public static final int EVENT_DISPLAY   = 1;
-		   public static final int EVENT_SELECTION = 2;
-	};
-	public int mapMode    = MapMode.EVENT_DISPLAY;
-	private boolean             locationSet  = false;
 	private GoogleMap 			map;
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
     private double 				currentLng = 0;
-    private double 				currentUserLat = 0;
-    private double 				currentUserLng = 0;
     private Marker 				myPosMarker;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
-    private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
-    private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
-    private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
-    private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
     @Override
     public void onCreate(Bundle savedInstancseState) {
@@ -73,82 +59,32 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		else{
 			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
 		}				
-		mLocationRequest = LocationRequest.create();
-	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	    //mLocationRequest.setInterval(UPDATE_INTERVAL);
-	    //mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
     }
 
-
-	@Override
-	public void onMarkerDrag(Marker arg0) {
-	}
-
-	@Override
-	public void onMarkerDragEnd(Marker arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMarkerDragStart(Marker arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+//	@Override
 	public void onLocationChanged(Location location) {
-		Log.d("DEBUG", "Map details onLocationChanged called");
-		
-		if (this.mapMode ==  MapMode.EVENT_SELECTION) {
-			currentLat = location.getLatitude();
-			currentLng = location.getLongitude();
-		}
-		else if (locationSet == false) {
-			return;
-		}
-//		Log.e("Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
-//				"  Map " + String.valueOf(map));
-
 		myPos = new LatLng(currentLat,currentLng);
 		if (map == null) {
 			Log.d("DEBUG", "Map details is null");
-			
 			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-			//Log.e("@@@@ Location changed" , " LAT: " +String.valueOf(currentLat) + " LAT: " +String.valueOf(currentLng) + 
-			//		"  Map " + String.valueOf(map));
-			if (map != null) {
-				setMarkerCurrentUserLocation(location);
+		}
+		if (map != null) {
+			// Disable map controls
+			UiSettings mapUi = map.getUiSettings();
+			mapUi.setAllGesturesEnabled(false);
+			mapUi.setZoomControlsEnabled(false);
 				
-				// Disable map controls
-				UiSettings mapUi = map.getUiSettings();
-				mapUi.setAllGesturesEnabled(false);
-				mapUi.setZoomControlsEnabled(false);
-				
-				myPosMarker = map.addMarker(new MarkerOptions().position(myPos)
-						.icon(BitmapDescriptorFactory
-								.fromResource(R.drawable.ic_map_marker)));
-				if (this.mapMode == MapMode.EVENT_SELECTION) {
-					map.setOnMarkerDragListener(this);
-					myPosMarker.setDraggable(true);
-					Log.e("Draggable Marker", "True");
-				} else {
-					myPosMarker.setDraggable(false);
-					Log.e("Draggable Marker", "False");
-				}
-				setAddressOnMarker(myPosMarker, currentLat, currentLng);
-				myPosMarker.showInfoWindow();
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
-			}
+			myPosMarker = map.addMarker(new MarkerOptions().
+											position(myPos).
+											icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
+			setAddressOnMarker(myPosMarker, currentLat, currentLng);
+			myPosMarker.showInfoWindow();
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 		} else {
-			Log.d("DEBUG", "Map details is not null");
+			Log.d("DEBUG", "Map details is null");
 			myPosMarker.setPosition(myPos);
 			myPosMarker.showInfoWindow();
 		}
-//		if (this.mapMode !=  MapMode.EVENT_SELECTION) {
-//			locationclient.removeLocationUpdates(this);
-//		}
-
 	}
 
 	private void setAddressOnMarker(Marker marker, double latitude, double longitude) {
@@ -197,49 +133,21 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 
 	@Override
 	public void onConnected(Bundle connectionHint) {
-		Log.e("ON Connected" , String.valueOf(this.mapMode));
-        locationclient.requestLocationUpdates(mLocationRequest, 
-				(com.google.android.gms.location.LocationListener) this);
 	}
 
 	
 	@Override
 	public void onDisconnected() {
-		Log.d("DEBUG", "Map detail disconnected");
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void setLocaion(double lattitude, double longitude) {
-		this.mapMode =  MapMode.EVENT_DISPLAY; 
 		Log.e("MAP MODE SET", "Called with lat["+lattitude+"] and long["+longitude+"]");
 		currentLat = lattitude;
 		currentLng = longitude;
-		locationSet  = true;
 		Location eventLoc = new Location("asdf");
 		eventLoc.setLatitude(currentLat);
 		eventLoc.setLongitude(currentLng);
 		onLocationChanged(eventLoc);
-		//		locationclient.removeLocationUpdates(this);
 	}
 	
-	public void setMarkerCurrentUserLocation(Location loc) {
-		Location mCurrentLocation;
-		LatLng userLoc;
-		
-        mCurrentLocation = locationclient.getLastLocation();
-        if(mCurrentLocation == null) {
-        	Log.e("ERROR", "Current location is null");
-        	return;
-        }
-        userLoc = new LatLng(mCurrentLocation.getLatitude(),
-        		mCurrentLocation.getLongitude());
-        
-        Log.d("DEBUG", "Current user location is: lat["+
-        mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
-        
-        Marker usermarker = map.addMarker(new MarkerOptions()
-        .position(userLoc)
-        .draggable(false));
-	}
 }

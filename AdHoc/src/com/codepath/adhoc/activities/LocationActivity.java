@@ -55,7 +55,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private List<Events>		allEvents;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
-    private boolean             mapUpdateRcvd = false;
     private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
@@ -87,8 +86,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		}				
 		 mLocationRequest = LocationRequest.create();
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//	     mLocationRequest.setInterval(UPDATE_INTERVAL);
-//	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+	     mLocationRequest.setInterval(UPDATE_INTERVAL);
+	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
 
 	@Override
@@ -110,7 +109,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
-		mapUpdateRcvd = true;
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 			Log.e("DEBUG", "Map is null");
@@ -125,14 +123,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 							  .strokeColor(Color.RED));
 				setMarkerCurrentUserLocation();
 				addListOfEvents();
-			    	/*map.setOnMarkerDragListener(this);
-			    	myPosMarker = map.addMarker(new MarkerOptions()
-			    									.position(myPos)
-			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			    	myPosMarker.setDraggable(false);
-			    	setAddressOnMarker(myPosMarker,currentLat, currentLng);
-			    	myPosMarker.showInfoWindow();
-			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));*/
 			}
 		}
 		else{
