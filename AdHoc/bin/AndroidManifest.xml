@@ -39,6 +39,8 @@ to match your app's package name + ".permission.C2D_MESSAGE".
         android:theme="@style/Theme.Base.AppCompat.Light.DarkActionBar" >
         <activity
             android:name="com.codepath.adhoc.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,22 +60,32 @@ to match your app's package name + ".permission.C2D_MESSAGE".
         </activity>
         <activity
             android:name="com.codepath.adhoc.activities.EventListActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_event_list" >
         </activity>
         <activity
             android:name="com.codepath.adhoc.activities.EventDetailsActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_event_details" >
         </activity>
         <activity
             android:name="com.codepath.adhoc.activities.CreateEventActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_create_event" >
         </activity>
         <activity
             android:name="com.codepath.adhoc.activities.LocationActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_location" >
         </activity>
         <activity
             android:name="com.codepath.adhoc.activities.LocationCreationActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_location" >
         </activity>
 
@@ -83,7 +95,7 @@ to match your app's package name + ".permission.C2D_MESSAGE".
             android:value="@string/app_id" />
 		<meta-data
      		android:name="com.google.android.maps.v2.API_KEY"
-     		android:value="AIzaSyDOBr-nd2lzlxJ43x9Wh8mbFdAHfE0l9hU" />
+     		android:value="AIzaSyCcG3Q0t9o7zUV5Bj3QvUFPNTLM3Aj_huY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
