@@ -1,22 +1,23 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:AdHoc="http://schemas.android.com/apk/res-auto">
 	<item
         android:id="@+id/action_create_event"
-        android:showAsAction="ifRoom"
+        AdHoc:showAsAction="ifRoom"
         android:icon="@drawable/ic_create_event"
         android:title="@string/abCreate"/>
     <item
         android:id="@+id/action_map"
-        android:showAsAction="ifRoom"
+        AdHoc:showAsAction="ifRoom"
         android:icon="@drawable/ic_map"
         android:title="@string/abMap"/>
     <item
         android:id="@+id/action_list_events"
-        android:showAsAction="ifRoom"
+        AdHoc:showAsAction="ifRoom"
         android:icon="@drawable/ic_list_events"
         android:title="@string/abList"/>
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="900"
-        android:showAsAction="never"
+        AdHoc:showAsAction="never"
         android:title="@string/action_logout"/>
 </menu>
