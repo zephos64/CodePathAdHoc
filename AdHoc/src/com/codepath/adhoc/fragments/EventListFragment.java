@@ -100,5 +100,11 @@ public abstract class EventListFragment extends Fragment {
 	}
 	
 	abstract void loadList();
-
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d("DEBUG", "Event list Fragment refreshed");
+		loadList();
+	}
 }

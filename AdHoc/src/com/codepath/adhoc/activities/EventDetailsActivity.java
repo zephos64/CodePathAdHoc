@@ -418,4 +418,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 			llProgress.setVisibility(View.INVISIBLE);
 		}
 	}
+	
+	@Override
+	public void onRestart() {
+		super.onRestart();
+		Log.d("DEBUG", "Event Details restarted");
+		//populateItems();
+		getItem(itemId);
+	}
 }
