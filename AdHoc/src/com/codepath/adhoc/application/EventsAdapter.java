@@ -28,7 +28,7 @@ import com.parse.ParseUser;
 public class EventsAdapter extends ArrayAdapter<Events> {
 	
 	private List<Events> mEvents;
-	protected String str = "Not joined";
+	protected String str = "";
 
 	public EventsAdapter(Context context, List<Events> objects) {
 		super(context, com.codepath.adhoc.R.layout.fragment_item_event, objects);
@@ -50,7 +50,7 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		TextView tvDistance = (TextView) convertView.findViewById(R.id.tvDescription);
 		TextView tvRemainingSpots = (TextView) convertView.findViewById(R.id.tvStartTime);
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
-		TextView tvHostedOrJoined = (TextView) convertView.findViewById(R.id.tvHostedOrJoined);
+		final TextView tvHostedOrJoined = (TextView) convertView.findViewById(R.id.tvHostedOrJoined);
 		
 		ParseClient.getHostUser(events, new FindCallback<User>() {
 
@@ -64,6 +64,7 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 							.equals(ParseUser.getCurrentUser().getObjectId())) {
 						Log.d("Host?", listHostUser.get(0).getObjectId().toString());
 						str = "Host";
+						tvHostedOrJoined.setText(str);
 					}
 				}
 			}
@@ -81,12 +82,11 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 							.equals(ParseUser.getCurrentUser().getObjectId())) {
 						Log.d("Joined?", listJoinedUser.get(0).getObjectId().toString());
 						str = "Joined";
+						tvHostedOrJoined.setText(str);
 					}
 				}
 			}
 		});
-		
-		tvHostedOrJoined.setText(str);
 		
 		tvLoginTitle.setText(events.getEventName());
 		ParseGeoPoint point = events.getLoc();

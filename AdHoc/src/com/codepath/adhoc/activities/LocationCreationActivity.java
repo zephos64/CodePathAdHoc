@@ -42,11 +42,14 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
     private double 				currentLng = 0;
-    private Marker 				myPosMarker;
-    private LatLng 				myPos =new LatLng(currentLat,currentLng);
-    private LatLng 				evtPos =new LatLng(currentLat,currentLng);
-    LocationRequest 			mLocationRequest;
     LocationData				prevLoc;
+    
+    private Marker				evtMarker;
+    private Marker 				myPosMarker;
+    private LatLng 				myPos;
+    private LatLng 				evtPos =new LatLng(currentLat,currentLng);
+    
+    LocationRequest 			mLocationRequest;
     private boolean             mapUpdateRcvd = false;
     private boolean             chosenByDrag  = false;
     public static final int 	MINUTE_IN_SECONDS = 60;
@@ -84,13 +87,16 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	public void onClickSave(View v) {
 		String [] address = null;
 		Log.e("Chosen by Drag", String.valueOf(chosenByDrag));
-		if (chosenByDrag == true) {
+		/*if (chosenByDrag == true) {
 			Log.e("Address ", " LAT  :" + String.valueOf(evtPos.latitude) + 
 							  " LONG :" + String.valueOf(evtPos.longitude));
 			address = MapUtils.getAddressFromGeoCode(this, evtPos.latitude, evtPos.longitude);
-		}
-		address = MapUtils.getAddressFromGeoCode(this, myPos.latitude, myPos.longitude);
-		LocationData lcn = new LocationData(myPos.latitude, myPos.longitude);
+		}*/
+		Log.d("DEBUG", "Address set to["+evtPos.latitude+","+evtPos.longitude+"]");
+		address = MapUtils.getAddressFromGeoCode(this, evtPos.latitude, evtPos.longitude);
+		//address = MapUtils.getAddressFromGeoCode(this, myPos.latitude, myPos.longitude);
+		//LocationData lcn = new LocationData(myPos.latitude, myPos.longitude);
+		LocationData lcn = new LocationData(evtPos.latitude, evtPos.longitude);
 		lcn.setAddress(address);
 		Intent data = new Intent();
 		data.putExtra("Location", lcn);
@@ -116,7 +122,8 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	    	 currentLng = location.getLongitude();
 	     }
 		
-		myPos      = new LatLng(currentLat,currentLng);
+		//myPos      = new LatLng(currentLat,currentLng);
+		setMarkerCurrentUserLocation();
 		if (map == null) {
 			Log.d("DEBUG", "Map creation is null");
 
@@ -124,26 +131,25 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 			map = supportMap.getMap();
 
 			if (map != null) {
-					setMarkerCurrentUserLocation();
+					//user marker stuff
 			    	map.setOnMapClickListener(this);
 			    	map.setOnMarkerClickListener(this);
 			    	myPosMarker = map.addMarker(new MarkerOptions()
 			    									.position(myPos)
-			    									.draggable(true)
-			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
+			    									.draggable(false)
+			    									.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user)));
 			    	//myPosMarker.setDraggable(true);
 //			    	MapUtils.setAddressOnMarker(this, myPosMarker,currentLat, currentLng);
-			    	myPosMarker.setTitle("Drag Me");
-			    	myPosMarker.showInfoWindow();
+//			    	myPosMarker.showInfoWindow();
 			        map.setOnMarkerDragListener(this);
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
 			}
 		}
 		else {
 			Log.d("DEBUG", "Map creation is not null");
-			if (mapUpdateRcvd == false) {
+			//if (mapUpdateRcvd == false) {
 				myPosMarker.setPosition(myPos);
-			}
+			//}
 		}
 		mapUpdateRcvd = true;
 
@@ -208,24 +214,25 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		mCurrentLocation = locationclient.getLastLocation();
         Log.d("DEBUG", "Current user location is: lat["+
         mCurrentLocation.getLatitude() + "] long is [" + mCurrentLocation.getLongitude()+"]");
+        myPos = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 	}
 
 	@Override
 	public void onMapClick(LatLng latLng) {
 		// TODO Auto-generated method stub
-		if (myPosMarker != null) {
-			myPosMarker.remove();
+		if (evtMarker != null) {
+			evtMarker.remove();
 		}
-		myPosMarker = map.addMarker(new MarkerOptions()
+		evtMarker = map.addMarker(new MarkerOptions()
 						.position(latLng)
 						.draggable(true)
 						.visible(true)
 						.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))
 		);
-		MapUtils.setAddressOnMarker(this, myPosMarker, latLng.latitude, latLng.longitude);
+		MapUtils.setAddressOnMarker(this, evtMarker, latLng.latitude, latLng.longitude);
 		Log.d("DEBUG", "Map clicked at lat["+latLng.latitude+
 				"], long["+latLng.longitude+"]");
-		myPos = latLng;
+		evtPos = latLng;
 	}
 
 	@Override
@@ -238,8 +245,8 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 
 	@Override
 	public void onMarkerDrag(Marker marker) {
-    	myPosMarker.setTitle("Drop Me");
-    	myPosMarker.showInfoWindow();
+    	//myPosMarker.setTitle("Drop Me");
+    	evtMarker.showInfoWindow();
 		
 	}
 
@@ -250,14 +257,14 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		String [] address = null;
 		address = MapUtils.getAddressFromGeoCode(this, evtPos.latitude, evtPos.longitude);
 		chosenByDrag = true;
-		myPosMarker.setTitle("Done");
-    	myPosMarker.showInfoWindow();
+		evtMarker.setTitle(address[0]);
+    	evtMarker.showInfoWindow();
 	}
 
 	@Override
 	public void onMarkerDragStart(Marker marker) {
 		chosenByDrag = false;
-		myPosMarker.setTitle("Drop Me");
-    	myPosMarker.showInfoWindow();
+		//myPosMarker.setTitle("Drop Me");
+    	evtMarker.showInfoWindow();
 	}
 }

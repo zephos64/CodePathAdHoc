@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvMaxAttendees"
-        android:text="Regular Text" />
+        android:text="" />
 
 </RelativeLayout>

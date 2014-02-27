@@ -36,8 +36,10 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
     private LocationClient 		locationclient;
     private double 				currentLat = 0;
     private double 				currentLng = 0;
-    private Marker 				myPosMarker;
-    private LatLng 				myPos =new LatLng(currentLat,currentLng);
+    private Marker 				eventMarker;
+    private Marker				myPosMarker;
+    private LatLng 				myPos;
+    private LatLng				eventPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
 
@@ -58,12 +60,15 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		}
 		else{
 			Toast.makeText(getActivity(), "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
-		}				
+		}			
+		mLocationRequest = LocationRequest.create();
+	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
 //	@Override
 	public void onLocationChanged(Location location) {
-		myPos = new LatLng(currentLat,currentLng);
+		eventPos = new LatLng(currentLat,currentLng);
+		
 		if (map == null) {
 			Log.d("DEBUG", "Map details is null");
 			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -73,17 +78,19 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 			UiSettings mapUi = map.getUiSettings();
 			mapUi.setAllGesturesEnabled(false);
 			mapUi.setZoomControlsEnabled(false);
+			
+			setMarkerCurrentUserLocation();
 				
-			myPosMarker = map.addMarker(new MarkerOptions().
-											position(myPos).
+			eventMarker = map.addMarker(new MarkerOptions().
+											position(eventPos).
 											icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker)));
-			setAddressOnMarker(myPosMarker, currentLat, currentLng);
-			myPosMarker.showInfoWindow();
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
+			setAddressOnMarker(eventMarker, currentLat, currentLng);
+			eventMarker.showInfoWindow();
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventPos, 15));
 		} else {
 			Log.d("DEBUG", "Map details is null");
-			myPosMarker.setPosition(myPos);
-			myPosMarker.showInfoWindow();
+			eventMarker.setPosition(eventPos);
+			eventMarker.showInfoWindow();
 		}
 	}
 
@@ -150,4 +157,27 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		onLocationChanged(eventLoc);
 	}
 	
+	public void setMarkerCurrentUserLocation() {
+		Location mCurrentLocation;
+		LatLng userLoc;
+
+		mCurrentLocation = locationclient.getLastLocation();
+		if (mCurrentLocation == null) {
+			Log.e("ERROR", "Current location is null");
+			return;
+		}
+
+		userLoc = new LatLng(mCurrentLocation.getLatitude(),
+				mCurrentLocation.getLongitude());
+
+		Log.d("DEBUG",
+				"Current user location is: lat["
+						+ mCurrentLocation.getLatitude() + "] long is ["
+						+ mCurrentLocation.getLongitude() + "]");
+
+		Marker usermarker = map.addMarker(new MarkerOptions()
+				.position(userLoc)
+				.draggable(false)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user)));
+	}
 }
