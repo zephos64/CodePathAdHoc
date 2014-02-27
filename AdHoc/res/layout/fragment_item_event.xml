@@ -32,16 +32,16 @@
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvStartTime"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvMaxAttendees"
         android:text="Regular Text" />
 
     <TextView
         android:id="@+id/tvHostedOrJoined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvMaxAttendees"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvDescription"
         android:text="" />
 
 </RelativeLayout>
