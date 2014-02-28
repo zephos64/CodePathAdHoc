@@ -52,44 +52,12 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvMaxAttendees);
 		final TextView tvHostedOrJoined = (TextView) convertView.findViewById(R.id.tvHostedOrJoined);
 		
-		ParseClient.getHostUser(events, new FindCallback<User>() {
-
-			@Override
-			public void done(List<User> listHostUser, ParseException e) {
-				// TODO Auto-generated method stub
-				if (e == null) {
-					if (listHostUser.size() > 0
-							&& listHostUser.get(0)
-							.getObjectId()
-							.equals(ParseUser.getCurrentUser().getObjectId())) {
-						Log.d("Host?", listHostUser.get(0).getObjectId().toString());
-						str = "Host";
-						tvHostedOrJoined.setText(str);
-					}
-				}
-			}
-		});
-		
-		ParseClient.getJoinedUsers(events, new FindCallback<User>() {
-
-			@Override
-			public void done(List<User> listJoinedUser, ParseException e) {
-				// TODO Auto-generated method stub
-				if (e == null) {
-					if (listJoinedUser.size() > 0
-							&& listJoinedUser.get(0)
-							.getObjectId()
-							.equals(ParseUser.getCurrentUser().getObjectId())) {
-						Log.d("Joined?", listJoinedUser.get(0).getObjectId().toString());
-						str = "Joined";
-						tvHostedOrJoined.setText(str);
-					}
-				}
-			}
-		});
+		//tvHostedOrJoined.setText(events.getRel());
+		//Log.d("TEST", "TEST: " + events.getHostUserId());
+		tvHostedOrJoined.setText(events.getHostUserId());
 		
 		tvLoginTitle.setText(events.getEventName());
-		ParseGeoPoint point = events.getLoc();
+		//ParseGeoPoint point = events.getLoc();
 		
 		//Log.d("Which event", "Related host" + events.getHostUserIdRelation());
 		

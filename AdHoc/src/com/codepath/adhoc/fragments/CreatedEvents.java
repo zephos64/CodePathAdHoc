@@ -10,6 +10,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class CreatedEvents extends EventListFragment {
 	@Override
@@ -28,10 +29,15 @@ public class CreatedEvents extends EventListFragment {
 		ParseClient.getParseUserCreatedEvents((User)ParseUser.getCurrentUser(),
 				new FindCallback<Events>() {
 			@Override
-			public void done(List<Events> listEvents, ParseException arg1) {
-				getAdapter().clear();
-				getAdapter().addAll(listEvents);
-				lvEvents.onRefreshComplete();
+			public void done(List<Events> listEvents, ParseException e) {
+				if(e == null) {
+					getAdapter().clear();
+					getAdapter().addAll(listEvents);
+					lvEvents.onRefreshComplete();
+				} else {
+					Log.e("ERROR", "ParseException on all events: " + e);
+					e.printStackTrace();
+				}
 			}
 		});
 	}

@@ -25,8 +25,10 @@ public class AdHocUtils {
 	public final static String eventDesc = "description";
 	public final static String eventCreatedAt = "createdAt";
 	public final static String eventUpdatedAt = "updateAt";
-	public final static String eventHostUserId = "hosted_by_id";
-	public final static String eventJoinedUsersId = "joined_user_id";
+	//public final static String eventHostUserId = "hosted_by_id";
+	//public final static String eventJoinedUsersId = "joined_user_id";
+	public final static String eventHostUser = "host_user";
+	public final static String eventJoinedUser = "joined_users";
 	public final static String eventAddress = "address";
 	public final static String eventAttendanceCount = "attendanceCount";
 
@@ -45,13 +47,30 @@ public class AdHocUtils {
 			return state;
 		}
 	}
+	
+	public enum EventRelation {
+		HOST ("HOST"),
+		JOINED ("JOINED"),
+		NONE ("NONE");
+		
+		private final String relation;
+		EventRelation(String relation) {
+			this.relation = relation;
+		}
+		
+		public String toString() {
+			return relation;
+		}
+	}
 
 	public final static String userName = "username";
 	public final static String userPassword = "password";
 	public final static String userAuthData = "authData";
 	public final static String userPhoneNum = "phone";
-	public final static String userEventsAttending = "events_attending";
-	public final static String userEventsCreated = "events_created";
+	//public final static String userEventsAttending = "events_attending";
+	//public final static String userEventsCreated = "events_created";
+	public final static String userEventsJoined = "events_joined";
+	public final static String userEventsHost = "events_hosting";
 	
 	public static String getTime(String time) {
 		String[] broken = time.split("");

@@ -22,7 +22,9 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class CreateEventActivity extends ActionBarActivity {	
+public class CreateEventActivity extends ActionBarActivity {
+	Events newEvent;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -119,28 +121,32 @@ public class CreateEventActivity extends ActionBarActivity {
 			return;
 		}
 		
-		final Events newEvent = dataAct.getEvent();
+		newEvent = dataAct.getEvent();
 
 		newEvent.saveInBackground(new SaveCallback() {
-			
 			@Override
 			public void done(ParseException e) {
 				if(e == null) {
 					Log.d("DEBUG", "Saving host...");
 					User hostUser = (User)ParseUser.getCurrentUser();
-					hostUser.addEventHosting(newEvent);
-					hostUser.saveInBackground();
-					Log.d("DEBUG", "Save completed for host");
+//hostUser.addEventHosting(newEvent);
+
+					hostUser.addEventsHosting(newEvent);
+					hostUser.saveInBackground(new SaveCallback() {
+						
+						@Override
+						public void done(ParseException arg0) {
+							Log.d("DEBUG", "Save completed for host");
+							
+							Log.d("DEBUG", "Save completed for event");
+							Intent listIntent = new Intent(getBaseContext(), EventListActivity.class);
+							startActivity(listIntent);
+						}
+					});
 		        } else {
 		            Log.e("ERROR", "Error: " + e.getMessage());
-		        }
-				
+		        }	
 			}
 		});
-
-		Log.d("DEBUG", "Save completed for event");
-		
-		Intent listIntent = new Intent(this, EventListActivity.class);
-		startActivity(listIntent);
 	}
 }

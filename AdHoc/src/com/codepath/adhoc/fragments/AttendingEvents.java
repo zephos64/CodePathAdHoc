@@ -3,6 +3,7 @@ package com.codepath.adhoc.fragments;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.parsemodels.Events;
@@ -28,10 +29,15 @@ public class AttendingEvents extends EventListFragment {
 		ParseClient.getParseUserJoinedEvents((User)ParseUser.getCurrentUser(),
 				new FindCallback<Events>() {
 			@Override
-			public void done(List<Events> listEvents, ParseException arg1) {
-				getAdapter().clear();
-				getAdapter().addAll(listEvents);
-				lvEvents.onRefreshComplete();
+			public void done(List<Events> listEvents, ParseException e) {
+				if(e == null) {
+					getAdapter().clear();
+					getAdapter().addAll(listEvents);
+					lvEvents.onRefreshComplete();
+				} else {
+					Log.e("ERROR", "ParseException on all events: " + e);
+					e.printStackTrace();
+				}
 			}
 		});
 	}

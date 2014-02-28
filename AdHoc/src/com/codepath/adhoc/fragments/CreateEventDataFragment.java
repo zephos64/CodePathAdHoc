@@ -190,8 +190,8 @@ public class CreateEventDataFragment extends CreateEventFragment {
 		tempTime.set(Calendar.MINUTE, getMinutes(etStartTime.getText().toString()));
 		
 		Calendar tempEndTime = Calendar.getInstance();
-		tempTime.set(Calendar.HOUR_OF_DAY, getHours(etEndTime.getText().toString()));
-		tempTime.set(Calendar.MINUTE, getMinutes(etEndTime.getText().toString()));
+		tempEndTime.set(Calendar.HOUR_OF_DAY, getHours(etEndTime.getText().toString()));
+		tempEndTime.set(Calendar.MINUTE, getMinutes(etEndTime.getText().toString()));
 		
 		Events newEvent = new Events(AdHocUtils.EventStates.TBS,
 				spListEvents.getSelectedItem().toString(),

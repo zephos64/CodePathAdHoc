@@ -173,25 +173,50 @@ public class EventDetailsActivity extends ActionBarActivity {
 			//set event status cancel
 			
 			User curUser = (User) ParseUser.getCurrentUser();
-			item.setEventState(AdHocUtils.EventStates.CANCELLED.toString());
-			curUser.removeEventsHosting(item);
-			item.saveInBackground();
-			curUser.saveInBackground();
-			
-			tvStatus.setText(AdHocUtils.EventStates.CANCELLED.toString());
-			btnAction.setVisibility(View.INVISIBLE);
+			curUser.removeEventHosting(item);
+			curUser.saveInBackground(new SaveCallback() {
+				@Override
+				public void done(ParseException arg0) {
+					item.setEventState(AdHocUtils.EventStates.CANCELLED.toString());
+					//item.saveInBackground();
+					
+					tvStatus.setText(AdHocUtils.EventStates.CANCELLED.toString());
+					btnAction.setVisibility(View.INVISIBLE);
+					
+					item.saveInBackground(new SaveCallback() {
+						@Override
+						public void done(ParseException arg0) {
+							populateUserState();
+							populateAttendance();
+						}
+					});
+				}
+			});
 		} else if(hasJoined) {
 			//remove name from event list	
 
-			User curUser = (User) ParseUser.getCurrentUser();
+			final User curUser = (User) ParseUser.getCurrentUser();
 			Log.d("DEBUG", "Remove user [" + curUser.getObjectId()
 					+"] from event [" + item.getObjectId()+"]");
-			item.removeJoinedUser(curUser);
-			curUser.removeEventsAttending(item);
-			item.saveInBackground();
-			curUser.saveInBackground();
-		
+			
 			leaveEvent();
+			
+			curUser.removeEventsJoined(item);
+			//item.saveInBackground();
+			curUser.saveInBackground(new SaveCallback() {
+				
+				@Override
+				public void done(ParseException arg0) {
+					item.removeJoinedUser(curUser);
+					item.saveInBackground(new SaveCallback() {
+						@Override
+						public void done(ParseException arg0) {
+							populateUserState();
+							populateAttendance();
+						}
+					});
+				}
+			});
 		} else {
 			//add name to event list
 
@@ -202,15 +227,28 @@ public class EventDetailsActivity extends ActionBarActivity {
 						String eventStatus = listEvents.get(0).getEventState(); 
 						if(!eventStatus.equals(AdHocUtils.EventStates.CANCELLED.toString())
 							&& !eventStatus.equals(AdHocUtils.EventStates.FINISHED.toString())) {
-								User curUser = (User) ParseUser.getCurrentUser();
+								final User curUser = (User) ParseUser.getCurrentUser();
 								Log.d("DEBUG", "Adding user [" + curUser.getObjectId()
 									+"] from event [" + item.getObjectId()+"]");
-								item.addJoinedUser(curUser);
-								curUser.addEventAttending(item);
-								item.saveInBackground();
-								curUser.saveInBackground();
-							
-								joinEvent();
+								
+								joinedEvent();
+								
+
+								curUser.addEventsJoined(item);
+								curUser.saveInBackground(new SaveCallback() {
+									
+									@Override
+									public void done(ParseException arg0) {
+										item.addJoinedUser(curUser);
+										item.saveInBackground(new SaveCallback() {
+											@Override
+											public void done(ParseException arg0) {
+												populateUserState();
+												populateAttendance();
+											}
+										});
+									}
+								});
 						} else {
 							showErrDialog();
 						}
@@ -221,16 +259,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 				}
 			});
 		}
-
-		item.saveInBackground(new SaveCallback() {
-			@Override
-			public void done(ParseException arg0) {
-				populateUserState();
-			}
-		});
 	}
 	
-	private void joinEvent() {
+	private void joinedEvent() {
 		tvStatus.setText("JOINED");
 		btnAction.setText("LEAVE");
 		hasJoined=true;
@@ -310,96 +341,30 @@ public class EventDetailsActivity extends ActionBarActivity {
 	}
 	
 	private void populateAttendance() {
-		ParseClient.getHostUser(item, new FindCallback<User>() {
+		runOnUiThread(new Runnable() {
 			@Override
-			public void done(List<User> listUsersJoined, ParseException e) {
-				if (e == null) {
-					if (listUsersJoined.size() > 0
-							&& listUsersJoined
-									.get(0)
-									.getObjectId()
-									.equals(ParseUser.getCurrentUser()
-											.getObjectId())) {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								Log.d("DEBUG", "User is host of event");
-								tvStatus.setText("HOST");
-								btnAction.setText("CANCEL");
-								isHost = true;
-								gotAtt = true;
-								hideProgressBar();
-							}
-						});
-
-					}
+			public void run() {
+				gotAtt = true;
+				if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+					Log.d("DEBUG", "User is host of event");
+					tvStatus.setText("HOST");
+					btnAction.setText("CANCEL");
+					isHost = true;
+					hideProgressBar();
+				} else if(item.getJoinedUserIds().contains(ParseUser.getCurrentUser())) {
+					Log.d("DEBUG", "User has joined event");
+					joinedEvent();
+					hideProgressBar();
 				} else {
-					Log.e("ERROR", "Error getting userId for event details");
-					e.printStackTrace();
-				}
-			}
-		});
-		ParseClient.getJoinedUsers(item, new FindCallback<User>() {
-			@Override
-			public void done(List<User> listUsersJoined, ParseException e) {
-				if (e == null) {
-					Log.d("DEBUG", "Size of joined user list: " +listUsersJoined.size());
-					for(int a = 0; a < listUsersJoined.size(); a++) {
-						Log.d("DEBUG", "Event has user in it: " + listUsersJoined.get(a).getObjectId());
-					}
-					if (listUsersJoined.contains(ParseUser.getCurrentUser())) {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								Log.d("DEBUG", "User has joined event");
-								leaveEvent();
-								gotAtt = true;
-								hideProgressBar();
-							}
-						});
-					} else {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								Log.d("DEBUG", "User has NOT joined event");
-								joinEvent();
-								gotAtt = true;
-								hideProgressBar();
-							}
-						});
-					}
-				} else {
-					Log.e("ERROR", "Error getting userId for event details");
-					e.printStackTrace();
+					Log.d("DEBUG", "User has NOT joined event");
+					leaveEvent();
+					hideProgressBar();
 				}
 			}
 		});
 	}
 		
 	private void populateUserState() {
-		/*ParseClient.getCountJoinedUsers(item, new CountCallback() {
-			
-			@Override
-			public void done(final int count, ParseException e) {
-				if (e == null) {
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							tvAttendance.setText(count + " / "
-									+ item.getMaxAttendees());
-							gotState = true;
-							hideProgressBar();
-						}
-					});
-					
-				} else {
-					Log.e("ERROR",
-							"Error getting joined users for event details");
-					e.printStackTrace();
-				}
-				
-			}
-		});*/
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

@@ -1,19 +1,15 @@
 package com.codepath.adhoc.parsemodels;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-
-import android.util.Log;
+import java.util.List;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.AdHocUtils.EventStates;
-import com.codepath.adhoc.application.ParseClient;
-import com.parse.CountCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("Events")
@@ -22,6 +18,7 @@ public class Events extends ParseObject implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private AdHocUtils.EventRelation userRelation = AdHocUtils.EventRelation.NONE;
 
 	public Events() {
 	}
@@ -35,10 +32,12 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventAddress, addr);
-		put(AdHocUtils.eventAttendanceCount, 0);
+		put(AdHocUtils.eventAttendanceCount, 1);
 		
-		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
-		relation.add(hostUser);
+		put(AdHocUtils.eventHostUser, hostUser);
+		put(AdHocUtils.eventJoinedUser, new ArrayList<User>());
+		//ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
+		//relation.add(hostUser);
 	}
 
 	public Events(EventStates state, String name, int maxAttend, String time, String endTime,
@@ -50,13 +49,13 @@ public class Events extends ParseObject implements Serializable{
 		put(AdHocUtils.eventTimeEnd, endTime);
 		put(AdHocUtils.eventDesc, desc);
 		put(AdHocUtils.eventAddress, addr);
-		//put(AdHocUtils.eventLocLong, longitude);
-		//put(AdHocUtils.eventLocLat, latitude);
 		put(AdHocUtils.eventLoc, new ParseGeoPoint(latitude, longitude));
-		put(AdHocUtils.eventAttendanceCount, 0);
+		put(AdHocUtils.eventAttendanceCount, 1);
 
-		ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
-		relation.add(hostUser);
+		put(AdHocUtils.eventHostUser, hostUser);
+		put(AdHocUtils.eventJoinedUser, new ArrayList<User>());
+		//ParseRelation<ParseUser> relation = getRelation(AdHocUtils.eventHostUserId);
+		//relation.add(hostUser);
 	}
 
 	public String getEventState() {
@@ -78,14 +77,6 @@ public class Events extends ParseObject implements Serializable{
 	public String getEventTimeEnd() {
 		return getString(AdHocUtils.eventTimeEnd);
 	}
-
-	/*public double getLocLong() {
-		return getDouble(AdHocUtils.eventLocLong);
-	}
-
-	public double getLocLat() {
-		return getDouble(AdHocUtils.eventLocLat);
-	}*/
 	
 	public ParseGeoPoint getLoc() {
 		return getParseGeoPoint(AdHocUtils.eventLoc);
@@ -111,30 +102,22 @@ public class Events extends ParseObject implements Serializable{
 		return getInt(AdHocUtils.eventAttendanceCount);
 	}
 
-	public ParseRelation<User> getHostUserIdRelation() {
-		return getRelation(AdHocUtils.eventHostUserId);
-	}
-	
-	public ParseRelation<User> getJoinedUsersRelation() {
-	      return getRelation(AdHocUtils.eventJoinedUsersId);
-	  }
-
 	public void setEventState(String newState) {
 		put(AdHocUtils.eventState, newState);
 	}
-	
-	/*public void setLocLat(double lat) {
-		put(AdHocUtils.eventLocLat, lat);
-	}
-	
-	public void setLocLong(double longi) {
-		put(AdHocUtils.eventLocLat, longi);
-	}*/
 	
 	public void setLoc(double lat, double longi) {
 		put(AdHocUtils.eventLoc, new ParseGeoPoint(lat, longi));
 	}
 
+	/*public ParseRelation<User> getHostUserIdRelation() {
+		return getRelation(AdHocUtils.eventHostUserId);
+	}
+
+	public ParseRelation<User> getJoinedUsersRelation() {
+		return getRelation(AdHocUtils.eventJoinedUsersId);
+	}
+	
 	public void addJoinedUser(User userObj) {
 		getJoinedUsersRelation().add(userObj);
 		increment(AdHocUtils.eventAttendanceCount);
@@ -143,5 +126,33 @@ public class Events extends ParseObject implements Serializable{
 	public void removeJoinedUser(User userObj) {
 		getJoinedUsersRelation().remove(userObj);
 		increment(AdHocUtils.eventAttendanceCount, -1);
+	}*/
+	
+	public String getHostUserId() {
+		return getParseObject(AdHocUtils.eventHostUser).getObjectId();
+	}
+	
+	public List<User> getJoinedUserIds() {
+		return getList(AdHocUtils.eventJoinedUser);
+	}
+	
+	public void addJoinedUser(User userObj) {
+		getList(AdHocUtils.eventJoinedUser).add(userObj);
+	}
+	
+	public void removeJoinedUser(User userObj) {
+		List<Events> eventList = getList(AdHocUtils.eventJoinedUser);
+		if(eventList.contains(userObj)) {
+			eventList.remove(userObj);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object otherEvent) {
+		if(otherEvent instanceof Events && 
+				getObjectId().equals(((Events)otherEvent).getObjectId())) {
+			return true;
+		}
+		return false;
 	}
 }
