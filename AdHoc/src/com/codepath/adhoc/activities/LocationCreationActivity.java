@@ -87,6 +87,13 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	public void onClickSave(View v) {
 		String [] address = null;
 		Log.e("Chosen by Drag", String.valueOf(chosenByDrag));
+		
+		if(evtMarker == null) {
+			Log.d("DEBUG", "No location set, so defaulting to cancel");
+			onClickCancel(v);
+			return;
+		}
+		
 		/*if (chosenByDrag == true) {
 			Log.e("Address ", " LAT  :" + String.valueOf(evtPos.latitude) + 
 							  " LONG :" + String.valueOf(evtPos.longitude));
@@ -265,6 +272,6 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	public void onMarkerDragStart(Marker marker) {
 		chosenByDrag = false;
 		//myPosMarker.setTitle("Drop Me");
-    	evtMarker.showInfoWindow();
+    	//evtMarker.showInfoWindow();
 	}
 }

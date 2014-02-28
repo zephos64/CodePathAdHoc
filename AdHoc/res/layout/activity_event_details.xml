@@ -127,4 +127,13 @@
         
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/pbAttendance"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

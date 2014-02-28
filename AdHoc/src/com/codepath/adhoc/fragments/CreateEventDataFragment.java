@@ -220,11 +220,11 @@ public class CreateEventDataFragment extends CreateEventFragment {
 						Log.d("DEBUG", "Setting end time after start time already set");
 						
 						hour = getHours(etStartTime.getText().toString());
-						min = getMinutes(etStartTime.getText().toString());
+						min = getMinutes(etStartTime.getText().toString()+1);
 					} else if(etField.getText().toString().isEmpty()) {
 						Log.d("DEBUG", "Time field empty, getting calendar time");
 						hour = cal.get(Calendar.HOUR_OF_DAY);
-						min = cal.get(Calendar.MINUTE);
+						min = cal.get(Calendar.MINUTE)+1;
 					} else {
 						hour = getHours(etField.getText().toString());
 						min = getMinutes(etField.getText().toString());

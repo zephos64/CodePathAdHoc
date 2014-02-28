@@ -42,5 +42,6 @@
     <string name="errMissingDataTitle">Missing data in field</string>
     <string name="hintStartTime">Click to select a start time</string>
     <string name="getData">Getting event data...</string>
+    <string name="saving">Saving...</string>
     
 </resources>

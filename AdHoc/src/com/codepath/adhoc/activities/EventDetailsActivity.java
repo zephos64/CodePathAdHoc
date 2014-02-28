@@ -2,8 +2,6 @@ package com.codepath.adhoc.activities;
 
 import java.util.List;
 
-import javax.security.auth.callback.Callback;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -40,6 +38,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvTimeEnd;
 	TextView tvLoc;
 	TextView tvAttendance;
+	ProgressBar pbAttendance;
 	TextView tvDesc;
 	TextView tvStatus;
 	Button btnAction;
@@ -95,6 +94,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		tvTimeEnd = (TextView) findViewById(R.id.textView8);
 		tvLoc = (TextView) findViewById(R.id.textView6);
 		tvAttendance = (TextView) findViewById(R.id.textView4);
+		pbAttendance = (ProgressBar) findViewById(R.id.pbAttendance);
 		tvDesc = (TextView) findViewById(R.id.tvInfoStartTime);
 		tvStatus = (TextView) findViewById(R.id.tvInfoTitle);
 		
@@ -340,7 +340,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		});
 	}
 	
-	private void populateAttendance() {
+	private void populateUserState() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -364,12 +364,14 @@ public class EventDetailsActivity extends ActionBarActivity {
 		});
 	}
 		
-	private void populateUserState() {
+	private void populateAttendance() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				tvAttendance.setText(item.getAttendanceCount() + " / "
 						+ item.getMaxAttendees());
+				pbAttendance.setMax(item.getMaxAttendees());
+				pbAttendance.setProgress(item.getAttendanceCount());
 				gotState = true;
 				hideProgressBar();
 			}

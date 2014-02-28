@@ -27,5 +27,36 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/save" />
+    
+    <LinearLayout
+        android:id="@+id/llSaving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+    	android:paddingLeft="5dp"
+    	android:paddingRight="5dp"
+    	android:paddingTop="5dp"
+        android:background="@drawable/progress_box" >
+
+        <TextView
+            android:id="@+id/tvSavingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saving" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ProgressBar
+            android:id="@+id/pbSpinnerSaving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

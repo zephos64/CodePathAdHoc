@@ -5,16 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
-import com.codepath.adhoc.SupportFragmentTabListener;
 import com.codepath.adhoc.fragments.CreateEventDataFragment;
 import com.codepath.adhoc.parsemodels.Events;
 import com.codepath.adhoc.parsemodels.User;
@@ -25,6 +26,10 @@ import com.parse.SaveCallback;
 public class CreateEventActivity extends ActionBarActivity {
 	Events newEvent;
 	
+	ProgressBar pbSpinnerSaving;
+	TextView tvSavingText;
+	LinearLayout llSaving;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,6 +37,11 @@ public class CreateEventActivity extends ActionBarActivity {
 		
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		pbSpinnerSaving = (ProgressBar) findViewById(R.id.pbSpinnerSaving);
+		tvSavingText = (TextView) findViewById(R.id.tvSavingText);
+		llSaving = (LinearLayout) findViewById(R.id.llSaving);
+		hideProgressBar();
 		
 		CreateEventDataFragment data;
 		FragmentManager fm = getSupportFragmentManager();
@@ -86,38 +96,14 @@ public class CreateEventActivity extends ActionBarActivity {
 		return true;
 	}
 	
-	/*private void setupTabs() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayShowTitleEnabled(true);
-
-		Tab tab1 = actionBar
-				.newTab()
-				.setText("Data")
-				.setTag("Data")
-				.setTabListener(
-						new SupportFragmentTabListener<CreateEventDataFragment>(
-								R.id.flContainerEvent, this, "Data",
-								CreateEventDataFragment.class));
-		actionBar.addTab(tab1);		
-		actionBar.selectTab(tab1);
-//
-//		Tab tab2 = actionBar
-//				.newTab()
-//				.setText("Map")
-//				.setTag("Map")
-//				.setTabListener(
-//						new SupportFragmentTabListener<CreateEventMapActivity>(
-//								R.id.flContainerEvent, this, "Map",
-//								CreateEventMapActivity.class));
-//		actionBar.addTab(tab2);
-	}*/
-	
 	public void clickSave(View v) {
 		Log.d("DEBUG", "Saving new event...");
+		showProgressBar();
+		
 		FragmentManager fm = getSupportFragmentManager();
 		CreateEventDataFragment dataAct = (CreateEventDataFragment)fm.getFragments().get(0);		
 		if(!dataAct.checkData()) {
+			hideProgressBar();
 			return;
 		}
 		
@@ -129,7 +115,6 @@ public class CreateEventActivity extends ActionBarActivity {
 				if(e == null) {
 					Log.d("DEBUG", "Saving host...");
 					User hostUser = (User)ParseUser.getCurrentUser();
-//hostUser.addEventHosting(newEvent);
 
 					hostUser.addEventsHosting(newEvent);
 					hostUser.saveInBackground(new SaveCallback() {
@@ -137,8 +122,9 @@ public class CreateEventActivity extends ActionBarActivity {
 						@Override
 						public void done(ParseException arg0) {
 							Log.d("DEBUG", "Save completed for host");
-							
 							Log.d("DEBUG", "Save completed for event");
+							hideProgressBar();
+							
 							Intent listIntent = new Intent(getBaseContext(), EventListActivity.class);
 							startActivity(listIntent);
 						}
@@ -148,5 +134,17 @@ public class CreateEventActivity extends ActionBarActivity {
 		        }	
 			}
 		});
+	}
+	
+	private void hideProgressBar() {
+		pbSpinnerSaving.setVisibility(View.INVISIBLE);
+		tvSavingText.setVisibility(View.INVISIBLE);
+		llSaving.setVisibility(View.INVISIBLE);
+	}
+
+	private void showProgressBar() {
+		pbSpinnerSaving.setVisibility(View.VISIBLE);
+		tvSavingText.setVisibility(View.VISIBLE);
+		llSaving.setVisibility(View.VISIBLE);
 	}
 }
