@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventListActivity" >
+    tools:context=".EventListActivity"
+    android:background="#228B22" >
 
     <FrameLayout
         android:id="@+id/flEventList"
