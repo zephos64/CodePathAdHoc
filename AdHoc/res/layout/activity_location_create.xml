@@ -2,16 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#d0e6df"
     tools:context=".LocationActivity" >
-    
-<!-- 	<RelativeLayout -->
-<!--         android:id="@+id/mapView" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:layout_alignParentLeft="true" -->
-<!--         android:layout_alignParentTop="true"  -->
-<!--         android:name="com.google.android.gms.maps.MapFragment"> -->
-<!--     </RelativeLayout> -->
+
+    <!-- <RelativeLayout -->
+    <!-- android:id="@+id/mapView" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:name="com.google.android.gms.maps.MapFragment"> -->
+    <!-- </RelativeLayout> -->
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#228B22" />
 
     <fragment
         android:id="@+id/map"
@@ -21,6 +26,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/map"
+        android:background="#228B22" />
 
     <Button
         android:id="@+id/btnLocCreateSave"
@@ -39,5 +50,5 @@
         android:layout_alignParentLeft="true"
         android:onClick="onClickCancel"
         android:text="Cancel" />
-    
+
 </RelativeLayout>
