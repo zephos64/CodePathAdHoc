@@ -4,7 +4,8 @@
     <string name="app_name">AdHoc</string>
     <string name="app_id">575878422500726</string>
     <string name="login_button_fb">Log in with Twitter</string>
-    <string name="login_title">Ad Hoc Event</string>
+    <string name="login_title_1">do</string>
+    <string name="login_title_2">IT</string>
     <string name="title_activity_event_list">listIT</string>
     <string name="title_activity_event_details">seeIT</string>
     <string name="title_activity_create_event">makeIT</string>
@@ -15,7 +16,7 @@
     <string name="minAtt">Min Attendees:</string>
     <string name="maxAtt">Max Attendees:</string>
     <string name="desc">Description:</string>
-    <string name="descBody">Input an optional description here!</string>
+    <string name="descBody">Description (optional)</string>
     <string name="timeDesc">Time of Event:</string>
     <string name="title_activity_create_event_map">CreateEventMapActivity</string>
     <string name="action_logout">Log Out</string>
@@ -24,7 +25,7 @@
     <string name="save">Save</string>
     <string name="startTime">Event start time:</string>
     <string name="endTime">Event end time:</string>
-    <string name="location">Location:</string>
+    <string name="location">Location</string>
     <string name="errSaveEventTitle">Error saving event</string>
     <string name="OK">OK</string>
     <string name="errSaveEventMsg">Sorry but this event is finished or cancelled, please join another event</string>
@@ -43,5 +44,6 @@
     <string name="hintStartTime">Click to select a start time</string>
     <string name="getData">Getting event data...</string>
     <string name="saving">Saving...</string>
+    <string name="emptyListText">Nothing seems to be happening here, why don\'t you start something?</string>
     
 </resources>

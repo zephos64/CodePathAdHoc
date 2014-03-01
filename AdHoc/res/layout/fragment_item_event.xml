@@ -25,15 +25,15 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/tvStartTime"
+                android:id="@+id/tvHostedOrJoined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="Regular Text" />
+                android:layout_below="@+id/tvDescription"
+                android:text="" />
 
             <TextView
-                android:id="@+id/tvMaxAttendees"
+                android:id="@+id/tvStartTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -41,20 +41,14 @@
                 android:text="Regular Text" />
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvListMaxAttendees"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/tvMaxAttendees"
+                android:layout_alignBaseline="@+id/tvStartTime"
+                android:layout_alignBottom="@+id/tvStartTime"
+                android:layout_toRightOf="@+id/tvStartTime"
                 android:text="Regular Text" />
 
-            <TextView
-                android:id="@+id/tvHostedOrJoined"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvDescription"
-                android:text="" />
         </RelativeLayout>
     </RelativeLayout>
 

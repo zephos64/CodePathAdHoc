@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -30,6 +31,9 @@ public abstract class EventListFragment extends Fragment {
 	PullToRefreshListView lvEvents;
 	ArrayList<Events> events;
 	FragmentActivity activityListener;
+	
+	LinearLayout llEmptyList;
+	LinearLayout llListProgress;
 	
 	LatLng loc;
 	
@@ -61,9 +65,10 @@ public abstract class EventListFragment extends Fragment {
 		// TODO Auto-generated method stub
 		mContentView = inflater.inflate(R.layout.fragment_list, container, false);
 		this.lvEvents = (PullToRefreshListView) mContentView.findViewById(R.id.lvEvents);
-		Log.d("DEBUG", "adapter: " + eventsAdapter.toString());
-		//Log.d("DEBUG", "listview: " + lvEvents.toString());
-		//setListAdapter(getAdapter());
+		llEmptyList = (LinearLayout) mContentView.findViewById(R.id.llEmptyList);
+		llListProgress = (LinearLayout) mContentView.findViewById(R.id.llListProgress);
+		llEmptyList.setVisibility(View.INVISIBLE);
+
 		lvEvents.setAdapter(getAdapter());
 		lvEvents.setOnItemClickListener(new OnItemClickListener() {
 
@@ -85,7 +90,6 @@ public abstract class EventListFragment extends Fragment {
 				loadList();
 			}
 		});
-		//Log.d("DEBUG", "listview: " + lvEvents.toString());
 		return mContentView;
 	}
 	
@@ -106,5 +110,6 @@ public abstract class EventListFragment extends Fragment {
 		super.onResume();
 		Log.d("DEBUG", "Event list Fragment refreshed");
 		loadList();
+		llListProgress.setVisibility(View.VISIBLE);
 	}
 }

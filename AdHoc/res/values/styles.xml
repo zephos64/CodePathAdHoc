@@ -16,6 +16,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+    <style name="SectionDivider" parent="@style/AppBaseTheme">
+        <item name="android:background">#FFFFFF</item>
+    </style>
     
     <style name="AppLoginText" parent="@style/AppBaseTheme">
         <item name="android:textSize">69sp</item>

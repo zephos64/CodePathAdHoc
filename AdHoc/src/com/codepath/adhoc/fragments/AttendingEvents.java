@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.adhoc.application.ParseClient;
 import com.codepath.adhoc.parsemodels.Events;
@@ -32,8 +33,12 @@ public class AttendingEvents extends EventListFragment {
 			public void done(List<Events> listEvents, ParseException e) {
 				if(e == null) {
 					getAdapter().clear();
+					llListProgress.setVisibility(View.INVISIBLE);
 					getAdapter().addAll(listEvents);
 					lvEvents.onRefreshComplete();
+					if(listEvents.size() == 0) {
+						llEmptyList.setVisibility(View.VISIBLE);
+					}
 				} else {
 					Log.e("ERROR", "ParseException on all events: " + e);
 					e.printStackTrace();

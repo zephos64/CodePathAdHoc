@@ -8,13 +8,21 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/tvLoginTitle"
+        android:id="@+id/tvLoginTitle1"
         style="@style/AppLoginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/login_title" />
+        android:text="@string/login_title_1" />
+    <TextView
+        android:id="@+id/tvLoginTitle2"
+        style="@style/AppLoginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvLoginTitle1"
+        android:layout_alignParentTop="true"
+        android:text="@string/login_title_2" />
 
     <Button
         android:id="@+id/btnLoginTwitter"

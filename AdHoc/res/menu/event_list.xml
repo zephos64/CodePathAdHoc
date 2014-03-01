@@ -1,15 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:AdHoc="http://schemas.android.com/apk/res-auto" >
 	<item
-        android:id="@+id/action_create_event"
-        AdHoc:showAsAction="ifRoom"
-        android:icon="@drawable/ic_create_event"
-        android:title="@string/abCreate"/>
-    <item
         android:id="@+id/action_map"
         AdHoc:showAsAction="ifRoom"
         android:icon="@drawable/ic_map"
         android:title="@string/abMap"/>
+	<item
+        android:id="@+id/action_create_event"
+        AdHoc:showAsAction="ifRoom"
+        android:icon="@drawable/ic_create_event"
+        android:title="@string/abCreate"/>
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="900"
