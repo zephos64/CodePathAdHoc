@@ -2,99 +2,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EventDetailsActivity" >
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvInfoAttendance"
-        android:layout_alignParentRight="true"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_below="@+id/textView5"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tvInfoStartTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView6"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvInfoAttendance"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/textView5"
-        android:text=" to "
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView7"
-        android:layout_alignBottom="@+id/textView7"
-        android:layout_toRightOf="@+id/textView7"
-        android:text="TextView" />
 
     <fragment
         android:id="@+id/map"
         android:name="com.codepath.adhoc.fragments.AdhocMapFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvInfoAttendance"
-        android:layout_alignLeft="@+id/tvInfoAttendance"
+        android:layout_above="@+id/llProgress"
         android:layout_alignParentTop="true" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvInfoAttendance"
-        android:layout_below="@+id/textView4"
-        android:text="TextView" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/map"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="onAction"
-        android:text="Button" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onAction"
+            android:text="Button" />
 
-    <TextView
-        android:id="@+id/tvInfoAttendance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvInfoStartTime"
-        android:layout_centerVertical="true"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/tvInfoAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/tvInfoTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView6"
-        android:layout_alignRight="@+id/textView4"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/tvDetailStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvInfoAttendance"
+            android:layout_below="@+id/tvInfoAttendance"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvDetailsLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvDetailStartTime"
+            android:layout_below="@+id/tvDetailStartTime"
+            android:text="TextView" />
+
+        <ProgressBar
+            android:id="@+id/pbAttendance"
+            style="@style/custom_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/tvDetailsAttendance"
+            android:layout_alignBottom="@+id/tvDetailsAttendance"
+             />
+
+        <TextView
+            android:id="@+id/tvDetailsAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDetailsLoc"
+            android:layout_centerHorizontal="true"
+            android:text="Small Text"
+            android:textColor="#ffffff"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/tvInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvDetailDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvDetailsAttendance"
+            android:layout_marginTop="17dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvDetailsLoc"
+            android:layout_toRightOf="@+id/tvDetailStartTime"
+            android:text=" to "
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/tvDetailEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvDetailsLoc"
+            android:layout_toRightOf="@+id/textView7"
+            android:text="TextView" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/llProgress"
@@ -102,12 +117,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/progress_box"
         android:orientation="vertical"
         android:paddingBottom="5dp"
-    	android:paddingLeft="5dp"
-    	android:paddingRight="5dp"
-    	android:paddingTop="5dp"
-        android:background="@drawable/progress_box" >
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
+
         <TextView
             android:id="@+id/tvLoad"
             android:layout_width="wrap_content"
@@ -119,21 +135,11 @@
             android:layout_height="wrap_content" >
 
             <ProgressBar
-            android:id="@+id/pbProgess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"/>
+                android:id="@+id/pbProgess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
-        
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/pbAttendance"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

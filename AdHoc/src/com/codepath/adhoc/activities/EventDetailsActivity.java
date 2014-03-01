@@ -90,12 +90,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 		getMenuInflater().inflate(R.menu.event_details, menu);
 		
 		tvTitle = (TextView) findViewById(R.id.tvInfoAttendance);
-		tvTime = (TextView) findViewById(R.id.textView5);
-		tvTimeEnd = (TextView) findViewById(R.id.textView8);
-		tvLoc = (TextView) findViewById(R.id.textView6);
-		tvAttendance = (TextView) findViewById(R.id.textView4);
+		tvTime = (TextView) findViewById(R.id.tvDetailStartTime);
+		tvTimeEnd = (TextView) findViewById(R.id.tvDetailEndTime);
+		tvLoc = (TextView) findViewById(R.id.tvDetailsLoc);
+		tvAttendance = (TextView) findViewById(R.id.tvDetailsAttendance);
 		pbAttendance = (ProgressBar) findViewById(R.id.pbAttendance);
-		tvDesc = (TextView) findViewById(R.id.tvInfoStartTime);
+		tvDesc = (TextView) findViewById(R.id.tvDetailDesc);
 		tvStatus = (TextView) findViewById(R.id.tvInfoTitle);
 		
 		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
@@ -322,11 +322,11 @@ public class EventDetailsActivity extends ActionBarActivity {
 			@Override
 			public void run() {
 				tvTitle.setText(item.getEventName());
-				tvTime.setText(AdHocUtils.getTime(item.getEventTime()));
+				tvTime.setText("   "+AdHocUtils.getTime(item.getEventTime()));
 				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
 				tvDesc.setText(item.getDesc());
 				if(item.getAddress() != null) {
-					tvLoc.setText(item.getAddress());
+					tvLoc.setText("   "+item.getAddress());
 				} else {
 					tvLoc.setText("");
 				}
@@ -368,8 +368,12 @@ public class EventDetailsActivity extends ActionBarActivity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				tvAttendance.setText(item.getAttendanceCount() + " / "
+				if(item.getAttendanceCount() == item.getMaxAttendees()) {
+					tvAttendance.setText("FULL");
+				} else {
+					tvAttendance.setText(item.getAttendanceCount() + " / "
 						+ item.getMaxAttendees());
+				}
 				pbAttendance.setMax(item.getMaxAttendees());
 				pbAttendance.setProgress(item.getAttendanceCount());
 				gotState = true;

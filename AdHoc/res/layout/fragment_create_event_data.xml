@@ -30,7 +30,6 @@
             android:gravity="left"
             android:hint="@string/location" >
 
-            <requestFocus />
         </EditText>
 
         <RelativeLayout
