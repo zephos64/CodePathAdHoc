@@ -42,8 +42,9 @@ public class CustomInfoWindowAdapter implements InfoWindowAdapter{
 		
 			Events event = listEvents.get(id-1);
 			tvInfoTitle.setText(event.getEventName());
-			tvInfoStartTime.setText(AdHocUtils.getTime(event.getEventTime()));
-			tvInfoAttendance.setText("blah / "+event.getMaxAttendees());
+			tvInfoStartTime.setText("  " + AdHocUtils.getTime(event.getEventTime()));
+			tvInfoAttendance.setText("  " + event.getAttendanceCount()
+					+ "/"+event.getMaxAttendees());
 		}
 		
 		return v;

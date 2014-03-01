@@ -13,6 +13,7 @@
     <!-- android:layout_alignParentTop="true" -->
     <!-- android:name="com.google.android.gms.maps.MapFragment"> -->
     <!-- </RelativeLayout> -->
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
@@ -28,6 +29,7 @@
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <View
+        android:id="@+id/view1"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
         android:layout_below="@+id/map"
@@ -40,6 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:onClick="onClickSave"
+        android:layout_alignLeft="@+id/center"
         android:text="Save" />
 
     <Button
@@ -49,6 +52,17 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:onClick="onClickCancel"
+        android:layout_alignRight="@+id/center"
         android:text="Cancel" />
+
+    <LinearLayout
+        android:id="@+id/center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </RelativeLayout>
