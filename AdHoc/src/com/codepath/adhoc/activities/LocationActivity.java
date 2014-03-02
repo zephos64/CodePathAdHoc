@@ -127,6 +127,13 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	public void onMarkerDragStart(Marker marker) {
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition(R.anim.expand_in, R.anim.shrink_out);
+	}
+
 
 	@Override
 	public void onLocationChanged(Location location) {

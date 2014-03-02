@@ -93,10 +93,12 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 			map.setOnMapClickListener(new OnMapClickListener() {
 				@Override
 				public void onMapClick(LatLng arg0) {
+					Log.d("DEBUG", "Detail map was clicked");
 					Intent i = new Intent(getActivity(), LocationActivity.class);
 					LocationData passLoc = new LocationData(eventPos.latitude, eventPos.longitude);
 					i.putExtra(AdHocUtils.intentLoc, passLoc);
 					startActivity(i);
+					getActivity().overridePendingTransition(R.anim.expand_in, R.anim.shrink_out);
 				}
 			});
 			

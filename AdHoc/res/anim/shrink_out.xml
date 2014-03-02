@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <scale 
+        android:fromXScale="100%p"
+        android:toXScale="80%p"
+        android:fromYScale="100%p"
+        android:toYScale="80%p"
+        android:duration="@integer/fade_time"/>
+    <alpha 
+        android:fromAlpha="1.0"
+        android:toAlpha="0.8"
+        android:duration="@integer/fade_time"/>
+
+</set>

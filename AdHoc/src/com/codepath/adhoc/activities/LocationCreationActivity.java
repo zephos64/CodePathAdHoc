@@ -117,7 +117,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		//data.putExtra("Location", null);
 		setResult(RESULT_CANCELED, data);
 		finish();
-		overridePendingTransition(R.anim.up_in,	R.anim.down_out);
+		overridePendingTransition(R.anim.up_in, R.anim.down_out);
 	}
 	
 	@Override
