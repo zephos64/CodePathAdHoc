@@ -133,6 +133,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 	    	 currentLat = prevLoc.getLattitude();
 	    	 currentLng = prevLoc.getLongitude();
 	     } else {
+	    	 Log.d("DEBUG", "Previous locaiton null");
 	    	 currentLat = location.getLatitude();
 	    	 currentLng = location.getLongitude();
 	     }
@@ -158,6 +159,10 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 //			    	myPosMarker.showInfoWindow();
 			        map.setOnMarkerDragListener(this);
 			    	map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 15));
+			    	
+			    	if(prevLoc!=null) {
+			    		onMapClick(new LatLng(prevLoc.lattitude, prevLoc.longitude));
+			    	}
 			}
 		}
 		else {
