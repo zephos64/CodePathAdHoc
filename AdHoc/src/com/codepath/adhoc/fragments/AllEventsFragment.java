@@ -20,12 +20,13 @@ public class AllEventsFragment extends EventListFragment {
 
 	@Override
 	public void loadList() {
+		getAdapter().clear();
+		
 		ParseClient.getParseAllEvents(loc,
 				new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException e) {
 				if(e == null) {
-					getAdapter().clear();
 					llListProgress.setVisibility(View.INVISIBLE);
 					getAdapter().addAll(listEvents);
 					lvEvents.onRefreshComplete();

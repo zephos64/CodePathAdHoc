@@ -108,8 +108,9 @@ public abstract class EventListFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d("DEBUG", "Event list Fragment refreshed");
-		loadList();
-		llListProgress.setVisibility(View.VISIBLE);
+		Log.d("DEBUG", "Event list Fragment resumed");
+		llListProgress.setVisibility(View.INVISIBLE);
+		//loadList();
+		//llListProgress.setVisibility(View.VISIBLE);
 	}
 }
