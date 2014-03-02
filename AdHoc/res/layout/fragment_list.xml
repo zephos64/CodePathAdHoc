@@ -21,7 +21,7 @@
     
    <RelativeLayout
         android:id="@+id/llEmptyList"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -30,7 +30,7 @@
     	android:paddingLeft="5dp"
     	android:paddingRight="5dp"
     	android:paddingTop="5dp"
-        android:background="@drawable/progress_box" >
+    	android:background="#c8eb5d" >
 
         <TextView
             android:id="@+id/tvEmptyListText"
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:textSize="16sp"
             android:text="@string/emptyListText" />
         <Button
             android:id="@+id/btnAction"
