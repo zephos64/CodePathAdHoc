@@ -8,39 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="356dp" >
 
-        <com.codepath.adhoc.CustomEventSpinner
-            android:id="@+id/spListEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:entries="@array/sport_array"
-            android:paddingBottom="8dp"
-            android:prompt="@string/sport_prompt" />
-
-        <EditText
-            android:id="@+id/etLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/relativeLayout1"
-            android:ems="10"
-            android:gravity="left"
-            android:hint="@string/location" >
-
-        </EditText>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            style="@style/SectionDivider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvMaxAttendees"
-            android:layout_marginTop="22dp" >
-
             <TextView
                 android:id="@+id/tvStopTime"
                 android:layout_width="wrap_content"
@@ -51,25 +18,6 @@
                 android:text="@string/endTime"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/tvStartTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/etEndTime"
-                android:layout_alignParentLeft="true"
-                android:text="@string/startTime"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <EditText
-                android:id="@+id/etEndTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/etStartTime"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:ems="10"
-                android:gravity="right" />
-
             <EditText
                 android:id="@+id/etStartTime"
                 android:layout_width="wrap_content"
@@ -79,7 +27,6 @@
                 android:layout_toRightOf="@+id/tvStartTime"
                 android:ems="10"
                 android:gravity="right" />
-        </RelativeLayout>
 
         <EditText
             android:id="@+id/etMaxAttendees"
@@ -87,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/tvMaxAttendees"
             android:layout_alignBottom="@+id/tvMaxAttendees"
+            android:layout_alignLeft="@+id/etStartTime"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/tvMaxAttendees"
             android:ems="10"
             android:gravity="right"
             android:inputType="number" />
@@ -99,8 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spListEvents"
-            android:layout_marginTop="38dp"
-            android:paddingBottom="8dp"
+            android:layout_marginTop="@dimen/creation_seperator"
+            android:paddingBottom="@dimen/creation_seperator"
             android:text="@string/maxAtt"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -111,6 +58,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/etLocation"
             android:text="@string/desc"
+            android:layout_marginTop="@dimen/creation_seperator"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
@@ -122,8 +70,71 @@
             android:layout_below="@+id/tvDescription"
             android:ems="10"
             android:hint="@string/descBody"
-            android:maxLength="200"
+            android:maxLength="300"
             android:paddingBottom="8dp" />
+
+        <EditText
+            android:id="@+id/etLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvLocation"
+            android:ems="10"
+            android:gravity="left"
+            android:hint="@string/location" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/tvSportSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/chooseSport"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <com.codepath.adhoc.CustomEventSpinner
+            android:id="@+id/spListEvents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvSportSpinner"
+            android:entries="@array/sport_array"
+            android:paddingBottom="8dp"
+            android:prompt="@string/sport_prompt" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvStopTime"
+            android:text="@string/locationCreate"
+            android:layout_marginTop="@dimen/creation_seperator"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/tvStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/etMaxAttendees"
+            android:text="@string/startTime"
+            android:layout_marginTop="@dimen/creation_seperator"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/etEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvStopTime"
+            android:layout_toRightOf="@+id/tvStartTime"
+            android:ems="10"
+            android:gravity="right" />
 
     </RelativeLayout>
 

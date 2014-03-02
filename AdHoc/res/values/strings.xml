@@ -26,6 +26,8 @@
     <string name="startTime">Event start time:</string>
     <string name="endTime">Event end time:</string>
     <string name="location">Location</string>
+    <string name="locationCreate">Location:</string>
+    <string name="chooseSport">Choose a Sport</string>
     <string name="errSaveEventTitle">Error saving event</string>
     <string name="OK">OK</string>
     <string name="errSaveEventMsg">Sorry but this event is finished or cancelled, please join another event</string>
