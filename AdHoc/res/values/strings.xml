@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">AdHoc</string>
+    <string name="app_name">doIT</string>
     <string name="app_id">575878422500726</string>
     <string name="login_button_fb">Log in with Twitter</string>
     <string name="login_title_1">do</string>

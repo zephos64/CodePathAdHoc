@@ -26,13 +26,28 @@
             android:layout_below="@+id/tvInfoTitle"
             android:text="TextView" />
 
-        <TextView
-            android:id="@+id/tvInfoAttendance"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvInfoStartTime"
-            android:text="TextView" />
+            android:layout_below="@+id/tvInfoStartTime" >
+
+            <TextView
+                android:id="@+id/tvInfoAttendance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="TextView" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvInfoAttendance"
+                android:layout_toRightOf="@+id/tvInfoAttendance"
+                android:src="@drawable/ic_person" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <ImageView

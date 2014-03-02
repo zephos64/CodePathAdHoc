@@ -119,16 +119,6 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="2dp" />
 
-        <EditText
-            android:id="@+id/etMaxAttendees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spListEvents"
-            android:layout_toRightOf="@+id/tvMaxAttendees"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="number" />
-
         <ImageView
             android:id="@+id/ivDividerTop"
             android:layout_width="wrap_content"
@@ -159,6 +149,19 @@
             android:layout_below="@+id/etStartTime"
             android:ems="10"
             android:gravity="right" >
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/etMaxAttendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tvMaxAttendees"
+            android:layout_alignLeft="@+id/etStartTime"
+            android:layout_alignRight="@+id/ivDividerTop"
+            android:ems="10"
+            android:gravity="right"
+            android:inputType="number" >
 
         </EditText>
 
