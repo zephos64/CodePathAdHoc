@@ -68,11 +68,11 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(this,this, this);
 			locationclient.connect();
-			Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
 			Toast.makeText(this, "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
-			Log.e("ERROR", "Error with Google play services " + resp);
+//			Log.e("ERROR", "Error with Google play services " + resp);
 		}				
 		 mLocationRequest = LocationRequest.create();
 	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -154,9 +154,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		}
 		else {
 			Log.d("DEBUG", "Map creation is not null");
-			//if (mapUpdateRcvd == false) {
-				myPosMarker.setPosition(myPos);
-			//}
+			myPosMarker.setPosition(myPos);
 		}
 		mapUpdateRcvd = true;
 

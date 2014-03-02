@@ -33,20 +33,20 @@ public class CustomInfoWindowAdapter implements InfoWindowAdapter{
 		tvInfoStartTime = (TextView) v.findViewById(R.id.tvInfoStartTime);
 		tvInfoAttendance = (TextView) v.findViewById(R.id.tvInfoAttendance);
 		
-		Log.d("DEBUG", "Marker " + mark.getId() + " getInfoContents called");
-		int id = Integer.valueOf(mark.getId().replace("m", ""));
+		Log.e("DEBUG", "Marker " + mark.getSnippet() + " getInfoContents called");
+		if (mark.getSnippet() != null) {
+			int id = Integer.valueOf(mark.getSnippet()); 
+			Log.d("DEBUG", "Adapter marker maps to event: " + listEvents.get(id).getObjectId());
 		
-		// When user clicks map, marker == m0, this prevents error
-		if(id > 0) {
-			Log.d("DEBUG", "Adapter marker maps to event: " + listEvents.get(id-1).getObjectId());
-		
-			Events event = listEvents.get(id-1);
+			Events event = listEvents.get(id);
 			tvInfoTitle.setText(event.getEventName());
 			tvInfoStartTime.setText("  " + AdHocUtils.getTime(event.getEventTime()));
 			tvInfoAttendance.setText("  " + event.getAttendanceCount()
 					+ "/"+event.getMaxAttendees());
 		}
-		
+		else {
+			return null;
+		}
 		return v;
 	}
 
