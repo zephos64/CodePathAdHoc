@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -51,18 +54,20 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private double 				currentLat = 0;
     private double 				currentLng = 0;
     private Marker 				myPosMarker;
-    private List<Marker>		eventsMarkers;
+    private List<Marker>		eventsMarkers = null;
     private List<Events>		allEvents;
     private LatLng 				myPos =new LatLng(currentLat,currentLng);
     LocationRequest 			mLocationRequest;
+//    private static final int 	GPS_ENABLE_ACTIVITY = 100;
     private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-    private static final long   INTEREST_RADIUS_MILES = AdHocUtils.milesLocRadius;
+    private static final long   INTEREST_RADIUS_MILES = 1; //AdHocUtils.milesLocRadius;
     private static final double INTEREST_RADIUS_METERS = 1609.34 * INTEREST_RADIUS_MILES;
     private static final double METER_TO_MILE_FACTOR = 0.000621371;
+    private boolean  firstMapUpdate = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +83,39 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		if(resp == ConnectionResult.SUCCESS){
 			locationclient = new LocationClient(this,this, this);
 			locationclient.connect();
-			//Toast.makeText(this, "Google Play Service OK" , Toast.LENGTH_LONG).show();
 		}
 		else{
-			//Toast.makeText(this, "Google Play Service Error " + resp, Toast.LENGTH_LONG).show();
 			Log.e("ERROR", "Error with Google play services " + resp);
 		}				
-		 mLocationRequest = LocationRequest.create();
-	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	     mLocationRequest.setInterval(UPDATE_INTERVAL);
-	     mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
+//		LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+//		if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+//			Toast.makeText(this, "GPS is not enabled", Toast.LENGTH_LONG).show();
+//			promptGPSEnabling();
+//		}
+		mLocationRequest = LocationRequest.create();
+	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	    mLocationRequest.setInterval(UPDATE_INTERVAL);
+	    mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
-
+	
+//	private void promptGPSEnabling () {
+//		Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//		startActivityForResult(gpsOptionsIntent, GPS_ENABLE_ACTIVITY);		
+//	}
+//
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//	    super.onActivityResult(requestCode, resultCode, data);
+//	    if (requestCode == GPS_ENABLE_ACTIVITY) {
+//	    	LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+//			if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+//				Toast.makeText(this, "Map View can not be loaded without working GPS", Toast.LENGTH_LONG).show();
+//			}
+//			else {
+//				locationclient.requestLocationUpdates(mLocationRequest, this);
+//			}
+//	    }
+//	}	
 	@Override
 	public void onMarkerDrag(Marker marker) {
     }
@@ -112,25 +138,26 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		myPos      = new LatLng(currentLat,currentLng);
 		if (map == null) {
 			Log.e("DEBUG", "Map is null");
-
 			SupportMapFragment supportMap = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
 			map = supportMap.getMap();
+		}
 
-			if (map != null) {
+		if (map != null) {
+			if(firstMapUpdate == true) {
 				map.addCircle(new CircleOptions()
 							  .center(new LatLng(location.getLatitude(), location.getLongitude()))
 							  .radius(INTEREST_RADIUS_METERS)
 							  .strokeColor(Color.RED));
 				setMarkerCurrentUserLocation();
 				addListOfEvents();
+				firstMapUpdate = false;
+			}
+			else {
+				Log.d("DEBUG", "Need to get the events again");
+				addListOfEvents();
 			}
 		}
-		else{
-			Log.d("DEBUG", "Map is not null");
-//			myPosMarker.setPosition(myPos);
-		}
 	}
-
 	private void setAddressOnMarker(Marker marker, double latitude, double longitude) {
 		String [] address = null;
 		address = getAddressFromGeoCode(latitude, longitude);
@@ -167,12 +194,14 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 		return textAddresses;
 	}
+
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
 	}
 	@Override
     protected void onPause() {
         super.onPause();
+        locationclient.removeLocationUpdates(this);
     }
 	
 	@Override
@@ -243,22 +272,27 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	public void addListOfEvents() {
 		map.setOnMarkerDragListener(this);
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 14.0f));
+		if (( eventsMarkers != null ) && (eventsMarkers.size()!= 0 )) {
+			// Clear all the existing markers if any
+			eventsMarkers.clear();
+		}
+			
 		eventsMarkers = new ArrayList<Marker>();
 		
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker mark) {
-				Log.d("DEBUG", "Marker " + mark.getId() + " clicked");
-				/*int id = Integer.valueOf(mark.getId().replace("m", ""));
-				Events event = allEvents.get(id-1);
-				Log.d("DEBUG", "Maps to event: " + event.getObjectId());
-				gotoDetails(event.getObjectId());*/
-				for(int a = 0; a < eventsMarkers.size(); a++) {
-					if(mark.getId().equals(eventsMarkers.get(a).getId())) {
-						Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
-						gotoDetails(allEvents.get(a).getObjectId());
-					}
-				}
+				int a = Integer.valueOf(mark.getSnippet());
+				Log.e("ERROR", "Marker " + mark.getSnippet() + " clicked");
+				Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
+				gotoDetails(allEvents.get(a).getObjectId());
+
+//				for(int a = 0; a < eventsMarkers.size(); a++) {
+//					if(mark.getSnippet().equals(eventsMarkers.get(a).getSnippet())) {
+//						Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
+//						gotoDetails(allEvents.get(a).getObjectId());
+//					}
+//				}
 			}
 		});
 		
@@ -288,11 +322,10 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 								point.getLatitude()+"] and long[" +
 								point.getLongitude()+"] for "+listEvents.get(a).getObjectId());
 						eventsMarkers.add(map.addMarker(new MarkerOptions()
-							.position(evtPos)
-							.anchor(0.5f, 1)
-							.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
-						/*setAddressOnMarker(eventsMarkers.get(a),listEvents.get(a).getLocLat(),
-								listEvents.get(a).getLocLong());*/
+											 .position(evtPos)
+											 .anchor(0.5f, 1)
+											 .snippet(String.valueOf(a))
+											 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
 						eventsMarkers.get(markerCount).setDraggable(false);
 					} else {
 						Log.d("DEBUG", "Removed event " + listEvents.get(a).getObjectId());

@@ -2,11 +2,14 @@ package com.codepath.adhoc.activities;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.adhoc.R;
 import com.parse.LogInCallback;
@@ -17,6 +20,8 @@ import com.parse.SaveCallback;
 import com.parse.internal.AsyncCallback;
 
 public class MainActivity extends ActionBarActivity {
+    private static final int 	GPS_ENABLE_ACTIVITY = 100;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,8 +61,28 @@ public class MainActivity extends ActionBarActivity {
 				}
 			});
 		}
+		LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+		if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+			Toast.makeText(this, "This Application needs GPS. Please enable GPS.", Toast.LENGTH_LONG).show();
+			promptGPSEnabling();
+		}
+		
+	}
+	private void promptGPSEnabling () {
+		Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		startActivityForResult(gpsOptionsIntent, GPS_ENABLE_ACTIVITY);		
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    if (requestCode == GPS_ENABLE_ACTIVITY) {
+	    	LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+			if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+				Toast.makeText(this, "GPS not enabled. Working in limited feature mode", Toast.LENGTH_LONG).show();
+			}
+	    }
+	}	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
