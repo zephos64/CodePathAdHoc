@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d0e6df"
+    android:background="#afce7f"
     tools:context=".LocationCreationActivity" >
 
     <!-- <RelativeLayout -->
@@ -13,11 +13,6 @@
     <!-- android:layout_alignParentTop="true" -->
     <!-- android:name="com.google.android.gms.maps.MapFragment"> -->
     <!-- </RelativeLayout> -->
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="#228B22" />
 
     <fragment
         android:id="@+id/map"

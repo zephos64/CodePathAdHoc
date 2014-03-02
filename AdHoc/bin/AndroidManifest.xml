@@ -86,7 +86,7 @@ to match your app's package name + ".permission.C2D_MESSAGE".
             android:name="com.codepath.adhoc.activities.LocationCreationActivity"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_location" >
+            android:label="@string/title_activity_create_location" >
         </activity>
 
         <!-- Facebook information -->
@@ -127,6 +127,8 @@ to match your app's package name + ".permission.C2D_MESSAGE".
 
         <activity
             android:name="com.codepath.adhoc.fragments.CreateEventMapActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_create_event_map" >
         </activity>
     </application>
