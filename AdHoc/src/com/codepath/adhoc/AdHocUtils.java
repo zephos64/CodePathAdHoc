@@ -12,6 +12,7 @@ public class AdHocUtils {
 	public final static String dateFormat = "hh:mm aa";
 	
 	public final static String intentDetailsId = "intent_item_details";
+	public final static String intentLoc = "intent_loc_event";
 	
 	public final static int milesLocRadius = 10;
 	public final static int userLoadLimit = 100;

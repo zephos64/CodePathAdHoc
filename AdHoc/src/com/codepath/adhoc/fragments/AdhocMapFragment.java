@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,17 +12,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
+import com.codepath.adhoc.activities.LocationActivity;
 import com.codepath.adhoc.models.LocationData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -71,7 +73,7 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 		
 		if (map == null) {
 			Log.d("DEBUG", "Map details is null");
-			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+			map = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.fMap)).getMap();
 		}
 		if (map != null) {
 			// Disable map controls
@@ -87,6 +89,17 @@ public class AdhocMapFragment extends SupportMapFragment implements GooglePlaySe
 			setAddressOnMarker(eventMarker, currentLat, currentLng);
 			eventMarker.showInfoWindow();
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventPos, 15));
+			
+			map.setOnMapClickListener(new OnMapClickListener() {
+				@Override
+				public void onMapClick(LatLng arg0) {
+					Intent i = new Intent(getActivity(), LocationActivity.class);
+					LocationData passLoc = new LocationData(eventPos.latitude, eventPos.longitude);
+					i.putExtra(AdHocUtils.intentLoc, passLoc);
+					startActivity(i);
+				}
+			});
+			
 		} else {
 			Log.d("DEBUG", "Map details is null");
 			eventMarker.setPosition(eventPos);

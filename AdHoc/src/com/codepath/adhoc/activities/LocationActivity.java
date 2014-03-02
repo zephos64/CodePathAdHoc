@@ -5,24 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
 import com.codepath.adhoc.application.CustomInfoWindowAdapter;
 import com.codepath.adhoc.application.ParseClient;
+import com.codepath.adhoc.models.LocationData;
 import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -62,7 +60,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private static final int 	MILLISECONDS_PER_SECOND = 1000;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 5;
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
-    private static final int 	FASTEST_INTERVAL_IN_SECONDS = 1;
+    private static final int 	FASTEST_INTERVAL_IN_SECONDS = 5;
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
     private static final long   INTEREST_RADIUS_MILES = 1; //AdHocUtils.milesLocRadius;
     private static final double INTEREST_RADIUS_METERS = 1609.34 * INTEREST_RADIUS_MILES;
@@ -144,6 +142,18 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 		if (map != null) {
 			if(firstMapUpdate == true) {
+				Intent i = getIntent();
+				LocationData zoomPos = (LocationData) i.getSerializableExtra(AdHocUtils.intentLoc);
+				
+				if(zoomPos == null) {
+					Log.d("DEBUG", "Did not get zoom position, zooming to user");
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 14.0f));
+				} else {
+					Log.d("DEBUG", "Did get zoom position, zooming to event");
+					LatLng newPos = new LatLng(zoomPos.getLattitude(), zoomPos.getLongitude());
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPos, 14.0f));
+				}
+				
 				map.addCircle(new CircleOptions()
 							  .center(new LatLng(location.getLatitude(), location.getLongitude()))
 							  .radius(INTEREST_RADIUS_METERS)
@@ -271,7 +281,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	
 	public void addListOfEvents() {
 		map.setOnMarkerDragListener(this);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 14.0f));
 		if (( eventsMarkers != null ) && (eventsMarkers.size()!= 0 )) {
 			// Clear all the existing markers if any
 			eventsMarkers.clear();

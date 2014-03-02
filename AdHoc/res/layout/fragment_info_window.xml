@@ -1,41 +1,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tvInfoTitle"
+    <RelativeLayout
+        android:id="@+id/rlInfoWindowData"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="Large Text" />
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/tvInfoStartTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvInfoTitle"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/tvInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Large Text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvInfoAttendance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvInfoStartTime"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/tvInfoStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvInfoTitle"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvInfoAttendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tvInfoStartTime"
+            android:text="TextView" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/ivArrowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/rlInfoWindowData"
         android:paddingTop="14dp"
-        android:layout_toRightOf="@+id/tvInfoTitle"
         android:src="@drawable/ic_arrow" />
 
 </RelativeLayout>

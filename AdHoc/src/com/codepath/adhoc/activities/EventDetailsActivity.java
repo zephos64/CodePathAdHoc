@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -47,6 +48,8 @@ public class EventDetailsActivity extends ActionBarActivity {
 	ProgressBar pbProgress;
 	LinearLayout llProgress;
 	
+	Fragment fMap;
+	
 	Events item;
 	String itemId;
 	private AdhocMapFragment mapFrg = null;
@@ -65,7 +68,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
-		mapFrg = (AdhocMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+		mapFrg = (AdhocMapFragment) getSupportFragmentManager().findFragmentById(R.id.fMap);
 		Log.e("MAP Frag", String.valueOf(mapFrg));
 		
 		// for screen rotation
@@ -102,7 +105,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		tvLoad = (TextView) findViewById(R.id.tvLoad);
 		llProgress = (LinearLayout) findViewById(R.id.llProgress);
 		
-		btnAction = (Button) findViewById(R.id.button1);
+		btnAction = (Button) findViewById(R.id.btnAction);
 		
 		// for screen rotation
 		if(item == null) {
