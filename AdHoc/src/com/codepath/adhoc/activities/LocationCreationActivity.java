@@ -108,7 +108,8 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		Intent data = new Intent();
 		data.putExtra("Location", lcn);
 		setResult(RESULT_OK, data); // set result code and bundle data for response
-		finish();				
+		finish();
+		overridePendingTransition(R.anim.up_in,	R.anim.down_out);
 	}
 	
 	public void onClickCancel(View v) {
@@ -116,6 +117,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		//data.putExtra("Location", null);
 		setResult(RESULT_CANCELED, data);
 		finish();
+		overridePendingTransition(R.anim.up_in,	R.anim.down_out);
 	}
 
 	@Override

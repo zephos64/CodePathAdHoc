@@ -89,31 +89,9 @@ public abstract class EventListFragment extends Fragment {
 				itemDetails.putExtra(AdHocUtils.intentDetailsId, events
 						.get(pos).getObjectId());
 
-				ObjectAnimator itemAnim = ObjectAnimator.ofFloat(item,
-						"translationX", 0.0f, 660.0f);
-				itemAnim.setDuration(900);
-				itemAnim.addListener(new AnimatorListener() {
-					
-					@Override
-					public void onAnimationStart(Animator arg0) {						
-					}
-					
-					@Override
-					public void onAnimationRepeat(Animator arg0) {						
-					}
-					
-					@Override
-					public void onAnimationEnd(Animator arg0) {
-						startActivity(itemDetails);
-						getActivity().overridePendingTransition(R.anim.right_in,
-								R.anim.left_out);
-					}
-					
-					@Override
-					public void onAnimationCancel(Animator arg0) {						
-					}
-				});
-				itemAnim.start();
+				startActivity(itemDetails);
+				getActivity().overridePendingTransition(R.anim.right_in,
+						R.anim.left_out);
 			}
 		});
 

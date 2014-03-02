@@ -2,47 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#afce7f"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CreateEventActivity"
-    android:background="#afce7f" >
+    tools:context=".CreateEventActivity" >
 
     <FrameLayout
         android:id="@+id/flContainerEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSave"
+        android:layout_above="@+id/rlSaveBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true">
-
+        android:layout_alignParentTop="true" >
     </FrameLayout>
 
-    <Button
-        android:id="@+id/btnSave"
-        style="@style/NiceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:onClick="clickSave"
-        android:text="@string/save" />
-    
     <LinearLayout
         android:id="@+id/llSaving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:background="@drawable/progress_box"
         android:orientation="vertical"
         android:paddingBottom="5dp"
-    	android:paddingLeft="5dp"
-    	android:paddingRight="5dp"
-    	android:paddingTop="5dp"
-        android:background="@drawable/progress_box" >
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/tvSavingText"
@@ -55,11 +43,32 @@
             android:layout_height="wrap_content" >
 
             <ProgressBar
-            android:id="@+id/pbSpinnerSaving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"/>
+                android:id="@+id/pbSpinnerSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlSaveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="#c8eb5d" >
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:onClick="clickSave"
+            android:text="@string/save" />
+    </RelativeLayout>
 
 </RelativeLayout>

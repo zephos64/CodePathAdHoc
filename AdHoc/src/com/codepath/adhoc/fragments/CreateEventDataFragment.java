@@ -307,17 +307,6 @@ public class CreateEventDataFragment extends CreateEventFragment {
 				.create()
 				.show();
 	}
-
-	/*@Override
-	public void onFocusChange(View view, boolean focusOn) {
-		if (view.getId() == R.id.etLocation){
-			if (focusOn) {
-				Intent i = new Intent(getActivity(), LocationCreationActivity.class);
-				Log.e("INTENT MAP", "Already Started");
-				startActivityForResult(i, LOCATION_ACTIVITY);
-			}	
-		}
-	}*/
 	
 	public void locationTouchListener() {
 		etLocation.setOnTouchListener(new OnTouchListener() {
@@ -329,6 +318,8 @@ public class CreateEventDataFragment extends CreateEventFragment {
 					i.putExtra("PrevLoc", lcn);
 					Log.e("INTENT MAP", "Already Started");
 					startActivityForResult(i, LOCATION_ACTIVITY);
+					getActivity().overridePendingTransition(R.anim.down_in,
+							R.anim.up_out);
 				}
 				return false;
 			}

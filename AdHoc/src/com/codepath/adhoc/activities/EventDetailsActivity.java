@@ -382,6 +382,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 					hideProgressBar();
 					if(item.getAttendanceCount() == item.getMaxAttendees()) {
 						btnAction.setEnabled(false);
+						btnAction.setText("CANNOT JOIN");
 					}
 				}
 			}
