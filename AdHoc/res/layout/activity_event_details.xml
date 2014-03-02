@@ -23,19 +23,13 @@
         android:paddingTop="@dimen/activity_vertical_margin" >
 
         <RelativeLayout
+            android:id="@+id/rlDetailContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#c8eb5d" >
-
-            <Button
-                android:id="@+id/btnAction"
-                style="@style/NiceButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:onClick="onAction"
-                android:text="Button" />
+            android:layout_above="@+id/btnAction"
+            android:layout_alignParentLeft="true"
+            android:background="#c8eb5d"
+            android:padding="@dimen/small_padding" >
 
             <TextView
                 android:id="@+id/tvInfoAttendance"
@@ -82,14 +76,21 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#ffffff" />
 
-            <TextView
-                android:id="@+id/tvDetailDesc"
+            <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/tvDetailsAttendance"
-                android:layout_marginTop="17dp"
-                android:text="TextView" />
+                android:layout_marginTop="17dp" >
+
+                <TextView
+                    android:id="@+id/tvDetailDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+            </ScrollView>
 
             <TextView
                 android:id="@+id/textView7"
@@ -120,9 +121,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/tvInfoAttendance"
-                android:text="" />
+                android:layout_below="@+id/tvInfoAttendance" />
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnAction"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/rlDetailContent"
+            android:onClick="onAction"
+            android:text="Button" />
     </RelativeLayout>
 
     <LinearLayout

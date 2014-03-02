@@ -56,8 +56,7 @@
         android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:background="#c8eb5d" >
+        android:layout_alignParentRight="true" >
 
         <Button
             android:id="@+id/btnSave"

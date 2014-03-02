@@ -1,7 +1,6 @@
 package com.codepath.adhoc;
 
 import java.lang.reflect.InvocationHandler;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -50,9 +49,15 @@ public class CustomEventSpinner extends Spinner {
             n.setAccessible(true);
             n.invoke(this,-1);
         } 
-        catch( Exception e ) {
+        catch(RuntimeException e ) {
             throw new RuntimeException(e);
-        }
+        } catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
     }
 
     protected SpinnerAdapter newProxy(SpinnerAdapter obj) {
@@ -94,7 +99,7 @@ public class CustomEventSpinner extends Spinner {
             catch (InvocationTargetException e) {
                 throw e.getTargetException();
             } 
-            catch (Exception e) {
+            catch (RuntimeException e) {
                 throw new RuntimeException(e);
             }
         }

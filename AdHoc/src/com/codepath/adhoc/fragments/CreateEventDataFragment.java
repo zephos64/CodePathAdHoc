@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -328,8 +329,9 @@ public class CreateEventDataFragment extends CreateEventFragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  // REQUEST_CODE is defined above
-	  if (resultCode == getActivity().RESULT_OK && requestCode == LOCATION_ACTIVITY) {
+	  getActivity();
+	// REQUEST_CODE is defined above
+	  if (resultCode == Activity.RESULT_OK && requestCode == LOCATION_ACTIVITY) {
 		  // Extract name value from result extras
 		  LocationData returnedLoc = (LocationData) data.getSerializableExtra("Location"); 
 		  if(returnedLoc != null) {

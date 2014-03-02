@@ -40,15 +40,18 @@
         <RelativeLayout
             android:id="@+id/rlAttendance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/rlStatusIcon"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" >
 
             <ProgressBar
                 android:id="@+id/pbAttendeeBar"
-                style="@+style/Widget.ProgressBar.Vertical"
+                style="@+style/custom_progress_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:minHeight="@dimen/height_pb_attendance"
+                android:maxWidth="@dimen/height_pb_attendance"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true" />
 

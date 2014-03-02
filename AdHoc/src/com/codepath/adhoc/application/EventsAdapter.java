@@ -68,7 +68,8 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 			tvRemainingSpots.setTextColor(Color.parseColor("#FF0000"));
 		} else {
 			tvRemainingSpots.setText(String.valueOf(events.getAttendanceCount()));
-			tvRemainingSpots.setTextColor(Color.parseColor("#00A7CF"));
+			//tvRemainingSpots.setTextColor(Color.parseColor("#00A7CF"));
+			tvRemainingSpots.setTextColor(Color.parseColor("#FFFFFF"));
 		}
 		tvTime.setText(AdHocUtils.getTime(events.getEventTime()));
 		

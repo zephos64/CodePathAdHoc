@@ -6,6 +6,7 @@
     android:background="#c8eb5d" >
 
     <RelativeLayout
+        android:padding="@dimen/small_padding"
         android:layout_width="match_parent"
         android:layout_height="356dp" >
 
@@ -26,21 +27,9 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tvStopTime"
                 android:layout_alignParentRight="true"
-                android:layout_toRightOf="@+id/tvStartTime"
+                android:layout_toRightOf="@+id/tvSportSpinner"
                 android:ems="10"
                 android:gravity="right" />
-
-        <EditText
-            android:id="@+id/etMaxAttendees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/tvMaxAttendees"
-            android:layout_alignBottom="@+id/tvMaxAttendees"
-            android:layout_alignLeft="@+id/etStartTime"
-            android:layout_alignParentRight="true"
-            android:ems="10"
-            android:gravity="right"
-            android:inputType="number" />
 
         <TextView
             android:id="@+id/tvMaxAttendees"
@@ -49,7 +38,6 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spListEvents"
             android:layout_marginTop="@dimen/creation_seperator"
-            android:paddingBottom="@dimen/creation_seperator"
             android:text="@string/maxAtt"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="2dp" />
@@ -88,7 +76,6 @@
             android:gravity="left"
             android:hint="@string/location" >
 
-            <requestFocus />
         </EditText>
 
         <TextView
@@ -117,9 +104,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tvStopTime"
+            android:layout_below="@+id/ivDividerBot"
             android:text="@string/locationCreate"
-            android:layout_marginTop="@dimen/creation_seperator"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="2dp" />
 
@@ -128,20 +114,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/etMaxAttendees"
+            android:layout_below="@+id/ivDividerTop"
             android:text="@string/startTime"
-            android:layout_marginTop="@dimen/creation_seperator"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="2dp" />
+
+        <EditText
+            android:id="@+id/etMaxAttendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spListEvents"
+            android:layout_toRightOf="@+id/tvMaxAttendees"
+            android:ems="10"
+            android:gravity="right"
+            android:inputType="number" />
+
+        <ImageView
+            android:id="@+id/ivDividerTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvMaxAttendees"
+            android:paddingTop="@dimen/creation_seperator_small"
+            android:paddingBottom="@dimen/creation_seperator_small"
+            android:src="@drawable/list_divider" />
+
+        <ImageView
+            android:id="@+id/ivDividerBot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvStopTime"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:paddingTop="@dimen/creation_seperator_small"
+            android:paddingBottom="@dimen/creation_seperator_small"
+            android:src="@drawable/list_divider" />
 
         <EditText
             android:id="@+id/etEndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tvStopTime"
-            android:layout_toRightOf="@+id/tvStartTime"
+            android:layout_alignLeft="@+id/etStartTime"
+            android:layout_below="@+id/etStartTime"
             android:ems="10"
-            android:gravity="right" />
+            android:gravity="right" >
+
+        </EditText>
 
     </RelativeLayout>
 

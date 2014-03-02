@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -395,6 +396,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 			public void run() {
 				if(item.getAttendanceCount() == item.getMaxAttendees()) {
 					tvAttendance.setText("FULL");
+					tvAttendance.setTextColor(Color.parseColor("#FF0000"));
 				} else {
 					tvAttendance.setText(item.getAttendanceCount() + " / "
 						+ item.getMaxAttendees());

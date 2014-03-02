@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sport_prompt">Choose a sport</string>
+    <string name="sport_prompt"></string>
     
     <string-array name="sport_array">
         <item>Baseball</item>
