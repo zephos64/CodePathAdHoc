@@ -19,9 +19,9 @@
         android:layout_centerVertical="true" >
     </eu.erikw.PullToRefreshListView>
     
-   <LinearLayout
+   <RelativeLayout
         android:id="@+id/llEmptyList"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -36,9 +36,21 @@
             android:id="@+id/tvEmptyListText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
             android:text="@string/emptyListText" />
+        <Button
+            android:id="@+id/btnAction"
+            style="@style/NiceButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/activity_vertical_small_margin"
+            android:layout_below="@+id/tvEmptyListText"
+            android:onClick="onClickCreateEvent"
+            android:text="@string/abCreate" />
 
-	</LinearLayout>
+	</RelativeLayout>
 	<LinearLayout
         android:id="@+id/llListProgress"
         android:layout_width="wrap_content"

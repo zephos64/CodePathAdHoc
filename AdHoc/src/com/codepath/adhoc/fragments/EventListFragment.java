@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -21,9 +22,6 @@ import com.codepath.adhoc.activities.EventDetailsActivity;
 import com.codepath.adhoc.application.EventsAdapter;
 import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.maps.model.LatLng;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.Animator.AnimatorListener;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -35,7 +33,7 @@ public abstract class EventListFragment extends Fragment {
 	ArrayList<Events> events;
 	FragmentActivity activityListener;
 
-	LinearLayout llEmptyList;
+	RelativeLayout llEmptyList;
 	LinearLayout llListProgress;
 
 	LatLng loc;
@@ -70,7 +68,7 @@ public abstract class EventListFragment extends Fragment {
 				false);
 		this.lvEvents = (PullToRefreshListView) mContentView
 				.findViewById(R.id.lvEvents);
-		llEmptyList = (LinearLayout) mContentView
+		llEmptyList = (RelativeLayout) mContentView
 				.findViewById(R.id.llEmptyList);
 		llListProgress = (LinearLayout) mContentView
 				.findViewById(R.id.llListProgress);

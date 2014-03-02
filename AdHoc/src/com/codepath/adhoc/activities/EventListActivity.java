@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -141,7 +142,7 @@ public class EventListActivity extends ActionBarActivity
 		locationclient.disconnect();
 		
 		setupTabs();
-	}
+	}//test
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
@@ -154,5 +155,11 @@ public class EventListActivity extends ActionBarActivity
 	
 	public LatLng getUserLoc() {
 		return userLoc;
+	}
+	
+	public void onClickCreateEvent(View v) {
+		Intent iCreate = new Intent(this, CreateEventActivity.class);
+		startActivity(iCreate);
+		overridePendingTransition(R.anim.down_in, R.anim.up_out);
 	}
 }
