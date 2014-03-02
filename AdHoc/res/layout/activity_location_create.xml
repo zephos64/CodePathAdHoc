@@ -1,8 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#afce7f"
+    android:orientation="vertical"
+    android:weightSum="8"
     tools:context=".LocationCreationActivity" >
 
     <!-- <RelativeLayout -->
@@ -21,6 +23,7 @@
         android:layout_above="@+id/btnLocCreateSave"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_weight="1"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <View
@@ -30,34 +33,36 @@
         android:layout_below="@+id/map"
         android:background="#228B22" />
 
-    <Button
-        android:id="@+id/btnLocCreateSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="onClickSave"
-        android:layout_alignLeft="@+id/center"
-        android:text="Save" />
-
-    <Button
-        android:id="@+id/btnLocCreateCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClickCancel"
-        android:layout_alignRight="@+id/center"
-        android:text="Cancel" />
-
     <LinearLayout
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnLocCreateCancel"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickCancel"
+            android:text="Cancel"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="1dp" />
+
+        <Button
+            android:id="@+id/btnLocCreateSave"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickSave"
+            android:text="Save"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="3dp" />
+
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -61,5 +61,13 @@
         <item name="android:maxHeight">48dip</item>
     </style>
     <style name="Widget"></style>
+    
+    <style name="NiceButton">
+        <item name="android:background">@drawable/states_nice_button</item>
+        <item name="android:shadowColor">#FFFFFF</item>
+        <item name="android:text">Button</item>
+        <item name="android:textColor">#1485CC</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>

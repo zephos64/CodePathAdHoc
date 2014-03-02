@@ -22,6 +22,7 @@
 
     <Button
         android:id="@+id/btnSave"
+        style="@style/NiceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
