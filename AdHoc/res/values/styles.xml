@@ -20,13 +20,13 @@
     <style name="SectionDivider" parent="@style/AppBaseTheme">
         <item name="android:background">#FFFFFF</item>
     </style>
-    
+
     <style name="AppLoginText" parent="@style/AppBaseTheme">
         <item name="android:textSize">69sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">serif</item>
     </style>
-    
+
     <style name="login_button_style" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -37,10 +37,29 @@
         <item name="android:paddingLeft">5dp</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="custom_progress_bar" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:minHeight">10dip</item>
         <item name="android:maxHeight">10dip</item>
         <item name="android:progressDrawable">@drawable/custom_progress_bar_horizontal</item>
     </style>
+
+    <style name="Widget.ProgressBar.Vertical">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/list_progress_bar_vertical</item>
+        <item name="android:minWidth">40dip</item>
+        <item name="android:maxWidth">40dip</item>
+    </style>
+
+    <style name="Widget.ProgressBar">
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:indeterminateDuration">3500</item>
+        <item name="android:minWidth">48dip</item>
+        <item name="android:maxWidth">48dip</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:maxHeight">48dip</item>
+    </style>
+    <style name="Widget"></style>
+
 </resources>

@@ -359,6 +359,9 @@ public class EventDetailsActivity extends ActionBarActivity {
 					Log.d("DEBUG", "User has NOT joined event");
 					leaveEvent();
 					hideProgressBar();
+					if(item.getAttendanceCount() == item.getMaxAttendees()) {
+						btnAction.setEnabled(false);
+					}
 				}
 			}
 		});

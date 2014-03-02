@@ -3,15 +3,17 @@
     <string name="sport_prompt">Choose a sport</string>
     
     <string-array name="sport_array">
-        <item>American Football</item>
         <item>Baseball</item>
         <item>Basketball</item>
         <item>Beach Volleyball</item>
         <item>Bowling</item>
-        <item>Hacky sack</item>
+        <item>Hacky Sack</item>
+        <item>Football</item>
         <item>Frisbee</item>
         <item>Soccer</item>
         <item>Tennis</item>
+        <item>Touch Football</item>
+        <item>Ultimate Frisbee</item>
         <item>Volleyball</item>
     </string-array>
 </resources>

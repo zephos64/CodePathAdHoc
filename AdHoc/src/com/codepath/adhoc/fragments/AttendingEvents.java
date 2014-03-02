@@ -27,12 +27,12 @@ public class AttendingEvents extends EventListFragment {
 
 	@Override
 	public void loadList() {
+		getAdapter().clear();
 		ParseClient.getParseUserJoinedEvents((User)ParseUser.getCurrentUser(),
 				new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException e) {
 				if(e == null) {
-					getAdapter().clear();
 					llListProgress.setVisibility(View.INVISIBLE);
 					getAdapter().addAll(listEvents);
 					lvEvents.onRefreshComplete();
