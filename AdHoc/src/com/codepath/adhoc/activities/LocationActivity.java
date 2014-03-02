@@ -359,5 +359,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		Intent itemDetails = new Intent(this, EventDetailsActivity.class);
 		itemDetails.putExtra(AdHocUtils.intentDetailsId, objId);
 		startActivity(itemDetails);
+		overridePendingTransition(R.anim.expand_in, R.anim.shrink_out);
 	}
 }
