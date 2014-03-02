@@ -87,11 +87,6 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 			ivStatus.setVisibility(View.INVISIBLE);
 		}
 		
-		/*Animation animation = new AlphaAnimation(0.0f,1.0f);  
-        animation.setFillAfter(true);  
-        animation.setDuration(100);  
-        animation.setStartOffset(position * 100);  
-        convertView.startAnimation(animation);  */
 		animatePostIcs(position, convertView);
 		mPreviousPosition = position;
 		

@@ -21,52 +21,59 @@ import com.codepath.adhoc.activities.EventDetailsActivity;
 import com.codepath.adhoc.application.EventsAdapter;
 import com.codepath.adhoc.parsemodels.Events;
 import com.google.android.gms.maps.model.LatLng;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 public abstract class EventListFragment extends Fragment {
-	
+
 	EventsAdapter eventsAdapter;
 	PullToRefreshListView lvEvents;
 	ArrayList<Events> events;
 	FragmentActivity activityListener;
-	
+
 	LinearLayout llEmptyList;
 	LinearLayout llListProgress;
-	
+
 	LatLng loc;
-	
+
 	private View mContentView = null;
-		
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		this.activityListener = (FragmentActivity) activity;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		events = new ArrayList<Events>();
 		eventsAdapter = new EventsAdapter(getActivity(), events);
-		//Log.d("DEBUG", "list of events: " + events.toString());
-		
-		loc = new LatLng(getArguments().getDouble("lat"),
-				getArguments().getDouble("long"));
-		
+		// Log.d("DEBUG", "list of events: " + events.toString());
+
+		loc = new LatLng(getArguments().getDouble("lat"), getArguments()
+				.getDouble("long"));
+
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		mContentView = inflater.inflate(R.layout.fragment_list, container, false);
-		this.lvEvents = (PullToRefreshListView) mContentView.findViewById(R.id.lvEvents);
-		llEmptyList = (LinearLayout) mContentView.findViewById(R.id.llEmptyList);
-		llListProgress = (LinearLayout) mContentView.findViewById(R.id.llListProgress);
+		mContentView = inflater.inflate(R.layout.fragment_list, container,
+				false);
+		this.lvEvents = (PullToRefreshListView) mContentView
+				.findViewById(R.id.lvEvents);
+		llEmptyList = (LinearLayout) mContentView
+				.findViewById(R.id.llEmptyList);
+		llListProgress = (LinearLayout) mContentView
+				.findViewById(R.id.llListProgress);
 		llEmptyList.setVisibility(View.INVISIBLE);
 
 		lvEvents.setAdapter(getAdapter());
@@ -75,14 +82,41 @@ public abstract class EventListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View item, int pos,
 					long id) {
-				Log.d("DEBUG", "Clicked item at [" + pos +
-						"] with Event id ["+events.get(pos).getObjectId()+"]");
-				Intent itemDetails = new Intent(getActivity(), EventDetailsActivity.class);
-				itemDetails.putExtra(AdHocUtils.intentDetailsId, events.get(pos).getObjectId());
-				startActivity(itemDetails);
+				Log.d("DEBUG", "Clicked item at [" + pos + "] with Event id ["
+						+ events.get(pos).getObjectId() + "]");
+				final Intent itemDetails = new Intent(getActivity(),
+						EventDetailsActivity.class);
+				itemDetails.putExtra(AdHocUtils.intentDetailsId, events
+						.get(pos).getObjectId());
+
+				ObjectAnimator itemAnim = ObjectAnimator.ofFloat(item,
+						"translationX", 0.0f, 660.0f);
+				itemAnim.setDuration(900);
+				itemAnim.addListener(new AnimatorListener() {
+					
+					@Override
+					public void onAnimationStart(Animator arg0) {						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animator arg0) {						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animator arg0) {
+						startActivity(itemDetails);
+						getActivity().overridePendingTransition(R.anim.right_in,
+								R.anim.left_out);
+					}
+					
+					@Override
+					public void onAnimationCancel(Animator arg0) {						
+					}
+				});
+				itemAnim.start();
 			}
 		});
-		
+
 		lvEvents.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -92,25 +126,25 @@ public abstract class EventListFragment extends Fragment {
 		});
 		return mContentView;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
-	
+
 	public EventsAdapter getAdapter() {
 		return eventsAdapter;
 	}
-	
+
 	abstract void loadList();
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		Log.d("DEBUG", "Event list Fragment resumed");
 		llListProgress.setVisibility(View.INVISIBLE);
-		//loadList();
-		//llListProgress.setVisibility(View.VISIBLE);
+		// loadList();
+		// llListProgress.setVisibility(View.VISIBLE);
 	}
 }
