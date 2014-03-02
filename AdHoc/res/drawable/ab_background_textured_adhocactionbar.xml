@@ -14,8 +14,15 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
--->
+
 
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
     android:src="@drawable/ab_texture_tile_adhocactionbar"
-    android:tileMode="repeat" />
+    android:tileMode="repeat" /> -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:startColor="#99cc00"
+        android:endColor="#62af0f"
+         />
+</shape>

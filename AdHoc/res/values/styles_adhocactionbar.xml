@@ -34,10 +34,8 @@
     </style>
 
     <style name="ActionBar.Solid.Adhocactionbar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_adhocactionbar</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_adhocactionbar</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_adhocactionbar</item>
-        <item name="progressBarStyle">@style/ProgressBar.Adhocactionbar</item>
+        <item name="android:background">@drawable/ab_background_textured_adhocactionbar</item>
+        <item name="background">@drawable/ab_background_textured_adhocactionbar</item>
     </style>
 
     <style name="ActionBar.Transparent.Adhocactionbar" parent="@style/Widget.AppCompat.Light.ActionBar">
