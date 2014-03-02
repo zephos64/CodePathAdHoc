@@ -147,6 +147,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		case R.id.action_map:
 			Intent iMap = new Intent(this, LocationActivity.class);
 			startActivity(iMap);
+			overridePendingTransition(R.anim.expand_in, R.anim.shrink_out);
 			break;
 		case R.id.action_logout:
 			ParseUser.logOut();
