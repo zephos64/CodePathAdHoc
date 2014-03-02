@@ -37,7 +37,7 @@
     <string name="errLowTime">That time is before the current time</string>
     <string name="errNoEvent">Please choose a sport</string>
     <string name="errNoAtt">You never told me how many people can join!</string>
-    <string name="errLowAtt">Can't have fun with that many people!</string>
+    <string name="errLowAtt">Can\'t have fun with that many people! Add some more!</string>
     <string name="errNoLoc">No location selected</string>
     <string name="errNoStartTime">Please select a start time</string>
     <string name="errNoEndTime">Please select an end time</string>

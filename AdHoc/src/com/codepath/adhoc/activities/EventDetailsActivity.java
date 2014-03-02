@@ -348,7 +348,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 				if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
 					Log.d("DEBUG", "User is host of event");
 					tvStatus.setText("HOST");
-					btnAction.setText("CANCEL");
+					btnAction.setText("CANCEL EVENT");
 					isHost = true;
 					hideProgressBar();
 				} else if(item.getJoinedUserIds().contains(ParseUser.getCurrentUser())) {
