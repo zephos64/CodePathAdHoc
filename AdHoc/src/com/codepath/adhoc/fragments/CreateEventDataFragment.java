@@ -84,6 +84,13 @@ public class CreateEventDataFragment extends CreateEventFragment {
 			return false;
 		}
 		
+		if(Double.valueOf(etMaxAttendees.getText().toString()) <= 0) {
+			Log.e("err", "Max Attendees too low");
+			showErrDialog(getString(R.string.errMissingDataTitle),
+					getString(R.string.errLowAtt));
+			return false;
+		}
+		
 		if(etStartTime.getText().length() == 0) {
 			Log.e("err", "Start time not inputted");
 			showErrDialog(getString(R.string.errMissingDataTitle),
