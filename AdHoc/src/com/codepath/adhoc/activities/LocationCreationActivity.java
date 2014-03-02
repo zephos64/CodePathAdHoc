@@ -119,6 +119,12 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 		finish();
 		overridePendingTransition(R.anim.up_in,	R.anim.down_out);
 	}
+	
+	@Override
+	public void onBackPressed() {
+	    super.onBackPressed();
+	    overridePendingTransition(R.anim.up_in,	R.anim.down_out);
+	}
 
 	@Override
 	public void onLocationChanged(Location location) {
