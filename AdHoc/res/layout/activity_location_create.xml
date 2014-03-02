@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d0e6df"
-    tools:context=".LocationActivity" >
+    tools:context=".LocationCreationActivity" >
 
     <!-- <RelativeLayout -->
     <!-- android:id="@+id/mapView" -->

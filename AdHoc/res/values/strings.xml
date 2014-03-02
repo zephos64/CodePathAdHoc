@@ -9,6 +9,7 @@
     <string name="title_activity_event_list">listIT</string>
     <string name="title_activity_event_details">seeIT</string>
     <string name="title_activity_create_event">makeIT</string>
+    <string name="title_activity_create_location">makeIT</string>
     <string name="title_activity_location">mapIT</string>
     <string name="abCreate">Create Event</string>
     <string name="abMap">Map</string>
