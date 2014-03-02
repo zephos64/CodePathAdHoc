@@ -21,8 +21,13 @@
         <item name="android:background">#FFFFFF</item>
     </style>
 
-    <style name="AppLoginText" parent="@style/AppBaseTheme">
-        <item name="android:textSize">69sp</item>
+    <style name="AppLoginText1" parent="@style/AppBaseTheme">
+        <item name="android:textSize">100sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:typeface">san</item>
+    </style>
+    <style name="AppLoginText2" parent="@style/AppBaseTheme">
+        <item name="android:textSize">100sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">serif</item>
     </style>

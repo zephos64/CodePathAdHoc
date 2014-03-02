@@ -6,18 +6,9 @@
     android:contentDescription="@string/login_button_fb"
     android:orientation="vertical"
     tools:context=".MainActivity" >
-
-    <TextView
-        android:id="@+id/tvLoginTitle1"
-        style="@style/AppLoginText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/login_title_1" />
     <TextView
         android:id="@+id/tvLoginTitle2"
-        style="@style/AppLoginText"
+        style="@style/AppLoginText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/tvLoginTitle1"
@@ -38,5 +29,14 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="@string/login_button_fb" />
+
+    <TextView
+        android:id="@+id/tvLoginTitle1"
+        style="@style/AppLoginText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvLoginTitle2"
+        android:layout_alignParentLeft="true"
+        android:text="@string/login_title_1" />
 
 </RelativeLayout>
