@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,6 +49,8 @@ public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvLoad;
 	ProgressBar pbProgress;
 	LinearLayout llProgress;
+	
+	ImageView ivDetailStatus;
 	
 	Fragment fMap;
 	
@@ -104,6 +108,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
 		tvLoad = (TextView) findViewById(R.id.tvLoad);
 		llProgress = (LinearLayout) findViewById(R.id.llProgress);
+		ivDetailStatus = (ImageView) findViewById(R.id.ivDetailStatus);
 		
 		btnAction = (Button) findViewById(R.id.btnAction);
 		
@@ -202,7 +207,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 			Log.d("DEBUG", "Remove user [" + curUser.getObjectId()
 					+"] from event [" + item.getObjectId()+"]");
 			
-			leaveEvent();
+			setEmptyEvent();
 			
 			curUser.removeEventsJoined(item);
 			//item.saveInBackground();
@@ -234,8 +239,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 								Log.d("DEBUG", "Adding user [" + curUser.getObjectId()
 									+"] from event [" + item.getObjectId()+"]");
 								
-								joinedEvent();
-								
+								setJoinedEvent();
 
 								curUser.addEventsJoined(item);
 								curUser.saveInBackground(new SaveCallback() {
@@ -264,16 +268,32 @@ public class EventDetailsActivity extends ActionBarActivity {
 		}
 	}
 	
-	private void joinedEvent() {
+	private void setJoinedEvent() {
 		tvStatus.setText("JOINED");
 		btnAction.setText("LEAVE");
 		hasJoined=true;
+		setImage("@drawable/ic_user_joined", ivDetailStatus);
 	}
 	
-	private void leaveEvent() {
+	private void setEmptyEvent() {
 		tvStatus.setText("");
 		btnAction.setText("JOIN");
 		hasJoined=false;
+		ivDetailStatus.setVisibility(View.INVISIBLE);
+	}
+	
+	private void setHostEvent() {
+		tvStatus.setText("HOST");
+		btnAction.setText("CANCEL EVENT");
+		isHost=true;
+		setImage("@drawable/ic_star", ivDetailStatus);
+	}
+	
+	public void setImage(String uri, ImageView ivImage) {
+		int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+		Drawable res = getResources().getDrawable(imageResource);
+		ivImage.setImageDrawable(res);
+		ivImage.setVisibility(View.VISIBLE);
 	}
 	
 	private void checkEventStatus(Events event, FindCallback<Events> fcb) {
@@ -350,17 +370,15 @@ public class EventDetailsActivity extends ActionBarActivity {
 				gotAtt = true;
 				if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
 					Log.d("DEBUG", "User is host of event");
-					tvStatus.setText("HOST");
-					btnAction.setText("CANCEL EVENT");
-					isHost = true;
+					setHostEvent();
 					hideProgressBar();
 				} else if(item.getJoinedUserIds().contains(ParseUser.getCurrentUser())) {
 					Log.d("DEBUG", "User has joined event");
-					joinedEvent();
+					setJoinedEvent();
 					hideProgressBar();
 				} else {
 					Log.d("DEBUG", "User has NOT joined event");
-					leaveEvent();
+					setEmptyEvent();
 					hideProgressBar();
 					if(item.getAttendanceCount() == item.getMaxAttendees()) {
 						btnAction.setEnabled(false);

@@ -30,6 +30,10 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 	
 	private List<Events> mEvents;
 	protected String str = "";
+	private int mPreviousPosition = -1;
+	private final float mAnimX = 140;
+    private final float mAnimY = 140;
+    private ArrayList<Animator> mAnimatorList = new ArrayList<Animator>();
 
 	public EventsAdapter(Context context, List<Events> objects) {
 		super(context, com.codepath.adhoc.R.layout.fragment_item_event, objects);
@@ -93,12 +97,6 @@ public class EventsAdapter extends ArrayAdapter<Events> {
 		
 		return convertView;
 	}
-	
-	private int mPreviousPosition = -1;
-	private final float mAnimX = 140;
-    private final float mAnimY = 140;
-    private boolean mAnimate;
-    private ArrayList<Animator> mAnimatorList = new ArrayList<Animator>();
 
 	public void setImage(String uri, ImageView ivImage, View convertView) {
 		int imageResource = convertView.getResources().getIdentifier(uri, null, convertView.getContext().getPackageName());
