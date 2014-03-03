@@ -98,12 +98,10 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 	@Override
 	public void onMarkerDragEnd(Marker marker) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void onMarkerDragStart(Marker marker) {
-		// TODO Auto-generated method stub
 	}
 	
 	@Override
@@ -115,6 +113,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 
 	@Override
 	public void onLocationChanged(Location location) {
+		Log.d("DEBUG", "onLocationChanged called");
 		
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();
@@ -149,7 +148,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			}
 			else {
 				Log.d("DEBUG", "Need to get the events again");
-				addListOfEvents();
+				//addListOfEvents();
+				updatingListEvents();
 			}
 		}
 	}
@@ -183,7 +183,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -218,7 +217,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
 	public void onDisconnected() {
 		Log.d("DEBUG", "Map disconnected");
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -274,8 +272,9 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	}
 	
 	public void addListOfEvents() {
+		Log.d("DEBUG", "Adding list of events");
 		map.setOnMarkerDragListener(this);
-		if (( eventsMarkers != null ) && (eventsMarkers.size()!= 0 )) {
+		if (( eventsMarkers != null ) && (eventsMarkers.size() != 0 )) {
 			// Clear all the existing markers if any
 			eventsMarkers.clear();
 		}
@@ -285,17 +284,25 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 			@Override
 			public void onInfoWindowClick(Marker mark) {
-				int a = Integer.valueOf(mark.getSnippet());
-				Log.e("ERROR", "Marker " + mark.getSnippet() + " clicked");
-				Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
-				gotoDetails(allEvents.get(a).getObjectId());
+				// need to go through list and find event
+				//  due to bug with adding events dynamically
+				int listPos = 0;
+				Log.d("ERROR", "Marker " + mark.getSnippet() + " clicked");
+				for(int a = 0; a < allEvents.size(); a++) {
+					if(mark.getSnippet().equals(allEvents.get(a).getObjectId())) {
+						listPos = a;
+					}
+				}
+				
+				Log.d("DEBUG", "Maps to event: " + allEvents.get(listPos).getObjectId());
+				gotoDetails(allEvents.get(listPos).getObjectId());
 			}
 		});
 		
 		ParseClient.getParseAllEvents(myPos, new FindCallback<Events>() {
 			@Override
 			public void done(List<Events> listEvents, ParseException arg1) {
-				allEvents = listEvents;
+				allEvents=listEvents;
 				int markerCount = 0;
 				for(int a = 0; a < listEvents.size(); a++) {
 					double evtLat = 0;
@@ -320,13 +327,92 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 						eventsMarkers.add(map.addMarker(new MarkerOptions()
 											 .position(evtPos)
 											 .anchor(0.5f, 1)
-											 .snippet(String.valueOf(a))
+											 .snippet(String.valueOf(listEvents.get(a).getObjectId()))
 											 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
 						eventsMarkers.get(markerCount).setDraggable(false);
 					} else {
 						Log.d("DEBUG", "Removed event " + listEvents.get(a).getObjectId());
 						listEvents.remove(a);
 						a--;
+					}
+				}
+
+				map.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater(), allEvents));
+			}
+		});
+	}
+	
+	public void updatingListEvents() {
+		Log.d("DEBUG", "Updating list of events");
+		
+		ParseClient.getParseAllEvents(myPos, new FindCallback<Events>() {
+			@Override
+			public void done(List<Events> listEvents, ParseException arg1) {
+				int markerCount = 0;
+				
+				List<Events> parseEvents = listEvents;
+				List<Events> mapEvents = new ArrayList<Events>();
+				for(int a = 0; a < allEvents.size(); a++) {
+					mapEvents.add(allEvents.get(a));
+				}
+				
+				Log.d("DEBUG", "Size of map events is " + mapEvents.size());
+				Log.d("DEBUG", "Size of parse events is " + parseEvents.size());
+				
+				// first go through and determine new/old events
+				for(int a = 0; a < mapEvents.size(); a++) {
+					for(int b = 0; b < parseEvents.size(); b++) {
+						if(mapEvents.size() != 0 &&
+								mapEvents.get(a).equals(parseEvents.get(b))) {
+							Log.d("DEBUG", "Contains both " +
+									mapEvents.get(a).getObjectId() + ","
+									+ parseEvents.get(b).getObjectId());
+							mapEvents.remove(a);
+							parseEvents.remove(b--);
+						}
+					}
+				}
+				
+				// at this point mapEvents has deleted events
+				//  and parseEvents has new events
+				Log.d("DEBUG", "Size of map events became " + mapEvents.size());
+				Log.d("DEBUG", "Size of parse events became " + parseEvents.size());
+				
+				// remove deleted events by going through map events
+				for(int a = 0; a < mapEvents.size(); a++) {
+					for(int b = 0; b < allEvents.size(); b++) {
+						//Log.v("DELETE", "Checking events to delete " + mapEvents.get(a).getObjectId() + "," + allEvents.get(b).getObjectId());
+						if(mapEvents.get(a).equals(allEvents.get(b))) {
+							Log.d("DEBUG", "Removing event [" +allEvents.get(b).getObjectId()+"]");
+							allEvents.remove(b);
+							
+							eventsMarkers.get(b).remove();
+							eventsMarkers.remove(b--);
+						}
+					}
+				}
+				
+				// add new events from parseEvents
+				for(int a = 0; a < parseEvents.size(); a++) {
+					Log.d("DEBUG", "Checking to add event " + parseEvents.get(a).getObjectId());
+					
+					ParseGeoPoint point = listEvents.get(a).getLoc();
+					double evtLat = point.getLatitude();
+					double evtLng = point.getLongitude();
+					LatLng 	evtPos =new LatLng(evtLat,evtLng);
+					float[] dist  = new float[1];
+					Location.distanceBetween(myPos.latitude, myPos.longitude, evtLat, evtLng, dist);
+					
+					if ((dist[0] * METER_TO_MILE_FACTOR) <= INTEREST_RADIUS_MILES) {
+						Log.d("DEBUG", "Adding event " + parseEvents.get(a).getObjectId());
+						allEvents.add(parseEvents.get(a));
+					
+						eventsMarkers.add(map.addMarker(new MarkerOptions()
+						 	.position(evtPos)
+						 	.anchor(0.5f, 1)
+						 	.snippet(String.valueOf(parseEvents.get(a).getObjectId()))
+						 	.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_marker))));
+						eventsMarkers.get(markerCount).setDraggable(false);
 					}
 				}
 

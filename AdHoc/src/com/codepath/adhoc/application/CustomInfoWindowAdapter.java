@@ -35,10 +35,17 @@ public class CustomInfoWindowAdapter implements InfoWindowAdapter{
 		
 		Log.e("DEBUG", "Marker " + mark.getSnippet() + " getInfoContents called");
 		if (mark.getSnippet() != null) {
-			int id = Integer.valueOf(mark.getSnippet()); 
-			Log.d("DEBUG", "Adapter marker maps to event: " + listEvents.get(id).getObjectId());
+			String id = mark.getSnippet(); 
+			
+			int listPos = -1;
+			for(int a = 0; a < listEvents.size(); a++) {
+				if(mark.getSnippet().equals(listEvents.get(a).getObjectId())) {
+					listPos = a;
+				}
+			}
+			Log.d("DEBUG", "Adapter marker maps to event: " + listEvents.get(listPos).getObjectId());
 		
-			Events event = listEvents.get(id);
+			Events event = listEvents.get(listPos);
 			tvInfoTitle.setText(event.getEventName());
 			tvInfoStartTime.setText("  " + AdHocUtils.getTime(event.getEventTime()));
 			tvInfoAttendance.setText("  " + event.getAttendanceCount()
