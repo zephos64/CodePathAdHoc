@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:text="Large Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvInfoAttendance"
                 android:layout_below="@+id/tvInfoAttendance"
-                android:text="TextView" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/tvDetailsLoc"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvDetailStartTime"
                 android:layout_below="@+id/tvDetailStartTime"
-                android:text="TextView" />
+                android:text="" />
 
             <ProgressBar
                 android:id="@+id/pbAttendance"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvDetailsLoc"
                 android:layout_centerHorizontal="true"
-                android:text="Small Text"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#ffffff" />
 
@@ -89,16 +89,16 @@
                     android:id="@+id/tvDetailDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="" />
             </ScrollView>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/tvTimeFiller"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tvDetailsLoc"
                 android:layout_toRightOf="@+id/tvDetailStartTime"
-                android:text=" to "
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
@@ -106,8 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tvDetailsLoc"
-                android:layout_toRightOf="@+id/textView7"
-                android:text="TextView" />
+                android:layout_toRightOf="@+id/tvTimeFiller"
+                android:text="" />
 
             <ImageView
                 android:id="@+id/ivDetailStatus"
@@ -133,7 +133,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignRight="@+id/rlDetailContent"
             android:onClick="onAction"
-            android:text="Button" />
+            android:text="" />
     </RelativeLayout>
 
     <LinearLayout

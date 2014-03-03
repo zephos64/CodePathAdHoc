@@ -42,6 +42,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvTimeEnd;
 	TextView tvLoc;
 	TextView tvAttendance;
+	TextView tvTimeFiller;
 	ProgressBar pbAttendance;
 	TextView tvDesc;
 	TextView tvStatus;
@@ -102,6 +103,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 		tvTimeEnd = (TextView) findViewById(R.id.tvDetailEndTime);
 		tvLoc = (TextView) findViewById(R.id.tvDetailsLoc);
 		tvAttendance = (TextView) findViewById(R.id.tvDetailsAttendance);
+		tvTimeFiller = (TextView) findViewById(R.id.tvTimeFiller);
 		pbAttendance = (ProgressBar) findViewById(R.id.pbAttendance);
 		tvDesc = (TextView) findViewById(R.id.tvDetailDesc);
 		tvStatus = (TextView) findViewById(R.id.tvInfoTitle);
@@ -349,6 +351,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 				tvTitle.setText(item.getEventName());
 				tvTime.setText("   "+AdHocUtils.getTime(item.getEventTime()));
 				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
+				tvTimeFiller.setText(" to ");
 				tvDesc.setText(item.getDesc());
 				if(item.getAddress() != null) {
 					tvLoc.setText("   "+item.getAddress());
