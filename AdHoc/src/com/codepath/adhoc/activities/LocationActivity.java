@@ -85,35 +85,13 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 		else{
 			Log.e("ERROR", "Error with Google play services " + resp);
 		}				
-//		LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-//		if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-//			Toast.makeText(this, "GPS is not enabled", Toast.LENGTH_LONG).show();
-//			promptGPSEnabling();
-//		}
+
 		mLocationRequest = LocationRequest.create();
 	    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	    mLocationRequest.setInterval(UPDATE_INTERVAL);
 	    mLocationRequest.setFastestInterval(FASTEST_INTERVAL);	
 	}
 	
-//	private void promptGPSEnabling () {
-//		Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//		startActivityForResult(gpsOptionsIntent, GPS_ENABLE_ACTIVITY);		
-//	}
-//
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//	    super.onActivityResult(requestCode, resultCode, data);
-//	    if (requestCode == GPS_ENABLE_ACTIVITY) {
-//	    	LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-//			if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-//				Toast.makeText(this, "Map View can not be loaded without working GPS", Toast.LENGTH_LONG).show();
-//			}
-//			else {
-//				locationclient.requestLocationUpdates(mLocationRequest, this);
-//			}
-//	    }
-//	}	
 	@Override
 	public void onMarkerDrag(Marker marker) {
     }
@@ -218,8 +196,17 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
     protected void onPause() {
         super.onPause();
+        Log.d("LIFE CYCLE", "Pausing map updates");
         locationclient.removeLocationUpdates(this);
     }
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		Log.d("LIFE CYCLE", "Restarting view");
+		locationclient.requestLocationUpdates(mLocationRequest,
+				(com.google.android.gms.location.LocationListener) this);
+	}
 	
 	@Override
 	public void onConnected(Bundle connectionHint) {
@@ -302,13 +289,6 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 				Log.e("ERROR", "Marker " + mark.getSnippet() + " clicked");
 				Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
 				gotoDetails(allEvents.get(a).getObjectId());
-
-//				for(int a = 0; a < eventsMarkers.size(); a++) {
-//					if(mark.getSnippet().equals(eventsMarkers.get(a).getSnippet())) {
-//						Log.d("DEBUG", "Maps to event: " + allEvents.get(a).getObjectId());
-//						gotoDetails(allEvents.get(a).getObjectId());
-//					}
-//				}
 			}
 		});
 		
