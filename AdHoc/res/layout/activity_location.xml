@@ -4,20 +4,50 @@
     android:layout_height="match_parent"
     tools:context=".LocationActivity" >
 
-    
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
-    
-<!-- 	<RelativeLayout -->
-<!--         android:id="@+id/mapView" -->
-<!--         android:layout_width="match_parent" -->
-<!--         android:layout_height="match_parent" -->
-<!--         android:layout_alignParentLeft="true" -->
-<!--         android:layout_alignParentTop="true"  -->
-<!--         android:name="com.google.android.gms.maps.MapFragment"> -->
-<!--     </RelativeLayout> -->
-    
+
+    <!-- <RelativeLayout -->
+    <!-- android:id="@+id/mapView" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:name="com.google.android.gms.maps.MapFragment"> -->
+    <!-- </RelativeLayout> -->
+
+    <LinearLayout
+        android:id="@+id/llProgressLoc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/progress_box"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/tvLoadLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getLoc" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ProgressBar
+                android:id="@+id/pbProgessLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </RelativeLayout>

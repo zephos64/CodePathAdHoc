@@ -47,6 +47,7 @@
     <string name="errMissingDataTitle">Missing data in field</string>
     <string name="hintStartTime">Click to select a start time</string>
     <string name="getData">Getting event data...</string>
+    <string name="getLoc">Getting user location</string>
     <string name="saving">Saving...</string>
     <string name="emptyListText">Nothing seems to be happening here, why don\'t you start something?</string>
     

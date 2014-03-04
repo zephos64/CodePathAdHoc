@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -36,6 +37,7 @@ public class EventListActivity extends ActionBarActivity
 	LatLng userLoc;
 	LocationClient locationclient;
 	LocationRequest mLocationRequest;
+	LinearLayout llProgressList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class EventListActivity extends ActionBarActivity
 		setContentView(R.layout.activity_event_list);
 		
 		AdHocUtils.forceShowActionBar(this);
+		llProgressList = (LinearLayout) findViewById(R.id.llProgressList);
 		getCurrentUserLoc();
 	}
 
@@ -136,6 +139,7 @@ public class EventListActivity extends ActionBarActivity
 	@Override
 	public void onLocationChanged(Location loc) {
 		Log.d("DEBUG", "Event list onLocaitonChanged");
+		llProgressList.setVisibility(View.INVISIBLE);
 		
 		Log.d("DEBUG", "Current user location (for event list) is: " +
 				loc.getLatitude() + "," + loc.getLongitude());

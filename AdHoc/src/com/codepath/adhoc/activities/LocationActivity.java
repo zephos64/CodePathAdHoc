@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -66,6 +68,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private static final double INTEREST_RADIUS_METERS = 1609.34 * INTEREST_RADIUS_MILES;
     private static final double METER_TO_MILE_FACTOR = 0.000621371;
     private boolean  firstMapUpdate = true;
+    LinearLayout llProgressLoc;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,8 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
 	@Override
 	public void onLocationChanged(Location location) {
 		Log.d("DEBUG", "onLocationChanged called");
+		llProgressLoc = (LinearLayout) findViewById(R.id.llProgressLoc);
+		llProgressLoc.setVisibility(View.INVISIBLE);
 		
 		currentLat = location.getLatitude();
 		currentLng = location.getLongitude();

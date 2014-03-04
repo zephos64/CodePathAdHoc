@@ -44,25 +44,55 @@
             style="@style/NiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:onClick="onClickCancel"
-            android:text="Cancel"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="1dp" />
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/btnLocCreateSave"
             style="@style/NiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:onClick="onClickSave"
-            android:text="Save"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="3dp" />
+            android:text="Save" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/llProgressLocCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/progress_box"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/tvLoadLocCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getLoc" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ProgressBar
+                android:id="@+id/pbProgessLocCreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

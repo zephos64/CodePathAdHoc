@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
@@ -55,6 +56,7 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
     public static final int 	MINUTE_IN_SECONDS = 60;
     public static final int 	UPDATE_INTERVAL_IN_SECONDS = 60 *MINUTE_IN_SECONDS;
     public static final int 	UPDATE_INTERVAL_FASTEST_IN_SECONDS =  MINUTE_IN_SECONDS;
+    LinearLayout llProgressLocCreate;
     
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,8 @@ public class LocationCreationActivity extends ActionBarActivity implements Googl
 
 	@Override
 	public void onLocationChanged(Location location) {
+		llProgressLocCreate = (LinearLayout) findViewById(R.id.llProgressLocCreate);
+		llProgressLocCreate.setVisibility(View.INVISIBLE);
 		if(prevLoc != null) {
 	    	 Log.d("DEBUG", "Previous locaiton not null, using that");
 	    	 currentLat = prevLoc.getLattitude();
