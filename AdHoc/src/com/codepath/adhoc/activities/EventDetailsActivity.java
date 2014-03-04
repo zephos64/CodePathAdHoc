@@ -198,7 +198,6 @@ public class EventDetailsActivity extends ActionBarActivity {
 					item.saveInBackground(new SaveCallback() {
 						@Override
 						public void done(ParseException arg0) {
-							populateUserState();
 							populateAttendance();
 						}
 					});
@@ -339,9 +338,10 @@ public class EventDetailsActivity extends ActionBarActivity {
 		AsyncPopulateDetails apd = new AsyncPopulateDetails();
 		AsyncPopulateAttendance apa = new AsyncPopulateAttendance();
 		AsyncPopulateState aps = new AsyncPopulateState();
+		
+		aps.execute();
 		apd.execute();
 		apa.execute();
-		aps.execute();
 	}
 	
 	private void populateDetails() {
@@ -387,7 +387,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 					hideProgressBar();
 					if(item.getAttendanceCount() == item.getMaxAttendees()) {
 						btnAction.setEnabled(false);
-						btnAction.setText("CANNOT JOIN");
+						btnAction.setText("EVENT FULL");
 					}
 				}
 			}
@@ -401,8 +401,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 				if(item.getAttendanceCount() == item.getMaxAttendees()) {
 					tvAttendance.setText("FULL");
 					tvAttendance.setTextColor(Color.parseColor("#FF0000"));
-					btnAction.setEnabled(false);
-					btnAction.setText("EVENT FULL");
+					
 				} else {
 					tvAttendance.setText(item.getAttendanceCount() + " / "
 						+ item.getMaxAttendees());
