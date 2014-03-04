@@ -140,6 +140,8 @@ public class EventListActivity extends ActionBarActivity
 		Log.d("DEBUG", "Current user location (for event list) is: " +
 				loc.getLatitude() + "," + loc.getLongitude());
 		userLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
+		//Location temp = locationclient.getLastLocation();
+		//userLoc = new LatLng(temp.getLatitude(), temp.getLongitude());
 		locationclient.disconnect();
 		
 		setupTabs();

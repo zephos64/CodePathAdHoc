@@ -32,6 +32,8 @@ public class AllEventsFragment extends EventListFragment {
 					lvEvents.onRefreshComplete();
 					if(listEvents.size() == 0) {
 						llEmptyList.setVisibility(View.VISIBLE);
+					} else {
+						llEmptyList.setVisibility(View.INVISIBLE);
 					}
 				} else {
 					Log.e("ERROR", "ParseException on all events: " + e);

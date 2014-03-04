@@ -401,7 +401,6 @@ public class EventDetailsActivity extends ActionBarActivity {
 				if(item.getAttendanceCount() == item.getMaxAttendees()) {
 					tvAttendance.setText("FULL");
 					tvAttendance.setTextColor(Color.parseColor("#FF0000"));
-//disable button when full
 					btnAction.setEnabled(false);
 					btnAction.setText("EVENT FULL");
 				} else {
