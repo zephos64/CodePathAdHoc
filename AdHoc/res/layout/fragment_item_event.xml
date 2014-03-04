@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_small_margin">
+    android:paddingBottom="@dimen/activity_vertical_small_margin" >
 
     <RelativeLayout
         android:id="@+id/rlListContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c8eb5d" 
+        android:background="@drawable/layout_rounded"
         android:paddingBottom="@dimen/activity_vertical_small_margin"
         android:paddingLeft="@dimen/activity_horizontal_small_margin"
         android:paddingRight="@dimen/activity_horizontal_small_margin"
@@ -51,10 +51,10 @@
                 style="@+style/custom_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:minHeight="@dimen/height_pb_attendance"
-                android:maxWidth="@dimen/height_pb_attendance"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:maxWidth="@dimen/height_pb_attendance"
+                android:minHeight="@dimen/height_pb_attendance" />
 
             <TextView
                 android:id="@+id/tvListMaxAttendees"
@@ -98,7 +98,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/rlListContent"
-        android:src="@drawable/list_divider" />
+        android:layout_below="@+id/rlListContent" />
 
 </RelativeLayout>
