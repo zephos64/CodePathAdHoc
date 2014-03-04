@@ -204,6 +204,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 						@Override
 						public void done(ParseException arg0) {
 							populateAttendance();
+							gotoList();
 						}
 					});
 				}
@@ -267,6 +268,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 										public void done(ParseException arg0) {
 											populateUserState();
 											populateAttendance();
+											gotoList();
 										}
 									});
 								}
@@ -451,5 +453,10 @@ public class EventDetailsActivity extends ActionBarActivity {
 		Log.d("DEBUG", "Event Details restarted");
 		// populateItems();
 		getItem(itemId);
+	}
+	
+	public void gotoList() {
+		Intent i = new Intent(this, EventListActivity.class);
+		startActivity(i);
 	}
 }
