@@ -49,7 +49,6 @@ public class ParseClient {
 	}
 	
 	public static void getParseUserJoinedEvents(User userObj, FindCallback<Events> findCallback) {
-		//TODO test
 		Log.d("DEBUG", "Getting events user joined with id " + userObj.getObjectId());
 		
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
@@ -65,19 +64,9 @@ public class ParseClient {
 		query.setLimit(AdHocUtils.userLoadLimit);
 		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
-		
-		/*ParseRelation<Events> userRel = userObj.getEventsAttendingRelation();
-		ParseQuery<Events> query = userRel.getQuery();
-		query.whereNotContainedIn(AdHocUtils.eventState, 
-				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
-						AdHocUtils.EventStates.CANCELLED.toString()));
-		query.setLimit(AdHocUtils.userLoadLimit);
-		query.orderByAscending(AdHocUtils.eventTime);
-		query.findInBackground(findCallback);*/
 	}
 	
 	public static void getParseUserCreatedEvents(User userObj, FindCallback<Events> findCallback) {
-		//TODO test
 		Log.d("DEBUG", "Getting events user created with id " + userObj.getObjectId());
 		
 		ParseQuery<Events> query = ParseQuery.getQuery(Events.class);
@@ -93,15 +82,6 @@ public class ParseClient {
 		query.setLimit(AdHocUtils.userLoadLimit);
 		query.orderByAscending(AdHocUtils.eventTime);
 		query.findInBackground(findCallback);
-		
-		/*ParseRelation<Events> userRel = userObj.getEventsHostingRelation();
-		ParseQuery<Events> query = userRel.getQuery();
-		query.whereNotContainedIn(AdHocUtils.eventState, 
-				Arrays.asList(AdHocUtils.EventStates.FINISHED.toString(),
-						AdHocUtils.EventStates.CANCELLED.toString()));
-		query.setLimit(AdHocUtils.userLoadLimit);
-		query.orderByAscending(AdHocUtils.eventTime);
-		query.findInBackground(findCallback);*/
 	}
 	
 	public static void getParseEventDetails(String eventId, FindCallback<Events> findCallback) {

@@ -33,8 +33,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 /**
- * runOnUiThread exist because data retrieved async
- *  but must run on UI thread to change views
+ * runOnUiThread exist because data retrieved async but must run on UI thread to
+ * change views
  */
 public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvTitle;
@@ -47,49 +47,50 @@ public class EventDetailsActivity extends ActionBarActivity {
 	TextView tvDesc;
 	TextView tvStatus;
 	Button btnAction;
-	
+
 	TextView tvLoad;
 	ProgressBar pbProgress;
 	LinearLayout llProgress;
-	
+
 	ImageView ivDetailStatus;
-	
+
 	Fragment fMap;
-	
+
 	Events item;
 	String itemId;
 	private AdhocMapFragment mapFrg = null;
 	private boolean isHost = false;
 	private boolean hasJoined = false;
-	
+
 	private boolean gotDetails = false;
 	private boolean gotAtt = false;
 	private boolean gotState = false;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_details);
-		
+
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		mapFrg = (AdhocMapFragment) getSupportFragmentManager().findFragmentById(R.id.fMap);
+
+		mapFrg = (AdhocMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.fMap);
 		Log.e("MAP Frag", String.valueOf(mapFrg));
-		
+
 		// for screen rotation
-		if(savedInstanceState != null) {
-			item = (Events)savedInstanceState.getSerializable("event");
+		if (savedInstanceState != null) {
+			item = (Events) savedInstanceState.getSerializable("event");
 			ParseGeoPoint point = item.getLoc();
-			double longitude  = point.getLongitude();
-			double latitude  = point.getLatitude();
+			double longitude = point.getLongitude();
+			double latitude = point.getLatitude();
 			mapFrg.setLocaion(latitude, longitude);
 		} else {
 			Intent prevIntent = getIntent();
 			itemId = prevIntent.getStringExtra(AdHocUtils.intentDetailsId);
 			Log.d("DEBUG", "Got item id : " + itemId);
 		}
-		
+
 		AdHocUtils.forceShowActionBar(this);
 	}
 
@@ -97,7 +98,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.event_details, menu);
-		
+
 		tvTitle = (TextView) findViewById(R.id.tvInfoAttendance);
 		tvTime = (TextView) findViewById(R.id.tvDetailStartTime);
 		tvTimeEnd = (TextView) findViewById(R.id.tvDetailEndTime);
@@ -107,29 +108,28 @@ public class EventDetailsActivity extends ActionBarActivity {
 		pbAttendance = (ProgressBar) findViewById(R.id.pbAttendance);
 		tvDesc = (TextView) findViewById(R.id.tvDetailDesc);
 		tvStatus = (TextView) findViewById(R.id.tvInfoTitle);
-		
+
 		pbProgress = (ProgressBar) findViewById(R.id.pbProgess);
 		tvLoad = (TextView) findViewById(R.id.tvLoad);
 		llProgress = (LinearLayout) findViewById(R.id.llProgress);
 		ivDetailStatus = (ImageView) findViewById(R.id.ivDetailStatus);
-		
+
 		btnAction = (Button) findViewById(R.id.btnAction);
-		
+
 		// for screen rotation
-		if(item == null) {
+		if (item == null) {
 			getItem(itemId);
 		} else {
 			populateItems();
 		}
-			
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    outState.putSerializable("event", item);
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("event", item);
 	}
 
 	@Override
@@ -153,7 +153,8 @@ public class EventDetailsActivity extends ActionBarActivity {
 			break;
 		case R.id.action_logout:
 			ParseUser.logOut();
-			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now
+																// be null
 			Intent intLogOut = new Intent(this, MainActivity.class);
 			startActivity(intLogOut);
 			break;
@@ -163,38 +164,42 @@ public class EventDetailsActivity extends ActionBarActivity {
 
 		return true;
 	}
-	
+
 	public void getItem(String eventId) {
 		Log.d("DEBUG", "API call to get event details for event : " + eventId);
 		ParseClient.getParseEventDetails(eventId, new FindCallback<Events>() {
-		    public void done(List<Events> itemList, ParseException e) {
-		        if (e == null) {
-		            // Access the array of results here
-		            item = itemList.get(0);
-		            populateItems();
-		        } else {
-		            Log.d("item", "Error in populating details : " + e.getMessage());
-		        }
-		    }
+			public void done(List<Events> itemList, ParseException e) {
+				if (e == null) {
+					// Access the array of results here
+					item = itemList.get(0);
+					populateItems();
+				} else {
+					Log.d("item",
+							"Error in populating details : " + e.getMessage());
+				}
+			}
 		});
 	}
-	
+
 	public void onAction(View v) {
-		if(isHost) {
+		showProgressBar();
+		if (isHost) {
 			Log.d("DEBUG", "Cancelling event : " + item.getObjectId());
-			//set event status cancel
-			
+			// set event status cancel
+
 			User curUser = (User) ParseUser.getCurrentUser();
 			curUser.removeEventHosting(item);
 			curUser.saveInBackground(new SaveCallback() {
 				@Override
 				public void done(ParseException arg0) {
-					item.setEventState(AdHocUtils.EventStates.CANCELLED.toString());
-					//item.saveInBackground();
-					
-					tvStatus.setText(AdHocUtils.EventStates.CANCELLED.toString());
+					item.setEventState(AdHocUtils.EventStates.CANCELLED
+							.toString());
+					// item.saveInBackground();
+
+					tvStatus.setText(AdHocUtils.EventStates.CANCELLED
+							.toString());
 					btnAction.setVisibility(View.INVISIBLE);
-					
+
 					item.saveInBackground(new SaveCallback() {
 						@Override
 						public void done(ParseException arg0) {
@@ -203,19 +208,19 @@ public class EventDetailsActivity extends ActionBarActivity {
 					});
 				}
 			});
-		} else if(hasJoined) {
-			//remove name from event list	
+		} else if (hasJoined) {
+			// remove name from event list
 
 			final User curUser = (User) ParseUser.getCurrentUser();
 			Log.d("DEBUG", "Remove user [" + curUser.getObjectId()
-					+"] from event [" + item.getObjectId()+"]");
-			
+					+ "] from event [" + item.getObjectId() + "]");
+
 			setEmptyEvent();
-			
+
 			curUser.removeEventsJoined(item);
-			//item.saveInBackground();
+			// item.saveInBackground();
 			curUser.saveInBackground(new SaveCallback() {
-				
+
 				@Override
 				public void done(ParseException arg0) {
 					item.removeJoinedUser(curUser);
@@ -229,36 +234,43 @@ public class EventDetailsActivity extends ActionBarActivity {
 				}
 			});
 		} else {
-			//add name to event list
+			// add name to event list
 
 			checkEventStatus(item, new FindCallback<Events>() {
 				@Override
 				public void done(List<Events> listEvents, ParseException e) {
-					if(e == null) {
-						String eventStatus = listEvents.get(0).getEventState(); 
-						if(!eventStatus.equals(AdHocUtils.EventStates.CANCELLED.toString())
-							&& !eventStatus.equals(AdHocUtils.EventStates.FINISHED.toString())) {
-								final User curUser = (User) ParseUser.getCurrentUser();
-								Log.d("DEBUG", "Adding user [" + curUser.getObjectId()
-									+"] from event [" + item.getObjectId()+"]");
-								
-								setJoinedEvent();
+					if (e == null) {
+						String eventStatus = listEvents.get(0).getEventState();
+						if (!eventStatus
+								.equals(AdHocUtils.EventStates.CANCELLED
+										.toString())
+								&& !eventStatus
+										.equals(AdHocUtils.EventStates.FINISHED
+												.toString())) {
+							final User curUser = (User) ParseUser
+									.getCurrentUser();
+							Log.d("DEBUG",
+									"Adding user [" + curUser.getObjectId()
+											+ "] from event ["
+											+ item.getObjectId() + "]");
 
-								curUser.addEventsJoined(item);
-								curUser.saveInBackground(new SaveCallback() {
-									
-									@Override
-									public void done(ParseException arg0) {
-										item.addJoinedUser(curUser);
-										item.saveInBackground(new SaveCallback() {
-											@Override
-											public void done(ParseException arg0) {
-												populateUserState();
-												populateAttendance();
-											}
-										});
-									}
-								});
+							setJoinedEvent();
+
+							curUser.addEventsJoined(item);
+							curUser.saveInBackground(new SaveCallback() {
+
+								@Override
+								public void done(ParseException arg0) {
+									item.addJoinedUser(curUser);
+									item.saveInBackground(new SaveCallback() {
+										@Override
+										public void done(ParseException arg0) {
+											populateUserState();
+											populateAttendance();
+										}
+									});
+								}
+							});
 						} else {
 							showErrDialog();
 						}
@@ -270,48 +282,48 @@ public class EventDetailsActivity extends ActionBarActivity {
 			});
 		}
 	}
-	
+
 	private void setJoinedEvent() {
 		tvStatus.setText("JOINED");
 		btnAction.setText("LEAVE");
-		hasJoined=true;
+		hasJoined = true;
 		setImage("@drawable/ic_user_joined", ivDetailStatus);
 	}
-	
+
 	private void setEmptyEvent() {
 		tvStatus.setText("");
 		btnAction.setText("JOIN");
-		hasJoined=false;
+		hasJoined = false;
 		ivDetailStatus.setVisibility(View.INVISIBLE);
 	}
-	
+
 	private void setHostEvent() {
 		tvStatus.setText("HOST");
 		btnAction.setText("CANCEL EVENT");
-		isHost=true;
+		isHost = true;
 		setImage("@drawable/ic_star", ivDetailStatus);
 	}
-	
+
 	public void setImage(String uri, ImageView ivImage) {
-		int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+		int imageResource = getResources().getIdentifier(uri, null,
+				getPackageName());
 		Drawable res = getResources().getDrawable(imageResource);
 		ivImage.setImageDrawable(res);
 		ivImage.setVisibility(View.VISIBLE);
 	}
-	
+
 	private void checkEventStatus(Events event, FindCallback<Events> fcb) {
 		ParseClient.getParseEventDetails(event.getObjectId(), fcb);
 	}
-	
+
 	private void showErrDialog() {
-		AlertDialog.Builder badEvent = new AlertDialog.Builder(
-				this);
+		AlertDialog.Builder badEvent = new AlertDialog.Builder(this);
 		badEvent.setTitle(getString(R.string.errSaveEventTitle));
 		badEvent.setMessage(getString(R.string.errSaveEventMsg));
 		badEvent.setNegativeButton(getString(R.string.OK), null);
 		badEvent.show();
 	}
-	
+
 	private class AsyncPopulateDetails extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -319,6 +331,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 			return null;
 		}
 	}
+
 	private class AsyncPopulateAttendance extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -326,6 +339,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 			return null;
 		}
 	}
+
 	private class AsyncPopulateState extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -333,51 +347,53 @@ public class EventDetailsActivity extends ActionBarActivity {
 			return null;
 		}
 	}
-	
+
 	private void populateItems() {
 		AsyncPopulateDetails apd = new AsyncPopulateDetails();
 		AsyncPopulateAttendance apa = new AsyncPopulateAttendance();
 		AsyncPopulateState aps = new AsyncPopulateState();
-		
+
 		aps.execute();
 		apd.execute();
 		apa.execute();
 	}
-	
+
 	private void populateDetails() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				tvTitle.setText(item.getEventName());
-				tvTime.setText("   "+AdHocUtils.getTime(item.getEventTime()));
+				tvTime.setText("   " + AdHocUtils.getTime(item.getEventTime()));
 				tvTimeEnd.setText(AdHocUtils.getTime(item.getEventTimeEnd()));
 				tvTimeFiller.setText(" to ");
 				tvDesc.setText(item.getDesc());
-				if(item.getAddress() != null) {
-					tvLoc.setText("   "+item.getAddress());
+				if (item.getAddress() != null) {
+					tvLoc.setText("   " + item.getAddress());
 				} else {
 					tvLoc.setText("");
 				}
-				
+
 				ParseGeoPoint point = item.getLoc();
-				mapFrg.setLocaion(point.getLatitude(),point.getLongitude());
-				
+				mapFrg.setLocaion(point.getLatitude(), point.getLongitude());
+
 				gotDetails = true;
 				hideProgressBar();
 			}
 		});
 	}
-	
+
 	private void populateUserState() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				gotAtt = true;
-				if(item.getHostUserId().equals(ParseUser.getCurrentUser().getObjectId())) {
+				if (item.getHostUserId().equals(
+						ParseUser.getCurrentUser().getObjectId())) {
 					Log.d("DEBUG", "User is host of event");
 					setHostEvent();
 					hideProgressBar();
-				} else if(item.getJoinedUserIds().contains(ParseUser.getCurrentUser())) {
+				} else if (item.getJoinedUserIds().contains(
+						ParseUser.getCurrentUser())) {
 					Log.d("DEBUG", "User has joined event");
 					setJoinedEvent();
 					hideProgressBar();
@@ -385,7 +401,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 					Log.d("DEBUG", "User has NOT joined event");
 					setEmptyEvent();
 					hideProgressBar();
-					if(item.getAttendanceCount() == item.getMaxAttendees()) {
+					if (item.getAttendanceCount() == item.getMaxAttendees()) {
 						btnAction.setEnabled(false);
 						btnAction.setText("EVENT FULL");
 					}
@@ -393,18 +409,19 @@ public class EventDetailsActivity extends ActionBarActivity {
 			}
 		});
 	}
-		
+
 	private void populateAttendance() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if(item.getAttendanceCount() == item.getMaxAttendees()) {
+				if (item.getAttendanceCount() == item.getMaxAttendees()) {
 					tvAttendance.setText("FULL");
 					tvAttendance.setTextColor(Color.parseColor("#FF0000"));
-					
+
 				} else {
 					tvAttendance.setText(item.getAttendanceCount() + " / "
-						+ item.getMaxAttendees());
+							+ item.getMaxAttendees());
+					tvAttendance.setTextColor(Color.parseColor("#FFFFFF"));
 				}
 				pbAttendance.setMax(item.getMaxAttendees());
 				pbAttendance.setProgress(item.getAttendanceCount());
@@ -413,20 +430,26 @@ public class EventDetailsActivity extends ActionBarActivity {
 			}
 		});
 	}
-	
+
 	private void hideProgressBar() {
-		if(gotAtt && gotState && gotDetails) {
+		if (gotAtt && gotState && gotDetails) {
 			pbProgress.setVisibility(View.INVISIBLE);
 			tvLoad.setVisibility(View.INVISIBLE);
 			llProgress.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
+	private void showProgressBar() {
+		pbProgress.setVisibility(View.VISIBLE);
+		tvLoad.setVisibility(View.VISIBLE);
+		llProgress.setVisibility(View.VISIBLE);
+	}
+
 	@Override
 	public void onRestart() {
 		super.onRestart();
 		Log.d("DEBUG", "Event Details restarted");
-		//populateItems();
+		// populateItems();
 		getItem(itemId);
 	}
 }

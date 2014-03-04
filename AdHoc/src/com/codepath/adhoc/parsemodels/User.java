@@ -31,30 +31,6 @@ public class User extends ParseUser {
 		return getString(AdHocUtils.userPhoneNum);
 	}
 	
-	/*public ParseRelation<Events> getEventsHostingRelation() {
-		return getRelation(AdHocUtils.userEventsCreated);
-	}
-	
-	public ParseRelation<Events> getEventsAttendingRelation() {
-		return getRelation(AdHocUtils.userEventsAttending);
-	}
-	
-	public void addEventAttending(Events eventObj) {
-		getEventsAttendingRelation().add(eventObj);
-	}
-	
-	public void addEventHosting(Events eventObj) {
-		getEventsHostingRelation().add(eventObj);
-	}
-	
-	public void removeEventsAttending(Events eventObj) {
-		getEventsAttendingRelation().remove(eventObj);
-	}
-	
-	public void removeEventsHosting(Events eventObj) {
-		getEventsHostingRelation().remove(eventObj);
-	}*/
-	
 	public List<Events> getEventsHosting() {
 		return getList(AdHocUtils.userEventsHost);
 	}

@@ -109,24 +109,6 @@ public class Events extends ParseObject implements Serializable{
 	public void setLoc(double lat, double longi) {
 		put(AdHocUtils.eventLoc, new ParseGeoPoint(lat, longi));
 	}
-
-	/*public ParseRelation<User> getHostUserIdRelation() {
-		return getRelation(AdHocUtils.eventHostUserId);
-	}
-
-	public ParseRelation<User> getJoinedUsersRelation() {
-		return getRelation(AdHocUtils.eventJoinedUsersId);
-	}
-	
-	public void addJoinedUser(User userObj) {
-		getJoinedUsersRelation().add(userObj);
-		increment(AdHocUtils.eventAttendanceCount);
-	}
-
-	public void removeJoinedUser(User userObj) {
-		getJoinedUsersRelation().remove(userObj);
-		increment(AdHocUtils.eventAttendanceCount, -1);
-	}*/
 	
 	public String getHostUserId() {
 		return getParseObject(AdHocUtils.eventHostUser).getObjectId();
@@ -138,6 +120,7 @@ public class Events extends ParseObject implements Serializable{
 	
 	public void addJoinedUser(User userObj) {
 		getList(AdHocUtils.eventJoinedUser).add(userObj);
+		increment(AdHocUtils.eventAttendanceCount);
 	}
 	
 	public void removeJoinedUser(User userObj) {
@@ -145,6 +128,7 @@ public class Events extends ParseObject implements Serializable{
 		if(eventList.contains(userObj)) {
 			eventList.remove(userObj);
 		}
+		increment(AdHocUtils.eventAttendanceCount, -1);
 	}
 	
 	@Override
