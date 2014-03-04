@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,49 +20,11 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btnLocCreateSave"
+        android:layout_above="@+id/linearLayout1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_weight="1"
         class="com.google.android.gms.maps.SupportMapFragment" />
-
-    <View
-        android:id="@+id/view1"
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/map"
-        android:background="#228B22" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="7"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btnLocCreateCancel"
-            style="@style/NiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:onClick="onClickCancel"
-            android:text="Cancel" />
-
-        <Button
-            android:id="@+id/btnLocCreateSave"
-            style="@style/NiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:onClick="onClickSave"
-            android:text="Save" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llProgressLocCreate"
@@ -95,4 +57,46 @@
         </RelativeLayout>
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_weight="7"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnLocCreateCancel"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:onClick="onClickCancel"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/btnLocCreateSave"
+            style="@style/NiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:onClick="onClickSave"
+            android:text="Save" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_alignBottom="@+id/map"
+        android:layout_alignParentLeft="true"
+        android:background="#228B22" />
+
+</RelativeLayout>
