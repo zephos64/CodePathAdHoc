@@ -75,6 +75,7 @@ public abstract class EventListFragment extends Fragment {
 		llEmptyList.setVisibility(View.INVISIBLE);
 
 		lvEvents.setAdapter(getAdapter());
+		lvEvents.setSelector(android.R.color.transparent);
 		lvEvents.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
