@@ -62,7 +62,7 @@ public class LocationActivity extends ActionBarActivity implements GooglePlaySer
     private static final long   UPDATE_INTERVAL =MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int 	FASTEST_INTERVAL_IN_SECONDS = 5;
     private static final long 	FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
-    private static final long   INTEREST_RADIUS_MILES = 1; //AdHocUtils.milesLocRadius;
+    private static final long   INTEREST_RADIUS_MILES = AdHocUtils.milesLocRadius;
     private static final double INTEREST_RADIUS_METERS = 1609.34 * INTEREST_RADIUS_MILES;
     private static final double METER_TO_MILE_FACTOR = 0.000621371;
     private boolean  firstMapUpdate = true;
