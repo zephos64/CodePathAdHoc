@@ -457,6 +457,8 @@ public class EventDetailsActivity extends ActionBarActivity {
 	
 	public void gotoList() {
 		Intent i = new Intent(this, EventListActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		i.putExtra("EXIT", true);
 		startActivity(i);
 	}
 }
