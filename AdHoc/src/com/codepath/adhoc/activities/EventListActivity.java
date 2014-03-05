@@ -55,7 +55,7 @@ public class EventListActivity extends ActionBarActivity implements
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		Toast onBackPressedToast = Toast.makeText(this,
-				"Press back once again to log out.", Toast.LENGTH_SHORT);
+				"Press back once again to log out.", Toast.LENGTH_LONG);
 		long currentTime = System.currentTimeMillis();
 
 		if (getIntent().getBooleanExtra("BACK", false)) {
