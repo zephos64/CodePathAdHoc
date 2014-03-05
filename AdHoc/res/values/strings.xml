@@ -49,6 +49,6 @@
     <string name="getData">Getting event data...</string>
     <string name="getLoc">Getting user location</string>
     <string name="saving">Saving...</string>
-    <string name="emptyListText">Nothing seems to be happening here, why don\'t you start something?</string>
+    <string name="emptyListText">Nothing seems to be happening here. Pull down to refresh or start something!</string>
     
 </resources>
