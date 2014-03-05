@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.codepath.adhoc.AdHocUtils;
 import com.codepath.adhoc.R;
@@ -38,6 +39,7 @@ public class EventListActivity extends ActionBarActivity
 	LocationClient locationclient;
 	LocationRequest mLocationRequest;
 	LinearLayout llProgressList;
+	private long mLastPress = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,26 @@ public class EventListActivity extends ActionBarActivity
 		AdHocUtils.forceShowActionBar(this);
 		llProgressList = (LinearLayout) findViewById(R.id.llProgressList);
 		getCurrentUserLoc();
+		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		Toast onBackPressedToast = Toast.makeText(this, "Press back once again to log out.", Toast.LENGTH_SHORT);
+	    long currentTime = System.currentTimeMillis();
+	    
+		if (currentTime - mLastPress > 5000) {
+			onBackPressedToast.show();
+			mLastPress = currentTime;
+		} else {
+			if (getIntent().getBooleanExtra("EXIT", false)) {
+				finish();
+			} else {
+				onBackPressedToast.cancel();
+				super.onBackPressed();
+			}
+		}
 	}
 
 	@Override
@@ -72,6 +94,8 @@ public class EventListActivity extends ActionBarActivity
 			ParseUser.logOut();
 			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
 			Intent intLogOut = new Intent(this, MainActivity.class);
+			intLogOut.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intLogOut.putExtra("EXIT", true);
 			startActivity(intLogOut);
 			break;
 		default:

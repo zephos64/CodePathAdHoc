@@ -127,6 +127,8 @@ public class CreateEventActivity extends ActionBarActivity {
 							hideProgressBar();
 							
 							Intent listIntent = new Intent(getBaseContext(), EventListActivity.class);
+							listIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							listIntent.putExtra("EXIT", true);
 							startActivity(listIntent);
 						}
 					});
