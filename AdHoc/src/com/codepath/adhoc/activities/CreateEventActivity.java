@@ -77,6 +77,7 @@ public class CreateEventActivity extends ActionBarActivity {
 			break;
 		case R.id.action_list_events:
 			Intent iList = new Intent(this, EventListActivity.class);
+			iList.putExtra("BACK", true);
 			startActivity(iList);
 			break;
 		case R.id.action_map:
