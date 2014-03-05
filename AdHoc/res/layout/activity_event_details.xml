@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/btnAction"
             android:layout_alignParentLeft="true"
-            android:background="#c8eb5d"
+            android:background="#afce7f"
             android:padding="@dimen/small_padding" >
 
             <TextView
