@@ -55,7 +55,7 @@ public class EventListActivity extends ActionBarActivity implements
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		Toast onBackPressedToast = Toast.makeText(this,
-				"Press back once again to log out.", Toast.LENGTH_LONG);
+				"Press back once again to exit.", Toast.LENGTH_LONG);
 		long currentTime = System.currentTimeMillis();
 
 		if (getIntent().getBooleanExtra("BACK", false)) {
@@ -65,12 +65,10 @@ public class EventListActivity extends ActionBarActivity implements
 				onBackPressedToast.show();
 				mLastPress = currentTime;
 			} else {
-				if (getIntent().getBooleanExtra("EXIT", false)) {
-					finish();
-				} else {
-					onBackPressedToast.cancel();
-					super.onBackPressed();
-				}
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
 			}
 		}
 	}

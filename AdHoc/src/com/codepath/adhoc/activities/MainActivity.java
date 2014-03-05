@@ -67,10 +67,6 @@ public class MainActivity extends ActionBarActivity {
 			promptGPSEnabling();
 		}
 		
-		if (getIntent().getBooleanExtra("EXIT", false)) {
-		    finish();  
-		}
-		
 	}
 	private void promptGPSEnabling () {
 		Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
