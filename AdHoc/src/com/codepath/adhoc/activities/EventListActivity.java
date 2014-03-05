@@ -28,10 +28,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseUser;
 
-public class EventListActivity extends ActionBarActivity 
-								implements GooglePlayServicesClient.ConnectionCallbacks,
-								GooglePlayServicesClient.OnConnectionFailedListener,
-								LocationListener {
+public class EventListActivity extends ActionBarActivity implements
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 	// list sorted by % full (fuller = better)
 	// then by what's happening soonest
 
@@ -40,33 +39,38 @@ public class EventListActivity extends ActionBarActivity
 	LocationRequest mLocationRequest;
 	LinearLayout llProgressList;
 	private long mLastPress = 0;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_list);
-		
+
 		AdHocUtils.forceShowActionBar(this);
 		llProgressList = (LinearLayout) findViewById(R.id.llProgressList);
 		getCurrentUserLoc();
-		
+
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-		Toast onBackPressedToast = Toast.makeText(this, "Press back once again to log out.", Toast.LENGTH_SHORT);
-	    long currentTime = System.currentTimeMillis();
-	    
-		if (currentTime - mLastPress > 5000) {
-			onBackPressedToast.show();
-			mLastPress = currentTime;
+		Toast onBackPressedToast = Toast.makeText(this,
+				"Press back once again to log out.", Toast.LENGTH_SHORT);
+		long currentTime = System.currentTimeMillis();
+
+		if (getIntent().getBooleanExtra("BACK", false)) {
+			super.onBackPressed();
 		} else {
-			if (getIntent().getBooleanExtra("EXIT", false)) {
-				finish();
+			if (currentTime - mLastPress > 5000) {
+				onBackPressedToast.show();
+				mLastPress = currentTime;
 			} else {
-				onBackPressedToast.cancel();
-				super.onBackPressed();
+				if (getIntent().getBooleanExtra("EXIT", false)) {
+					finish();
+				} else {
+					onBackPressedToast.cancel();
+					super.onBackPressed();
+				}
 			}
 		}
 	}
@@ -92,7 +96,8 @@ public class EventListActivity extends ActionBarActivity
 			break;
 		case R.id.action_logout:
 			ParseUser.logOut();
-			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+			ParseUser currentUser = ParseUser.getCurrentUser(); // this will now
+																// be null
 			Intent intLogOut = new Intent(this, MainActivity.class);
 			intLogOut.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intLogOut.putExtra("EXIT", true);
@@ -104,7 +109,7 @@ public class EventListActivity extends ActionBarActivity
 
 		return true;
 	}
-	
+
 	private void setupTabs() {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -118,7 +123,7 @@ public class EventListActivity extends ActionBarActivity
 						new SupportFragmentTabListener<AllEventsFragment>(
 								R.id.flEventList, this, "All",
 								AllEventsFragment.class, userLoc));
-		actionBar.addTab(tab1);		
+		actionBar.addTab(tab1);
 		actionBar.selectTab(tab1);
 
 		Tab tab2 = actionBar
@@ -130,7 +135,7 @@ public class EventListActivity extends ActionBarActivity
 								R.id.flEventList, this, "Joined",
 								AttendingEvents.class, userLoc));
 		actionBar.addTab(tab2);
-		
+
 		Tab tab3 = actionBar
 				.newTab()
 				.setText("Hosting")
@@ -141,17 +146,17 @@ public class EventListActivity extends ActionBarActivity
 								CreatedEvents.class, userLoc));
 		actionBar.addTab(tab3);
 	}
-	
+
 	public void getCurrentUserLoc() {
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-		locationclient = new LocationClient(this,this, this);
-		if(resp == ConnectionResult.SUCCESS) {
+		locationclient = new LocationClient(this, this, this);
+		if (resp == ConnectionResult.SUCCESS) {
 			locationclient.connect();
 		} else {
 			Log.e("ERROR", "Error with Google play services " + resp);
-		}				
-		 mLocationRequest = LocationRequest.create();
-	     mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		}
+		mLocationRequest = LocationRequest.create();
+		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	}
 
 	@Override
@@ -164,30 +169,31 @@ public class EventListActivity extends ActionBarActivity
 	public void onLocationChanged(Location loc) {
 		Log.d("DEBUG", "Event list onLocaitonChanged");
 		llProgressList.setVisibility(View.INVISIBLE);
-		
-		Log.d("DEBUG", "Current user location (for event list) is: " +
-				loc.getLatitude() + "," + loc.getLongitude());
+
+		Log.d("DEBUG",
+				"Current user location (for event list) is: "
+						+ loc.getLatitude() + "," + loc.getLongitude());
 		userLoc = new LatLng(loc.getLatitude(), loc.getLongitude());
-		//Location temp = locationclient.getLastLocation();
-		//userLoc = new LatLng(temp.getLatitude(), temp.getLongitude());
+		// Location temp = locationclient.getLastLocation();
+		// userLoc = new LatLng(temp.getLatitude(), temp.getLongitude());
 		locationclient.disconnect();
-		
+
 		setupTabs();
-	}//test
+	}// test
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
-		
+
 	}
 
 	@Override
 	public void onDisconnected() {
 	}
-	
+
 	public LatLng getUserLoc() {
 		return userLoc;
 	}
-	
+
 	public void onClickCreateEvent(View v) {
 		Intent iCreate = new Intent(this, CreateEventActivity.class);
 		startActivity(iCreate);
